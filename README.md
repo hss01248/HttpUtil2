@@ -36,9 +36,11 @@ Add it in your root build.gradle at the end of repositories:
 
 ```
     dependencies {
-            compile 'com.github.hss01248:HttpUtil:http:3.0.0'
+            compile 'com.github.hss01248.HttpUtil:http:3.0.0'
     }
 ```
+
+
 
 # 全局配置
 
