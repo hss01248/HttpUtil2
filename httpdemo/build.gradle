@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+
+android {
+	compileSdkVersion 26
+
+
+
+	defaultConfig {
+		applicationId "com.hss01248.httpdemo"
+		minSdkVersion 15
+		targetSdkVersion 26
+		versionCode 1
+		versionName "1.0"
+
+		//testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	/*configurations.all {
+		resolutionStrategy {
+			force 'com.android.support:support-v4:26.1.0'
+			force 'com.android.support:appcompat-v7:26.1.0'
+		}
+	}*/
+
+}
+
+dependencies {
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+	implementation 'com.android.support:appcompat-v7:26.1.0'
+	implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+
+	implementation 'com.jakewharton:butterknife:8.7.0'
+	annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+	//implementation "com.google.guava:guava:23.0-android"
+    compile project(path: ':http')
+	compile 'com.mylhyl:acp:1.0.0'
+	//compile 'com.alibaba:fastjson:1.1.64.android'
+	compile 'com.github.hss01248.TestTools:testtool:1.0.4'
+
+	compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+	compile 'com.alibaba:fastjson:1.1.64.android'
+}
