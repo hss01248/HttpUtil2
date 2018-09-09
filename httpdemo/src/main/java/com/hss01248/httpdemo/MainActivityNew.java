@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.cache.CacheMode;
+import com.hss01248.http.callback.BaseSubscriber;
 import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.FileDownlodConfig;
@@ -118,13 +119,12 @@ public class MainActivityNew extends Activity {
             case R.id.get_json:
 
                 HttpUtil.request("version/latestVersion/v1.json",GetCommonJsonBean.class)
-                        //.showLoadingDialog()
-                        //.setCacheMode(CacheStrategy.DEFAULT)
+                        .setCacheMode(CacheMode.REQUEST_FAILED_READ_CACHE)
                         .responseAsNormalJson()
                         .callback(new MyNetCallback<ResponseBean<GetCommonJsonBean>>(true,null) {
                             @Override
                             public void onSuccess(ResponseBean<GetCommonJsonBean> response) {
-                                MyLog.e("---from cache-----listener: method:"+Thread.currentThread() .getStackTrace()[0].getMethodName());
+                                MyLog.i("---from cache-----listener: method:"+response.isFromCache);
                             }
 
                             @Override
@@ -170,10 +170,11 @@ public class MainActivityNew extends Activity {
                         .addParam("pageIndex","1")
                         .post()
                         .responseAsNormalJson()
-                        .callback(new MyNetCallback<ResponseBean<List<PostCommonJsonBean>>>(true,null) {
+                        .asObservable()
+                        .subscribe(new BaseSubscriber<ResponseBean<List<PostCommonJsonBean>>>(true,null) {
                             @Override
                             public void onSuccess(ResponseBean<List<PostCommonJsonBean>> response) {
-                                
+
                             }
 
                             @Override
@@ -205,7 +206,6 @@ public class MainActivityNew extends Activity {
                         .addParam("pagesize","4")
                         .addParam("time",System.currentTimeMillis()/1000+"")
                         .addParam("key","fuck you")
-                        //.setStandardJsonKey("result","error_code","reason")
                         .setDataCodeMsgJsonConfig(DataCodeMsgJsonConfig
                                 .newBuilder()
                                 .key_code("error_code")
@@ -222,7 +222,6 @@ public class MainActivityNew extends Activity {
                                 .build()
                         )
                         //.setCacheMode(CacheStrategy.FIRST_CACHE_THEN_REQUEST)
-                       // .showLoadingDialog()
                         .callback(new MyNetCallback<ResponseBean<GetStandardJsonBean>>(true,null) {
                             @Override
                             public void onSuccess(ResponseBean<GetStandardJsonBean> response) {
@@ -256,7 +255,7 @@ public class MainActivityNew extends Activity {
 
                             }
                         });
-                       
+
                 break;
             case R.id.download:
                 /*File dir = Environment.getExternalStorageDirectory();
@@ -303,13 +302,10 @@ public class MainActivityNew extends Activity {
 
 
                 HttpUtil.request("http://192.168.108.102:8080/uploadImgs",String.class)
-                //HttpUtil.request("http://test.qxinli.com:80/gm/file/q_uploadAndroidApk.do",String.class)
                         .uploadMultipart()
                         .responseAsString()
-                        //.addFile("uploadFile","/storage/emulated/0/qxinli.apk")
                         .addFile("file1","/storage/emulated/0/Download/httpdemo/qxinli.apk")
-                        .addFile("file2","/storage/emulated/0/Download/httpdemo/qxinli.apk")
-                        //.addParam("uploadFile555","1474363536041.jpg")
+                        .addFile("file2","/storage/emulated/0/Download/httpdemo/qxinli2.apk")
                         .addParam("name","898767hjk")
                         .callback(new MyNetCallback<ResponseBean<String>>() {
                             @Override

@@ -2,6 +2,7 @@ package com.hss01248.http.config;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 
 /**
  * Created by hss on 2018/9/2.
@@ -77,6 +78,8 @@ public class LoadingDialogConfig {
     }
 
 
-
+public interface ILoadingDialog{
+        Dialog showLoadingDialog(Context context,String msg);
+}
 
 }

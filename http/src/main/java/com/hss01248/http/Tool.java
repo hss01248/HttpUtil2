@@ -1,6 +1,7 @@
 package com.hss01248.http;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -229,17 +230,27 @@ public class Tool {
         if(!Tool.isUseable(activity)){
             return;
         }
-        ProgressDialog dialog = new ProgressDialog(activity);
+
         String msg = dialogConfig.getMsg();
         if(dialogConfig.getStringResId() != 0){
             msg = activity.getResources().getString(dialogConfig.getStringResId());
         }
-        dialog.setMessage(msg);
-        dialog.setCancelable(dialogConfig.isCancelable());
+        Dialog dialog = null;
+        if(GlobalConfig.get().getDefaultLoadingDialog() != null){
+            dialog = GlobalConfig.get().getDefaultLoadingDialog().showLoadingDialog(activity,msg);
+        }else {
+            ProgressDialog progressDialog = new ProgressDialog(activity);
 
-        if(dialogConfig.isShowProgress()){
-            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setMessage(msg);
+            if(dialogConfig.isShowProgress()){
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            }
+            dialog = progressDialog;
         }
+
+
+
+        dialog.setCancelable(dialogConfig.isCancelable());
         dialogConfig.setDialog(dialog);
 
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

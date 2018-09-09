@@ -1,13 +1,11 @@
 package com.hss01248.http;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.callback.ProgressCallback;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.FileDownlodConfig;
-import com.hss01248.http.config.LoadingDialogConfig;
 import com.hss01248.http.executer.Runner;
 import com.hss01248.http.response.ResponseBean;
 import com.hss01248.http.utils.HttpHeaders;
@@ -366,6 +364,11 @@ public class ConfigInfo<T> {
         return this;
     }
 
+    /**
+     *
+     * @param cacheMode 取值: CacheMode.xxx
+     * @return
+     */
     public ConfigInfo<T> setCacheMode(int cacheMode) {
         this.cacheMode = cacheMode;
         return this;
@@ -403,7 +406,7 @@ public class ConfigInfo<T> {
     private Object tagForCancle;
 
 
-    public LoadingDialogConfig getLoadingDialogConfig() {
+    /*public LoadingDialogConfig getLoadingDialogConfig() {
         return loadingDialogConfig;
     }
 
@@ -426,7 +429,7 @@ public class ConfigInfo<T> {
     }
 
     //ui相关
-    private LoadingDialogConfig loadingDialogConfig;
+    private LoadingDialogConfig loadingDialogConfig;*/
 
 
 

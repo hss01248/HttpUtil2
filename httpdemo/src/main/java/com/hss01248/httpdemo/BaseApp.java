@@ -2,6 +2,9 @@ package com.hss01248.httpdemo;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 
 import com.hss01248.http.GlobalConfig;
@@ -9,6 +12,7 @@ import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
+import com.hss01248.http.config.LoadingDialogConfig;
 import com.hss01248.testtool.TestTool;
 import com.orhanobut.logger.IJsonToStr;
 import com.orhanobut.logger.MyLog;
@@ -120,8 +124,7 @@ public class BaseApp extends Application {
         };
 
 
-        HttpUtil
-                .init(this,true,"http://api.qxinli.com:9005/api/",tool)
+        HttpUtil.init(this,true,"http://api.qxinli.com:9005/api/",tool)
                 .setDataCodeMsgJsonConfig(DataCodeMsgJsonConfig
                         .newBuilder()
                         .key_data("data")
@@ -136,6 +139,16 @@ public class BaseApp extends Application {
                         })
 
                         .build())
+                .setDefaultLoadingDialog(new LoadingDialogConfig.ILoadingDialog() {
+                    @Override
+                    public Dialog showLoadingDialog(Context context,String msg) {
+                        ProgressDialog dialog =  new ProgressDialog(context);
+                        dialog.setContentView(R.layout.toast_layout);
+                        dialog.setMessage(msg);
+                        dialog.show();
+                        return dialog;
+                    }
+                })
                 // .addCrtificateRaw(R.raw.srca)
                 //.addCrtificateAssert("srca.cer")
                 .setLogTag("okhttp")
@@ -149,7 +162,6 @@ public class BaseApp extends Application {
                 .setTotalTimeOut(15000)
                 .setRetryCount(0)
                 .setRetryOnConnectionFailure(false)
-                .addCommonHeader("clienttype","android")
-                .addCommonHeader("clientversion",baseApp.getPackageManager().getPackageInfo(baseApp.getPackageName(),0).versionCode+"");
+                .addCommonHeader("clienttype","android");
     }
 }

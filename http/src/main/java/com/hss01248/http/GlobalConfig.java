@@ -5,6 +5,7 @@ import android.app.Application;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.FileDownlodConfig;
+import com.hss01248.http.config.LoadingDialogConfig;
 import com.hss01248.http.response.DownloadParser;
 import com.hss01248.http.utils.HttpHeaders;
 import com.hss01248.http.utils.SslUtil;
@@ -32,6 +33,17 @@ public class GlobalConfig {
     }
 
     private boolean debug;
+
+    public LoadingDialogConfig.ILoadingDialog getDefaultLoadingDialog() {
+        return defaultLoadingDialog;
+    }
+
+    public GlobalConfig setDefaultLoadingDialog(LoadingDialogConfig.ILoadingDialog defaultLoadingDialog) {
+        this.defaultLoadingDialog = defaultLoadingDialog;
+        return this;
+    }
+
+    private LoadingDialogConfig.ILoadingDialog defaultLoadingDialog;
 
     public Application getContext() {
         return context;
@@ -61,6 +73,9 @@ public class GlobalConfig {
     private boolean retryOnConnectionFailure = false;//默认不重试
     private String downloadDir;
     //private static GlobalConfig instance;
+
+
+
 
     public GlobalConfig setDataCodeMsgJsonConfig(DataCodeMsgJsonConfig dataCodeMsgJsonConfig) {
         this.dataCodeMsgJsonConfig = dataCodeMsgJsonConfig;

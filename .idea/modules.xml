@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HttpUtil.iml" filepath="$PROJECT_DIR$/HttpUtil.iml" />
-      <module fileurl="file://$PROJECT_DIR$/akuhttp/akuhttp.iml" filepath="$PROJECT_DIR$/akuhttp/akuhttp.iml" />
       <module fileurl="file://D:\projects\android\hss01248\HttpUtil\akuhttp\akuhttp.iml" filepath="D:\projects\android\hss01248\HttpUtil\akuhttp\akuhttp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/akuhttpdemo/akuhttpdemo.iml" filepath="$PROJECT_DIR$/akuhttpdemo/akuhttpdemo.iml" />
       <module fileurl="file://D:\projects\android\hss01248\HttpUtil\akuhttpdemo\akuhttpdemo.iml" filepath="D:\projects\android\hss01248\HttpUtil\akuhttpdemo\akuhttpdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/http/http.iml" filepath="$PROJECT_DIR$/http/http.iml" />
       <module fileurl="file://$PROJECT_DIR$/httpdemo/httpdemo.iml" filepath="$PROJECT_DIR$/httpdemo/httpdemo.iml" />
