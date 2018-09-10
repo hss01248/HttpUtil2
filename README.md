@@ -592,3 +592,5 @@ public static io.reactivex.Observable<ResponseBean<S3Info>> uploadImgs(String ty
 [retrofit](https://github.com/square/retrofit)
 
 [okhttp-OkGo](https://github.com/jeasonlzy/okhttp-OkGo)
+
+[RxEasyHttp](https://github.com/zhou-you/RxEasyHttp)
