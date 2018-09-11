@@ -36,9 +36,11 @@ Add it in your root build.gradle at the end of repositories:
 
 ```
     dependencies {
-            compile 'com.github.hss01248:HttpUtil:http:3.0.0'
+            compile 'com.github.hss01248.HttpUtil:http:3.0.0'
     }
 ```
+
+
 
 # 全局配置
 
@@ -590,3 +592,5 @@ public static io.reactivex.Observable<ResponseBean<S3Info>> uploadImgs(String ty
 [retrofit](https://github.com/square/retrofit)
 
 [okhttp-OkGo](https://github.com/jeasonlzy/okhttp-OkGo)
+
+[RxEasyHttp](https://github.com/zhou-you/RxEasyHttp)
