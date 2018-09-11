@@ -89,7 +89,7 @@ public class GlobalConfig {
 
     DataCodeMsgJsonConfig dataCodeMsgJsonConfig = DataCodeMsgJsonConfig.newBuilder().build();
 
-    FileDownlodConfig downlodConfig = FileDownlodConfig.newBuilder().build();
+    FileDownlodConfig downlodConfig ;
 
 
     public INetTool getTool() {

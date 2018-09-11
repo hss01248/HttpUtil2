@@ -37,8 +37,9 @@ public class Runner {
 
     public static <T> void asCallback(final ConfigInfo<T> info) {
         Observable<ResponseBean<T>> observable = asObservable(info);
-        observable.observeOn(SchedulerProvider.getInstance().ui());
-        observable.subscribe(info.getCallback());
+        //observable.observeOn(SchedulerProvider.getInstance().ui());
+        observable.compose(SchedulerProvider.getInstance().toUI())
+                .subscribe(info.getCallback());
 
     }
 
@@ -68,7 +69,7 @@ public class Runner {
                         public ResponseBean<T> apply(ResponseBody responseBody) throws Exception {
                             return DownloadParser.receiveInputStream(info, responseBody);
                         }
-                    }).compose(SchedulerProvider.getInstance().io2UI())//todo 为何一定要有这个才不报错:networkonmainthread?compose才能转换整个的线程
+                    })//.compose(SchedulerProvider.getInstance().io2UI())//todo 为何一定要有这个才不报错:networkonmainthread?compose才能转换整个的线程
                     .doOnNext(new Consumer<ResponseBean<T>>() {
                         @Override
                         public void accept(ResponseBean<T> tResponseBean) throws Exception {
@@ -83,12 +84,10 @@ public class Runner {
         //上传
         if (info.isUploadBinary() || info.isUploadMultipart()) {
             Observable<ResponseBody> net = RetrofitHelper.getResponseObservable(info);
-            net.subscribeOn(SchedulerProvider.getInstance().io())//修改上面的线程  //todo 处理同步请求
-                    .observeOn(SchedulerProvider.getInstance().io());//修改下面的线程
+            net.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程  //todo 处理同步请求
             return net.compose(ResponseTransformer2.handleResult(info))
                     .timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
-                    .retry(info.getRetryCount())
-                    .compose(SchedulerProvider.getInstance().io2UI());
+                    .retry(info.getRetryCount());
         } else {
             return handleStringRequst(info);
         }
@@ -101,7 +100,6 @@ public class Runner {
 
             return RetrofitHelper.getResponseObservable(info)
                     .subscribeOn(SchedulerProvider.getInstance().io())//修改上面的线程
-                    .observeOn(SchedulerProvider.getInstance().io())//修改下面的线程
                     .compose(ResponseTransformer2.handleResult(info))
                     .timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
                     .retry(info.getRetryCount());

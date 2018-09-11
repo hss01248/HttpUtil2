@@ -56,13 +56,12 @@ public class SchedulerProvider implements BaseSchedulerProvider {
 
     @NonNull
     @Override
-    public <T> ObservableTransformer<T, T> io2UI() {
+    public <T> ObservableTransformer<T, T> toUI() {
 
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> observable) {
-                return observable.subscribeOn(io())
-                        .observeOn(ui());
+                return observable.observeOn(ui());
             }
         };
     }

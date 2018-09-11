@@ -21,5 +21,5 @@ public interface BaseSchedulerProvider {
     Scheduler newThread();
 
     @NonNull
-    <T> ObservableTransformer<T, T> io2UI();
+    <T> ObservableTransformer<T, T> toUI();
 }
