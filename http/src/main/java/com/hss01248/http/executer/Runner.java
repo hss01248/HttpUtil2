@@ -69,7 +69,7 @@ public class Runner {
                         public ResponseBean<T> apply(ResponseBody responseBody) throws Exception {
                             return DownloadParser.receiveInputStream(info, responseBody);
                         }
-                    })//.compose(SchedulerProvider.getInstance().io2UI())//todo 为何一定要有这个才不报错:networkonmainthread?compose才能转换整个的线程
+                    }).compose(SchedulerProvider.getInstance().toUI())//todo 为何一定要有这个才不报错:networkonmainthread?compose才能转换整个的线程
                     .doOnNext(new Consumer<ResponseBean<T>>() {
                         @Override
                         public void accept(ResponseBean<T> tResponseBean) throws Exception {
