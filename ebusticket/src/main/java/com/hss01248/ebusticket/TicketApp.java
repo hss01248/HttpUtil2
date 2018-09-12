@@ -3,6 +3,8 @@ package com.hss01248.ebusticket;
 import android.app.Activity;
 import android.app.Application;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
@@ -12,6 +14,7 @@ import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.testtool.TestTool;
 import com.orhanobut.logger.IJsonToStr;
 import com.orhanobut.logger.MyLog;
+import com.xdandroid.hellodaemon.DaemonEnv;
 
 import org.json.JSONObject;
 
@@ -27,15 +30,37 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class TicketApp extends Application {
 
+    public static Application getContext() {
+        return context;
+    }
+
+    public static Application context;
+
+   static Handler handler;
+
+    public static Handler getHandler(){
+        if(handler == null){
+            handler = new Handler(Looper.getMainLooper());
+        }
+        return handler;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
+
+
+
+
+
         try {
             initTestTool();
             initHttp(this);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        DaemonEnv.initialize(this,EbusService.class,5*60*1000);
     }
 
     private void initTestTool() {

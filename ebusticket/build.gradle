@@ -35,4 +35,7 @@ dependencies {
     compile 'com.github.hss01248.TestTools:testtool:1.0.4'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     compile 'com.alibaba:fastjson:1.1.64.android'
+    compile 'com.xdandroid:hellodaemon:+'
+    compile 'com.github.hss01248:SafeMediaPlayer:1.0.1'
+
 }
