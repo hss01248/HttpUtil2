@@ -33,7 +33,7 @@ public class TicketUtil {
          HttpUtil.request("bc/phone/surplus/ticket/new",TicketLeftInfo.class)
                 .post()
                 //.addParam("customerId",55972)
-                .addParamStr("customerId=55972&customerName=15989369965&keyCode=3b3abfcc1c423f4797e9362f752c77cb&lineId=73755&vehTime=0720&beginDate=20180911&endDate=20180930")
+                .addParamStr("customerId=486902&customerName=16675354908&keyCode=42398a19e695e90fe007375d3eb56fdb&lineId=73755&vehTime=0720&beginDate=20180913&endDate=20180930")
                 .callback(new MyNetCallback<ResponseBean<TicketLeftInfo>>(false,null) {
                     @Override
                     public void onSuccess(ResponseBean<TicketLeftInfo> response) {

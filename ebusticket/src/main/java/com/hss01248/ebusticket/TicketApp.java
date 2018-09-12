@@ -173,7 +173,7 @@ public class TicketApp extends Application {
                 //.setWriteTimeout(10000)
                 .setTotalTimeOut(15000)
                 .setRetryCount(0)
-                .setRetryOnConnectionFailure(false)
-               .addCommonParam("keyCode","3b3abfcc1c423f4797e9362f752c77cb");
+                .setRetryOnConnectionFailure(false);
+
     }
 }

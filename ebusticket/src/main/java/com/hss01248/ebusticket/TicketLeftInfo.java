@@ -21,9 +21,14 @@ public class TicketLeftInfo {
         if(TextUtils.isEmpty(tickets)){
             return 0;
         }
-        String[] days = tickets.split(",");
+        String ti = tickets.replace("-1,","");
+        String[] days = ti.split(",");
         int count = 0;
-        for (String str: days) {
+        for (int j = 0; j<days.length; j++) {
+            String str = days[j];
+            if(j==0){
+                continue;
+            }
             try {
                 int i = Integer.parseInt(str);
                 if(i >0){
