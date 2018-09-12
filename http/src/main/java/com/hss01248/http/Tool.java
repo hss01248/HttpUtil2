@@ -9,9 +9,9 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
-
 import com.hss01248.http.callback.BaseSubscriber;
 import com.hss01248.http.config.LoadingDialogConfig;
+import io.reactivex.disposables.Disposable;
 
 import java.io.File;
 import java.util.HashSet;
@@ -19,8 +19,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import io.reactivex.disposables.Disposable;
 
 /**
  * Created by hss on 2018/7/29.
@@ -182,7 +180,9 @@ public class Tool {
 
     public static void logJson(Object t){
         if(GlobalConfig.get().isOpenLog()){
-            GlobalConfig.get().getTool().logdJson(GlobalConfig.get().getTool().toJsonStr(t));
+            //fastjson在华为荣耀6上直接anr
+            //GlobalConfig.get().getTool().logdJson(GlobalConfig.get().getTool().toJsonStr(t));
+            GlobalConfig.get().getTool().logObj(t);
         }
     }
 

@@ -3,13 +3,19 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HttpUtil.iml" filepath="$PROJECT_DIR$/HttpUtil.iml" />
+      <module fileurl="file://D:\projects\Android\github\hss01248\HttpUtil\HttpUtil.iml" filepath="D:\projects\Android\github\hss01248\HttpUtil\HttpUtil.iml" />
       <module fileurl="file://D:\projects\android\hss01248\HttpUtil\akuhttp\akuhttp.iml" filepath="D:\projects\android\hss01248\HttpUtil\akuhttp\akuhttp.iml" />
       <module fileurl="file://D:\projects\android\hss01248\HttpUtil\akuhttpdemo\akuhttpdemo.iml" filepath="D:\projects\android\hss01248\HttpUtil\akuhttpdemo\akuhttpdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/ebusticket/ebusticket.iml" filepath="$PROJECT_DIR$/ebusticket/ebusticket.iml" />
+      <module fileurl="file://D:\projects\Android\github\hss01248\HttpUtil\ebusticket\ebusticket.iml" filepath="D:\projects\Android\github\hss01248\HttpUtil\ebusticket\ebusticket.iml" />
       <module fileurl="file://$PROJECT_DIR$/http/http.iml" filepath="$PROJECT_DIR$/http/http.iml" />
+      <module fileurl="file://D:\projects\Android\github\hss01248\HttpUtil\http\http.iml" filepath="D:\projects\Android\github\hss01248\HttpUtil\http\http.iml" />
       <module fileurl="file://$PROJECT_DIR$/httpdemo/httpdemo.iml" filepath="$PROJECT_DIR$/httpdemo/httpdemo.iml" />
+      <module fileurl="file://D:\projects\Android\github\hss01248\HttpUtil\httpdemo\httpdemo.iml" filepath="D:\projects\Android\github\hss01248\HttpUtil\httpdemo\httpdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/openuri/openuri.iml" filepath="$PROJECT_DIR$/openuri/openuri.iml" />
+      <module fileurl="file://D:\projects\Android\github\hss01248\HttpUtil\openuri\openuri.iml" filepath="D:\projects\Android\github\hss01248\HttpUtil\openuri\openuri.iml" />
       <module fileurl="file://$PROJECT_DIR$/rxcache/rxcache.iml" filepath="$PROJECT_DIR$/rxcache/rxcache.iml" />
+      <module fileurl="file://D:\projects\Android\github\hss01248\HttpUtil\rxcache\rxcache.iml" filepath="D:\projects\Android\github\hss01248\HttpUtil\rxcache\rxcache.iml" />
     </modules>
   </component>
 </project>

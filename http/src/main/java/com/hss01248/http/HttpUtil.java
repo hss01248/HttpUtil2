@@ -22,20 +22,25 @@ public class HttpUtil {
     public static Context context;
 
     public static RxCache getRxCache() {
+        if(rxCache == null){
+            rxCache = new RxCache.Builder()
+                    .appVersion(1)//当版本号改变,缓存路径下存储的所有数据都会被清除掉
+                    .diskDir(new File(HttpUtil.context.getCacheDir().getPath() + File.separator + "okhttp-cache"))
+                    .diskConverter(new GsonDiskConverter())//支持Serializable、Json(GsonDiskConverter)
+                    .memoryMax(6*1024*1024)
+                    .diskMax(50*1024*1024)
+                    .build();
+        }
         return rxCache;
     }
 
-    public static RxCache rxCache;
+    private static RxCache rxCache;
 
     public static GlobalConfig init(Application context0, boolean openlog, String baseUrl, INetTool tool) {
         context = context0;
-        rxCache = new RxCache.Builder()
-                .appVersion(1)//当版本号改变,缓存路径下存储的所有数据都会被清除掉
-                .diskDir(new File(HttpUtil.context.getCacheDir().getPath() + File.separator + "okhttp-cache"))
-                .diskConverter(new GsonDiskConverter())//支持Serializable、Json(GsonDiskConverter)
-                .memoryMax(6*1024*1024)
-                .diskMax(50*1024*1024)
-                .build();
+
+
+
         //初始化uploader
 
         // initDownloader(context0);

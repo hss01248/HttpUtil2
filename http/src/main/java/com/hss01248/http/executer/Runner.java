@@ -1,12 +1,7 @@
 package com.hss01248.http.executer;
 
 import android.text.TextUtils;
-
-import com.hss01248.http.ConfigInfo;
-import com.hss01248.http.HttpUtil;
-import com.hss01248.http.RetrofitHelper;
-import com.hss01248.http.StringParser;
-import com.hss01248.http.Tool;
+import com.hss01248.http.*;
 import com.hss01248.http.cache.CacheKeyHandler;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.ConfigChecker;
@@ -21,13 +16,12 @@ import com.zchu.rxcache.data.CacheResult;
 import com.zchu.rxcache.data.ResultFrom;
 import com.zchu.rxcache.stategy.CacheStrategy;
 import com.zchu.rxcache.stategy.IObservableStrategy;
-
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hss on 2018/7/22.
@@ -37,8 +31,8 @@ public class Runner {
 
     public static <T> void asCallback(final ConfigInfo<T> info) {
         Observable<ResponseBean<T>> observable = asObservable(info);
-        //observable.observeOn(SchedulerProvider.getInstance().ui());
-        observable.compose(SchedulerProvider.getInstance().toUI())
+        observable.observeOn(SchedulerProvider.getInstance().ui())
+        //observable.compose(SchedulerProvider.getInstance().toUI())
                 .subscribe(info.getCallback());
 
     }
@@ -100,6 +94,7 @@ public class Runner {
 
             return RetrofitHelper.getResponseObservable(info)
                     .subscribeOn(SchedulerProvider.getInstance().io())//修改上面的线程
+                    .observeOn(SchedulerProvider.getInstance().ui())//修改下面的线程
                     .compose(ResponseTransformer2.handleResult(info))
                     .timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
                     .retry(info.getRetryCount());
