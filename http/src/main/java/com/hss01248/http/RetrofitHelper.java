@@ -4,6 +4,7 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import com.hss01248.http.config.GlobalClient;
+import com.hss01248.http.config.ParamsProcessor;
 import com.hss01248.http.request.ApiService;
 import com.hss01248.http.request.UploadFileRequestBody;
 import com.hss01248.http.utils.HttpHeaders;
@@ -123,8 +124,8 @@ public class RetrofitHelper {
         return filesMap;
     }
 
-    public static <T> RequestBody buidlJsonRequestBody(ConfigInfo<T> info) {
-        String jsonStr = GlobalConfig.get().getTool().toJsonStr(info.getParams());
+     static <T> RequestBody buidlJsonRequestBody(ConfigInfo<T> info)  {
+        String jsonStr = ParamsProcessor.getFinalJsonStr(info);
         return RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), jsonStr);
 
     }

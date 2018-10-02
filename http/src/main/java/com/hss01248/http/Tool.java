@@ -9,16 +9,19 @@ import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
+
 import com.hss01248.http.callback.BaseSubscriber;
 import com.hss01248.http.config.LoadingDialogConfig;
-import io.reactivex.disposables.Disposable;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by hss on 2018/7/29.
@@ -284,5 +287,16 @@ public class Tool {
         return false;
 
 
+    }
+
+    public static String urlDecode(String str){
+        try {
+            str = str.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
+            String urlStr = URLDecoder.decode(str, "UTF-8");
+            return urlStr;
+        }catch (Exception e){
+            e.printStackTrace();
+            return str;
+        }
     }
 }

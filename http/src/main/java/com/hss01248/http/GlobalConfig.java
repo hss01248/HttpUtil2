@@ -172,18 +172,18 @@ public class GlobalConfig {
         return this;
     }
 
-    public Map<String, String> getCommonParams() {
+    public Map<String, Object> getCommonParams() {
         return commonParams;
     }
 
-    public GlobalConfig addCommonParam(String key, String value) {
+    public GlobalConfig addCommonParam(String key, Object value) {
         this.commonParams.put(key, value);
         return this;
     }
 
 
     private Map<String, String> commonHeaders = new HashMap<>();
-    private Map<String, String> commonParams = new HashMap<>();
+    private Map<String, Object> commonParams = new HashMap<>();
     private boolean isAppendCommonHeaders = true;
     private boolean isAppendCommonParams = true;
 

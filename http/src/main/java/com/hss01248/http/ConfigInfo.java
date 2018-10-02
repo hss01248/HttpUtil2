@@ -26,10 +26,45 @@ import okhttp3.Interceptor;
 public class ConfigInfo<T> {
 
     public ConfigInfo() {
-
     }
+    private Object extraFromOut;//外面传递进来,一直沿着rx链一直传递下去的
+
+    private boolean download;
+    private boolean uploadMultipart;
+    private boolean uploadBinary;
 
 
+    //请求相关
+    private int method = HttpMethod.GET;
+    private String url;
+    private Map<String, String> params ;
+    //请求头  http://tools.jb51.net/table/http_header
+    private Map<String, String> headers ;
+    private Set<String> paramKeysSetNotForCacheKey;
+    private String paramsStr;
+    private boolean paramsAsJson = false;
+
+    //上传的文件路径
+    private Map<String, String> files;
+    private Map<String, List<String>> files2;//一个key接收多个文件
+
+
+    //响应相关
+    Class clazz;
+    boolean responseAsString;
+    private boolean responseAsDownload;
+    private boolean responseAsNormalJson;
+    private boolean responseAsDataCodeMsgInJson = true;
+
+
+    private boolean responseAsJsonArray;
+    private boolean treatEmptyDataAsSuccess;//response或者string为空,data字段为空时,是否当做成功来处理
+    private DataCodeMsgJsonConfig dataCodeMsgJsonConfig = GlobalConfig.get().dataCodeMsgJsonConfig;
+    private FileDownlodConfig downlodConfig = GlobalConfig.get().downlodConfig;
+
+
+    String responseBodyStr;
+    //public ResponseBean<T> response;
 
 
     public Object getExtraFromOut() {
@@ -40,8 +75,6 @@ public class ConfigInfo<T> {
         this.extraFromOut = extraFromOut;
         return this;
     }
-
-    private Object extraFromOut;//外面传递进来,一直沿着rx链一直传递下去的
 
     public ConfigInfo<T> setUrl(String url) {
         if (url.startsWith("http")) {
@@ -101,29 +134,10 @@ public class ConfigInfo<T> {
     }
 
 
-    /**
-     * 添加参数,
-     *
-     * @param key
-     * @param value 如果为null,则此key丢弃.内部调用value.toString()转成字符串
-     * @return
-     */
-    public ConfigInfo<T> addParam(String key, Object value) {
-        if (value == null) {
-            Log.w("configinfo", "addParam: value of " + key + " is null");
-            params.put(key, null);
-        } else {
-            params.put(key, value.toString());
-        }
-
-
-        return this;
-    }
-
     public ConfigInfo<T> addHeader(String key, String value) {
         if (value == null) {
             Log.w("configinfo", "addHeader: value of " + key + " is null");
-            headers.put(key, null);
+           // headers.put(key, null);
         } else {
             headers.put(key, value);
         }
@@ -133,6 +147,63 @@ public class ConfigInfo<T> {
     }
 
     /**
+     * 添加必须的参数
+     *
+     * @param key
+     * @param value 内部调用value.toString()转成字符串
+     *              如果为null,则直接在校验时拦截,调用onError的回调.
+     * @return
+     */
+    public ConfigInfo<T> addParam(String key, Object value) {
+        if(params == null){
+            params = new HashMap<>();
+        }
+        params.put(key, value.toString());
+        return this;
+    }
+
+    /**
+     * @param key
+     * @param value
+     * @param shouldAdd 是否添加这个参数
+     * @param isOptional 对于后台是否可选
+     * @param notAsCacheKey 是否不用于cachekey的生成
+     * @return
+     */
+    public ConfigInfo<T> addParam(String key, Object value,boolean shouldAdd,boolean isOptional,boolean notAsCacheKey){
+       if(!shouldAdd){
+            return this;
+        }
+        if(isOptional){
+           addParam(key,value);
+        }else {
+            addParamOptional(key,value);
+        }
+        if(notAsCacheKey){
+            setParamKeyNotUsedForCacheKey(key);
+        }
+        return this;
+
+    }
+
+    /**
+     * 对应服务端spring标识reqired = false的字段,通过这个添加,value为null时才不会被拦截.而是自动过滤掉
+     * @param key
+     * @param value
+     * @return
+     */
+    public ConfigInfo<T> addParamOptional(String key,Object value) {
+        if(value !=null){
+            addParam(key,value);
+        }
+        return this;
+    }
+
+
+
+
+
+    /**
      * 直接将拼接好的参数或者json化的参数塞进来
      * 常用于从抓包工具拷过来的,进行模拟请求
      *
@@ -140,7 +211,7 @@ public class ConfigInfo<T> {
      * @return
      */
     public ConfigInfo<T> addParamStr(String paramsStr) {
-        this.paramsStr = paramsStr;
+        this.paramsStr = Tool.urlDecode(paramsStr);
         return this;
     }
 
@@ -151,7 +222,7 @@ public class ConfigInfo<T> {
      * @return
      */
     public ConfigInfo<T> postParamsAsJson() {
-        paramsAsJson = true;
+        this.paramsAsJson = true;
         return this;
     }
 
@@ -160,7 +231,7 @@ public class ConfigInfo<T> {
      *
      * @return
      */
-    public ConfigInfo<T> setParamKeyNotForCacheKey(String paramKey) {
+    public ConfigInfo<T> setParamKeyNotUsedForCacheKey(String paramKey) {
         if (paramKeysSetNotForCacheKey == null) {
             paramKeysSetNotForCacheKey = new HashSet<>();
         }
@@ -204,44 +275,6 @@ public class ConfigInfo<T> {
         this.responseAsJsonArray = responseAsJsonArray;
         return this;
     }
-
-
-    private boolean download;
-    private boolean uploadMultipart;
-    private boolean uploadBinary;
-
-
-    //请求相关
-    private int method = HttpMethod.GET;
-    private String url;
-    private Map<String, String> params = GlobalConfig.get().getCommonParams();
-    //请求头  http://tools.jb51.net/table/http_header
-    private Map<String, String> headers = GlobalConfig.get().getCommonHeaders();
-    private Set<String> paramKeysSetNotForCacheKey;
-    private String paramsStr;
-    private boolean paramsAsJson = false;
-
-    //上传的文件路径
-    private Map<String, String> files;
-    private Map<String, List<String>> files2;//一个key接收多个文件
-
-
-    //响应相关
-    Class clazz;
-    boolean responseAsString;
-    private boolean responseAsDownload;
-    private boolean responseAsNormalJson;
-    private boolean responseAsDataCodeMsgInJson = true;
-
-
-    private boolean responseAsJsonArray;
-    private boolean treatEmptyDataAsSuccess;//response或者string为空,data字段为空时,是否当做成功来处理
-    private DataCodeMsgJsonConfig dataCodeMsgJsonConfig = GlobalConfig.get().dataCodeMsgJsonConfig;
-    private FileDownlodConfig downlodConfig = GlobalConfig.get().downlodConfig;
-
-
-    String responseBodyStr;
-    //public ResponseBean<T> response;
 
 
     public ConfigInfo<T> treatEmptyDataAsSuccess() {
@@ -527,8 +560,8 @@ public class ConfigInfo<T> {
         return this;
     }
 
-    public ConfigInfo<T> setAppendCommonParams(boolean isAppendCommonHeaders) {
-        this.appendCommonParams = isAppendCommonHeaders;
+    public ConfigInfo<T> setAppendCommonParams(boolean isAppendCommon) {
+        this.appendCommonParams = isAppendCommon;
         return this;
     }
 
