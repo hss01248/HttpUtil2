@@ -184,6 +184,7 @@ public class GlobalConfig {
 
     private Map<String, String> commonHeaders = new HashMap<>();
     private Map<String, Object> commonParams = new HashMap<>();
+    private Map<String, String> baseUrlMap = new HashMap<>();
     private boolean isAppendCommonHeaders = true;
     private boolean isAppendCommonParams = true;
 
@@ -195,6 +196,8 @@ public class GlobalConfig {
         isAppendCommonHeaders = appendCommonHeaders;
         return this;
     }
+
+
 
     public boolean isAppendCommonParams() {
         return isAppendCommonParams;
@@ -243,13 +246,39 @@ public class GlobalConfig {
      */
     public GlobalConfig setBaseUrl(String url) {
         this.baseUrl = url;
+         addBaseUrl(HOST_TAG_DEFAULT, url);
         return this;
     }
 
-    private String baseUrl = "http://www.qxinli.com/";
+    private String baseUrl = "http://www.baidu.com/";
+    public static final String HOST_TAG_DEFAULT = "default";
 
     public String getBaseUrl() {
         return baseUrl;
+    }
+
+    public String getBaseUrl(String hostTag) {
+        if(baseUrlMap !=null && baseUrlMap.containsKey(hostTag)){
+            return baseUrlMap.get(hostTag);
+        }
+        return baseUrl;
+    }
+
+    public Map<String, String> getBaseUrlMap() {
+        return baseUrlMap;
+    }
+
+    public GlobalConfig addBaseUrl(String hostTag,String baseUrl){
+        if(baseUrlMap == null){
+            baseUrlMap = new HashMap<>();
+        }
+       /* if(baseUrlMap.isEmpty()){
+            if(TextUtils.isEmpty(this.baseUrl)){
+                setBaseUrl(baseUrl);
+            }
+        }*/
+        baseUrlMap.put(hostTag,baseUrl);
+        return this;
     }
 
     private String key_data = "data";
@@ -405,7 +434,6 @@ public class GlobalConfig {
 
     public GlobalConfig addCrtificateRaw(int rawId) {
         SslUtil.addCrtificateRaws(rawId);
-
         return this;
     }
 

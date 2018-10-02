@@ -82,7 +82,15 @@ public class ConfigInfo<T> {
         } else {
             this.url = GlobalConfig.get().getBaseUrl() + url;
         }
+        return this;
+    }
 
+    public ConfigInfo<T> setUrlWithHost(String url,String hostTag) {
+        if (url.startsWith("http")) {
+            this.url = url;
+        } else {
+            this.url = GlobalConfig.get().getBaseUrl(hostTag) + url;
+        }
         return this;
     }
 
