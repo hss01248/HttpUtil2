@@ -162,6 +162,23 @@ public class ConfigInfo<T> {
         return this;
     }
 
+    public ConfigInfo<T> addParamIf(String key, Object value,boolean shouldAdd){
+        return addParamWith(key,value,shouldAdd,false,false);
+    }
+
+    /**
+     * 对应服务端spring标识reqired = false的字段,通过这个添加,value为null时才不会被拦截.而是自动过滤掉
+     * @param key
+     * @param value
+     * @return
+     */
+    public ConfigInfo<T> addParamOptional(String key,Object value) {
+        if(value !=null){
+            addParam(key,value);
+        }
+        return this;
+    }
+
     /**
      * @param key
      * @param value
@@ -170,7 +187,7 @@ public class ConfigInfo<T> {
      * @param notAsCacheKey 是否不用于cachekey的生成
      * @return
      */
-    public ConfigInfo<T> addParam(String key, Object value,boolean shouldAdd,boolean isOptional,boolean notAsCacheKey){
+    public ConfigInfo<T> addParamWith(String key, Object value,boolean shouldAdd,boolean isOptional,boolean notAsCacheKey){
        if(!shouldAdd){
             return this;
         }
@@ -186,18 +203,7 @@ public class ConfigInfo<T> {
 
     }
 
-    /**
-     * 对应服务端spring标识reqired = false的字段,通过这个添加,value为null时才不会被拦截.而是自动过滤掉
-     * @param key
-     * @param value
-     * @return
-     */
-    public ConfigInfo<T> addParamOptional(String key,Object value) {
-        if(value !=null){
-            addParam(key,value);
-        }
-        return this;
-    }
+
 
 
 
