@@ -117,12 +117,15 @@ HttpUtil.init(this,true,"http://api.qxinli.com:9005/api/",tool)
 #### 添加参数
 
 ```
-.addParam(String key, Object value)
+.addParam(String key, Object value)//value不能为null,否则直接拦截掉. value后续会调用tostring方法转成字符串.
 或者:
 .addParamStr(String paramsStr)//格式: xxx=rrr&iii=888 或者序列化的{} 或者[]
 addParamIf(String key, Object value,boolean shouldAdd)//shouldAdd是否添加此参数
-addParamOptional(String key,Object value)
 //对应服务端spring标识reqired = false的字段,通过这个添加,value为null时才不会被拦截.而是自动过滤掉
+addParamOptional(String key,Object value)
+
+//全量方法:
+addParamWith(String key, Object value,boolean shouldAdd,boolean isOptional,boolean notAsCacheKey)
 ```
 
 如果参数是要json化后传输,那么:
