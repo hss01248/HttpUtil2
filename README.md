@@ -14,6 +14,9 @@
 * 丰富的debug日志
 * 可配置chuck,stecho等抓包工具
 * 丰富的下载后处理配置
+ 
+ # todo 
+ * 同步返回javabean的方法
 
 # 使用:
 
