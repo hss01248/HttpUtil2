@@ -6,9 +6,11 @@ import android.text.TextUtils;
 
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
+import com.hss01248.http.Tool;
 import com.hss01248.http.callback.BaseSubscriber;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.exceptions.DataCodeMsgCodeErrorException;
+import com.hss01248.http.exceptions.ExceptionWrapper;
 import com.hss01248.http.exceptions.FileDownloadException;
 import com.hss01248.http.exceptions.RequestConfigCheckException;
 import com.hss01248.http.exceptions.ResponseStrEmptyException;
@@ -39,9 +41,31 @@ public class ErrorCallbackDispatcher {
      * @param e        rx框架接我们各处代码发出的异常
      */
     public static void dispatchException(BaseSubscriber callback, Throwable e) {
+
+
+        ConfigInfo info = null;
+        boolean isFromCache = false;
+        if(e instanceof ExceptionWrapper){
+            ExceptionWrapper wrapper = (ExceptionWrapper) e;
+            info = wrapper.info;
+            e = wrapper.getRealThrowable();
+            isFromCache = wrapper.fromCache;
+            callback.info = info;
+            callback.fromCache = isFromCache;
+            GlobalConfig.get().getTool().logw("e is instanceof ExceptionWrapper!!!!");
+        }else {
+            GlobalConfig.get().getTool().logw("e not instanceof ExceptionWrapper!!!!");
+        }
+
         if (GlobalConfig.get().isOpenLog()) {
             e.printStackTrace();
         }
+
+        callback.info = info;
+        if(info != null){
+            Tool.logJson(info);
+        }
+        Tool.logd("is from cache : "+isFromCache);
 
 
         if (e instanceof ResponseStrEmptyException) {

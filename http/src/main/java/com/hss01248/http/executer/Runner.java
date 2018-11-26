@@ -1,11 +1,17 @@
 package com.hss01248.http.executer;
 
 import android.text.TextUtils;
-import com.hss01248.http.*;
+
+import com.hss01248.http.ConfigInfo;
+import com.hss01248.http.HttpUtil;
+import com.hss01248.http.RetrofitHelper;
+import com.hss01248.http.StringParser;
+import com.hss01248.http.Tool;
 import com.hss01248.http.cache.CacheKeyHandler;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.ConfigChecker;
 import com.hss01248.http.config.FileDownlodConfig;
+import com.hss01248.http.exceptions.ExceptionWrapper;
 import com.hss01248.http.exceptions.RequestConfigCheckException;
 import com.hss01248.http.response.DownloadParser;
 import com.hss01248.http.response.ResponseBean;
@@ -16,12 +22,14 @@ import com.zchu.rxcache.data.CacheResult;
 import com.zchu.rxcache.data.ResultFrom;
 import com.zchu.rxcache.stategy.CacheStrategy;
 import com.zchu.rxcache.stategy.IObservableStrategy;
+
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hss on 2018/7/22.
@@ -115,6 +123,16 @@ public class Runner {
         String cacheKey = CacheKeyHandler.getCacheKey(info);
         IObservableStrategy strategy = getStrategy(info);
         Observable<ResponseBean<T>> all =  net.compose(rxCache.transformObservable(cacheKey, ResponseBean.class, strategy))
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends CacheResult<ResponseBean<T>>>>() {
+                    @Override
+                    public ObservableSource<? extends CacheResult<ResponseBean<T>>> apply(Throwable throwable) throws Exception {
+                        if(throwable instanceof  ExceptionWrapper){
+                            return Observable.error(throwable);
+                        }else {
+                            return Observable.error(new ExceptionWrapper(throwable,info,true));
+                        }
+                    }
+                })
         .map(new Function<CacheResult<ResponseBean<T>>, ResponseBean<T>>() {
             @Override
             public ResponseBean<T> apply(CacheResult<ResponseBean<T>> cacheResult) throws Exception {

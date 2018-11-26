@@ -37,9 +37,9 @@ public class ConfigInfo<T> {
     //请求相关
     private int method = HttpMethod.GET;
     private String url;
-    private Map<String, String> params ;
+    private Map<String, String> params = new HashMap<>();
     //请求头  http://tools.jb51.net/table/http_header
-    private Map<String, String> headers ;
+    private Map<String, String> headers = new HashMap<>();
     private Set<String> paramKeysSetNotForCacheKey;
     private String paramsStr;
     private boolean paramsAsJson = false;

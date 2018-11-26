@@ -184,8 +184,8 @@ public class Tool {
     public static void logJson(Object t){
         if(GlobalConfig.get().isOpenLog()){
             //fastjson在华为荣耀6上直接anr
-            //GlobalConfig.get().getTool().logdJson(GlobalConfig.get().getTool().toJsonStr(t));
-            GlobalConfig.get().getTool().logObj(t);
+            GlobalConfig.get().getTool().logdJson(GlobalConfig.get().getTool().toJsonStr(t));
+            //GlobalConfig.get().getTool().logObj(t);
         }
     }
 

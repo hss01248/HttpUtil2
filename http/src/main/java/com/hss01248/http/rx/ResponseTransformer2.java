@@ -2,6 +2,7 @@ package com.hss01248.http.rx;
 
 
 import com.hss01248.http.ConfigInfo;
+import com.hss01248.http.exceptions.ExceptionWrapper;
 import com.hss01248.http.response.ResponseBean;
 import com.hss01248.http.StringParser;
 
@@ -24,12 +25,13 @@ public class ResponseTransformer2 {
             public ObservableSource<ResponseBean<T>> apply(Observable<ResponseBody> upstream) {
                 return upstream
                         .subscribeOn(SchedulerProvider.getInstance().io())
-                        .onErrorResumeNext(new ErrorResumeFunction<>(configInfo))
+                        .onErrorResumeNext(new ErrorResumeFunction<T>(configInfo,false))
                         .flatMap(new ResponseFunction<T>(configInfo, false))
                         .subscribeOn(SchedulerProvider.getInstance().io());
             }
         };
     }
+
 
 
     /**
@@ -39,14 +41,21 @@ public class ResponseTransformer2 {
      */
     private static class ErrorResumeFunction<T> implements Function<Throwable, ObservableSource<? extends ResponseBody>> {
 
-        public ErrorResumeFunction(T configInfo) {
+        ConfigInfo<T> info;
+        boolean fromCache;
 
-
+        public ErrorResumeFunction(ConfigInfo<T> configInfo,boolean fromCache) {
+            this.info = configInfo;
+            this.fromCache = fromCache;
         }
 
         @Override
         public ObservableSource<? extends ResponseBody> apply(Throwable throwable) throws Exception {
-            return Observable.error(throwable);
+            if(throwable instanceof  ExceptionWrapper){
+                return Observable.error(throwable);
+            }else {
+                return Observable.error(new ExceptionWrapper(throwable,info,true));
+            }
         }
     }
 

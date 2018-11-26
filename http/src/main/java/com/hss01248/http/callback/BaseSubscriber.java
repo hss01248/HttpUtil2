@@ -44,6 +44,8 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
 
     public LoadingDialogConfig dialogConfig;
     Object tagForCancel;
+    public volatile ConfigInfo info;
+    public volatile boolean fromCache;
 
 
     public BaseSubscriber(){
@@ -154,7 +156,7 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
      * 50x错误
      */
     public void onServerError(int code,String message,String responseBodyStr){
-        onError("onServerError:code-"+code+" message:"+message);
+        onError("onServerError:code:"+code+" message:"+message);
     }
 
     public void onHttpError(int code,String message,String responseBodyStr){
@@ -165,7 +167,7 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
         }else if(code == 401){
             onHttp401(responseBodyStr);
         }else {
-            onError("HttpError:code-"+code+"\nmessage:"+message+"\nresponseStr:"+responseBodyStr);
+            onError("HttpError:code:"+code+"\nmessage:"+message+"\nresponseStr:"+responseBodyStr);
         }
     }
 
