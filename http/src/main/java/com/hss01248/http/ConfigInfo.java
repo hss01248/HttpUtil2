@@ -149,8 +149,13 @@ public class ConfigInfo<T> {
         } else {
             headers.put(key, value);
         }
+        return this;
+    }
 
-
+    public ConfigInfo<T> addHeaderIf(String key, String value,boolean condition) {
+        if(condition){
+            addHeader(key,value);
+        }
         return this;
     }
 
