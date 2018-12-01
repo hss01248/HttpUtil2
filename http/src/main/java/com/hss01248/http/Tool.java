@@ -36,7 +36,7 @@ public class Tool {
 
     /**
      * 取消请求,常在activity ondestory处调用.直接传入activity即可,不会保存引用,直接识别其名字作为tag
-     * @param obj
+     * @param obj 内部以obj.tostring来保存
      * @param disposable 不为空时,只移除特定的disposable
      */
     public static void cancelByTag(Object obj,@Nullable Disposable disposable,boolean closeSocket){
@@ -56,6 +56,7 @@ public class Tool {
         }*/
         // XLogUtil.obj(callMap);
         // XLogUtil.obj("key:"+obj);
+        obj = obj.toString();
         if(!callMap.containsKey(obj)){
             return;
         }
@@ -91,6 +92,11 @@ public class Tool {
         logObj(callMap);
     }
 
+    /**
+     * 内部以obj.tostring为key来保存
+     * @param obj
+     * @param disposable
+     */
     public static void addByTag(Object obj,Disposable disposable){
         if(obj == null){
             return;
@@ -101,26 +107,18 @@ public class Tool {
         if(callMap == null ){
             callMap = new ConcurrentHashMap<>();
         }
+        String str = obj.toString();
         Set<Disposable> set = null;
-        if(!callMap.containsKey(obj)){
+        if(!callMap.containsKey(str)){
             set = new HashSet<>();
-            callMap.put(obj,set);
+            callMap.put(str,set);
         }else {
-            set = callMap.get(obj);
+            set = callMap.get(str);
         }
 
         set.add(disposable);
         logObj(callMap);
-
-
     }
-
-
-
-
-
-
-
 
     private static String getSuffix(File file) {
         if (file == null || !file.exists() || file.isDirectory()) {
@@ -215,12 +213,12 @@ public class Tool {
     }
 
 
-    public static <T> void showLoadingDialog(LoadingDialogConfig dialogConfig, Object tagForCancel, BaseSubscriber<T> subscriber) {
+    public static <T> boolean showLoadingDialog(LoadingDialogConfig dialogConfig, Object tagForCancel, BaseSubscriber<T> subscriber) {
         if(dialogConfig ==null ){
-            return;
+            return false;
         }
         if(dialogConfig.getDialog() != null && dialogConfig.getDialog().isShowing()){
-            return;
+            return false;
         }
 
         Activity activity = dialogConfig.getActivity();
@@ -231,7 +229,7 @@ public class Tool {
             activity = (Activity) tagForCancel;
         }
         if(!Tool.isUseable(activity)){
-            return;
+            return false;
         }
 
         String msg = dialogConfig.getMsg();
@@ -254,37 +252,46 @@ public class Tool {
                     }
                     dialog[0] = progressDialog;
                 }
-
                 dialog[0].setCancelable(dialogConfig.isCancelable());
                 dialogConfig.setDialog(dialog[0]);
 
+                Object object = tagForCancel;
+                if(object == null){
+                    object = dialog[0];
+                    Tool.addByTag(object, subscriber);
+                }
+
+                Object finalObject = object;
                 dialog[0].setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        cancelByTag(tagForCancel,subscriber,false);
+                        cancelByTag(finalObject,subscriber,false);
                     }
                 });
 
                 dialog[0].setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        cancelByTag(tagForCancel,subscriber,false);
+                        cancelByTag(finalObject,subscriber,true);
                     }
                 });
                 dialog[0].show();//在回调的start里去show
             }
         });
-
-
+        return true;
     }
 
     public static <T> boolean dismissLoadingDialog(LoadingDialogConfig dialogConfig, Object tagForCancel, BaseSubscriber<T> subscriber) {
         if(dialogConfig == null){
             return false;
         }
-
         if(dialogConfig.getDialog() != null){
-            dialogConfig.getDialog().dismiss();
+            runOnUI(new Runnable() {
+                @Override
+                public void run() {
+                    dialogConfig.getDialog().dismiss();
+                }
+            });
             return true;
         }
         return false;

@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.view.Gravity;
+import android.widget.TextView;
 
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
@@ -126,31 +128,34 @@ public class BaseApp extends Application {
         };
 
 
-        HttpUtil.init(this,true,"http://www.wanandroid.com/",tool)
+        HttpUtil.init(this,true,"http://api.qxinli.com:9005/api/",tool)
                 .setDataCodeMsgJsonConfig(DataCodeMsgJsonConfig
                         .newBuilder()
                         .key_data("data")
-                        .key_code("errorCode")
-                        .key_msg("errorMsg")
+                        .key_code("code")
+                        .key_msg("message")
                         .successJudge(new DataCodeMsgJsonConfig.DataSuccessJudge() {
                             @Override
                             public boolean isResponseSuccess(JSONObject object) {
-                                int code = object.optInt("errorCode");
+                                int code = object.optInt("code");
                                 return code==0;
                             }
                         })
-
                         .build())
                 .setDefaultLoadingDialog(new LoadingDialogConfig.ILoadingDialog() {
                     @Override
                     public Dialog buildLoadingDialog(Context context, String msg) {
                         ProgressDialog dialog =  new ProgressDialog(context);
                         //dialog.setContentView(R.layout.toast_layout);
+                        dialog.getWindow().setGravity(Gravity.CENTER);
                         dialog.setMessage(msg);
                         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                             @Override
                             public void onShow(DialogInterface dialog0) {
-                                dialog.setContentView(R.layout.toast_layout);
+
+                                dialog.setContentView(R.layout.dialog_loading);
+                               TextView textView =  dialog.getWindow().getDecorView().findViewById(R.id.toast_text);
+                               textView.setText("加载中....");
                             }
                         });
                         return dialog;

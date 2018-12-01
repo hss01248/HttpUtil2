@@ -95,6 +95,7 @@ public class MainActivityNew extends Activity {
                         MyLog.e("net work thread:"+Thread.currentThread().getName());
                         HttpUtil.requestString("article/getArticleCommentList/v1.json")
                                 .post()
+                                .setSync(true)
                                 .addParam("pageSize","30")
                                 .addParam("articleId","1738")
                                // .setCacheMode(CacheStrategy.FIRST_CACHE_THEN_REQUEST)
@@ -110,6 +111,7 @@ public class MainActivityNew extends Activity {
                                         MyLog.e(msgCanShow);
                                     }
                                 });
+                        MyLog.e("after:");
 
                     }
                 });
@@ -270,7 +272,7 @@ public class MainActivityNew extends Activity {
                 PermissionUtils.askExternalStorage(new PermissionUtils.PermissionListener() {
                     @Override
                     public void onGranted() {
-                        String url2 = "http://www.qxinli.com/download/qxinli.apk";
+                        String url2 = "https://kiwivm.64clouds.com/dist/openvpn-install-2.4.5-I601.exe";
                         HttpUtil.download(url2)
                                 .setFileDownlodConfig(
                                         FileDownlodConfig.newBuilder()
@@ -328,7 +330,7 @@ public class MainActivityNew extends Activity {
                         .addParam("appType","0")
                          .postParamsAsJson()
                         .responseAsNormalJson()
-                        .callback(new MyNetCallback<ResponseBean<com.hss01248.httpdemo.bean.VersionInfo>>() {
+                        .callback(new MyNetCallback<ResponseBean<com.hss01248.httpdemo.bean.VersionInfo>>(true,null) {
                             @Override
                             public void onSuccess(ResponseBean<com.hss01248.httpdemo.bean.VersionInfo> response) {
                                 MyLog.i(response.bodyStr);

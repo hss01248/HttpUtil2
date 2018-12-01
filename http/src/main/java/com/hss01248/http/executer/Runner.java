@@ -38,7 +38,7 @@ public class Runner {
     public static <T> void asCallback(final ConfigInfo<T> info) {
         Observable<ResponseBean<T>> observable = asObservable(info);
         if (!info.isSync()) {
-            observable.observeOn(SchedulerProvider.getInstance().ui());
+          observable =   observable.observeOn(SchedulerProvider.getInstance().ui());
         }
        /* observable.subscribeOn(SchedulerProvider.getInstance().io())
         .compose(SchedulerProvider.getInstance().toUI())*/
@@ -63,13 +63,23 @@ public class Runner {
         //下载
         if (info.isDownload()) {
             Observable<ResponseBody> net = RetrofitHelper.getResponseObservable(info);
-            net.subscribeOn(SchedulerProvider.getInstance().io())//修改上面的线程  //todo 处理同步请求
-                    .observeOn(SchedulerProvider.getInstance().io());//修改下面的线程
+            if(!info.isSync()){
+                net = net.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程  //todo 处理同步请求
+            }
             return net
                     .map(new Function<ResponseBody, ResponseBean<T>>() {
                         @Override
                         public ResponseBean<T> apply(ResponseBody responseBody) throws Exception {
                             return DownloadParser.receiveInputStream(info, responseBody);
+                        }
+                    }) .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ResponseBean<T>>>() {
+                        @Override
+                        public ObservableSource<? extends ResponseBean<T>> apply(Throwable throwable) throws Exception {
+                            if (throwable instanceof ExceptionWrapper) {
+                                return Observable.error(throwable);
+                            } else {
+                                return Observable.error(new ExceptionWrapper(throwable, info, false));
+                            }
                         }
                     });//.compose(SchedulerProvider.getInstance().toUI())//todo 为何一定要有这个才不报错:networkonmainthread?compose才能转换整个的线程
                    /* .doOnNext(new Consumer<ResponseBean<T>>() {
@@ -99,24 +109,21 @@ public class Runner {
     private static <T> Observable<ResponseBean<T>> handleStringRequst(ConfigInfo<T> info) {
 
         if (info.getCacheMode() == CacheMode.NO_CACHE || info.getCacheMode() == CacheMode.DEFAULT) {
-
             Observable<ResponseBody> observable = RetrofitHelper.getResponseObservable(info);
             if (!info.isSync()) {
-                observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
+                observable =   observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
             }
             return observable.compose(ResponseTransformer2.handleResult(info))
                     .timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
                     .retry(info.getRetryCount());
         }
 
-
         Observable<ResponseBody> observable = RetrofitHelper.getResponseObservable(info);
         if (!info.isSync()) {
-            observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
+            observable =  observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
         }
         //.observeOn(SchedulerProvider.getInstance().io())//修改下面的线程
         Observable<ResponseBean<T>> net = observable.compose(ResponseTransformer2.handleResult(info));
-
 
         //根据缓存策略处理,缓存库采用https://github.com/z-chu/RxCache
         RxCache rxCache = HttpUtil.getRxCache();

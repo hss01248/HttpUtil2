@@ -70,6 +70,9 @@ public class PersistentCookieStore {
             }
             cookies.get(url.host()).put(name, cookie);
         } else {
+            if (!cookies.containsKey(url.host())) {
+                cookies.put(url.host(), new ConcurrentHashMap<String, Cookie>());
+            }
             if (cookies.containsKey(url.host())) {
                 cookies.get(url.host()).remove(name);
             }

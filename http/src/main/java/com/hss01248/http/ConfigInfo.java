@@ -242,6 +242,7 @@ public class ConfigInfo<T> {
      */
     public ConfigInfo<T> postParamsAsJson() {
         this.paramsAsJson = true;
+        this.method = HttpMethod.POST;
         return this;
     }
 

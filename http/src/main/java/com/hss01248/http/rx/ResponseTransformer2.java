@@ -25,10 +25,11 @@ public class ResponseTransformer2 {
             @Override
             public ObservableSource<ResponseBean<T>> apply(Observable<ResponseBody> upstream) {
                 if (!configInfo.isSync()) {
-                    upstream.subscribeOn(SchedulerProvider.getInstance().io());
+                    upstream = upstream.subscribeOn(SchedulerProvider.getInstance().io());
                 }
-                upstream.onErrorResumeNext(new ErrorResumeFunction<T>(configInfo, false));
-                Observable<ResponseBean<T>> bean = upstream.flatMap(new ResponseFunction<T>(configInfo, false));
+                upstream = upstream.onErrorResumeNext(new ErrorResumeFunction<T>(configInfo, false));
+                Observable<ResponseBean<T>> bean =
+                        upstream.flatMap(new ResponseFunction<T>(configInfo, false));
                 if (!configInfo.isSync()) {
                     return bean.subscribeOn(SchedulerProvider.getInstance().io());
                 }
@@ -41,6 +42,9 @@ public class ResponseTransformer2 {
 
     /**
      * 非服务器产生的异常，比如本地无无网络请求，Json数据解析错误,HttpException,socket超时等等。
+     *
+     * 无法捕获rxjava内部产生的异常,比如设置的超时异常:
+     * ObservableTimeoutTimed$TimeoutObserver.onTimeout(ObservableTimeoutTimed.java:132)
      *
      * @param <T>
      */
@@ -59,7 +63,7 @@ public class ResponseTransformer2 {
             if (throwable instanceof ExceptionWrapper) {
                 return Observable.error(throwable);
             } else {
-                return Observable.error(new ExceptionWrapper(throwable, info, true));
+                return Observable.error(new ExceptionWrapper(throwable, info, fromCache));
             }
         }
     }

@@ -1,7 +1,5 @@
 package com.hss01248.http.exceptions;
 
-import com.hss01248.http.Tool;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -24,7 +22,6 @@ public class OkHttpOutCrashInterceptor implements Interceptor {
             if (e instanceof IOException) {
                 throw e;
             } else {
-                Tool.logw(e.getMessage());
                 throw new IOException(e);
             }
         }

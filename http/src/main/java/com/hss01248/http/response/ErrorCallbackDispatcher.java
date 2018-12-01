@@ -54,6 +54,7 @@ public class ErrorCallbackDispatcher {
             callback.fromCache = isFromCache;
         }else {
             Tool.logw("e not instanceof ExceptionWrapper!!!!");
+            //rxjava本身超时机制抛出的异常无法用onerrorresume捕获,所以无法包裹,所以拿不到info
         }
 
         if (GlobalConfig.get().isOpenLog()) {
@@ -62,7 +63,10 @@ public class ErrorCallbackDispatcher {
 
         callback.info = info;
         if(info != null){
-            Tool.logJson(info);
+           // Tool.logJson(info);
+        }else {
+            Tool.logw("callback.info is null ");
+
         }
         Tool.logd("is from cache : "+isFromCache);
 
@@ -92,7 +96,7 @@ public class ErrorCallbackDispatcher {
                     }
                 }
             }
-            Tool.logw(String.format("httpcode:%d,msg:%s,errorBody:%s", code, message, responseStr));
+            Tool.logw(String.format("httpcode:%d,msg:%s,errorBody:\n%s", code, message, responseStr));
             callback.onHttpError(code, message, responseStr);
         } else if (isJsonException(e)) {
             callback.onJsonParseError(e);

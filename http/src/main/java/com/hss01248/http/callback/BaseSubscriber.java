@@ -37,9 +37,7 @@ import io.reactivex.observers.DisposableObserver;
  * 日期： 2016/12/20 10:35<br>
  * 版本： v2.0<br>
  */
-public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements ProgressCallback{
-
-
+public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements ProgressCallback {
 
 
     public LoadingDialogConfig dialogConfig;
@@ -49,26 +47,26 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     public long startTime;
 
 
-    public BaseSubscriber(){
-        this(false,null);
+    public BaseSubscriber() {
+        this(false, null);
     }
+
     /**
-     *
      * @param showLoadingDialog
-     * @param tagForCancel activity,或者某些特殊
+     * @param tagForCancel      activity,或者某些特殊
      */
-    public BaseSubscriber(boolean showLoadingDialog,@Nullable Object tagForCancel) {
+    public BaseSubscriber(boolean showLoadingDialog, @Nullable Object tagForCancel) {
         this.tagForCancel = tagForCancel;
-        if(!showLoadingDialog){
+        if (!showLoadingDialog) {
             return;
         }
-        if(this.dialogConfig ==null){
+        if (this.dialogConfig == null) {
             dialogConfig = LoadingDialogConfig.newInstance();
         }
 
     }
 
-    public BaseSubscriber(LoadingDialogConfig dialogConfig,@Nullable Object tagForCancel) {
+    public BaseSubscriber(LoadingDialogConfig dialogConfig, @Nullable Object tagForCancel) {
         this.tagForCancel = tagForCancel;
         this.dialogConfig = dialogConfig;
     }
@@ -77,8 +75,10 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     protected void onStart() {
         Tool.logd("-->http is onStart");
         startTime = System.currentTimeMillis();
-        Tool.showLoadingDialog(dialogConfig,tagForCancel,this);
-        Tool.addByTag(tagForCancel,this);
+       boolean hasShow =  Tool.showLoadingDialog(dialogConfig, tagForCancel, this);
+       if(!hasShow){
+           Tool.addByTag(tagForCancel, this);
+       }
     }
 
     //原生的方法
@@ -92,25 +92,22 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
 
     @Override
     public final void onError(Throwable e) {
-        //Tool.dismissLoadingDialog(dialogConfig,tagForCancel,this);
-        ErrorCallbackDispatcher.dispatchException(this,e);
+        Tool.logd("-->http is onError,cost time : " + (System.currentTimeMillis() - startTime) + " ms");
+        Tool.dismissLoadingDialog(dialogConfig, tagForCancel, this);
+        ErrorCallbackDispatcher.dispatchException(this, e);
+
     }
 
     @Override
     public void onComplete() {
-        Tool.logd("-->http is onComplete");
-        Tool.logd("cost time : "+ (System.currentTimeMillis() - startTime)+" ms");
-        Tool.dismissLoadingDialog(dialogConfig,tagForCancel,this);
+        Tool.logd("-->http is onComplete,cost time : " + (System.currentTimeMillis() - startTime) + " ms");
+        Tool.dismissLoadingDialog(dialogConfig, tagForCancel, this);
     }
-
-
-
-
-
 
 
     /**
      * 真正类型是ResponseBean,内部已有各种数据封装,核心是ResponseBean.bean
+     *
      * @param response
      */
     public abstract void onSuccess(T response);
@@ -123,66 +120,60 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     public abstract void onError(String msgCanShow);
 
 
-
-
-
     /**
      * dns解析异常,socket timout异常等等
      */
-    public void onNoNetwork(Throwable e){
-        onError("no network connection:"+e.getMessage());
+    public void onNoNetwork(Throwable e) {
+        onError("no network connection:" + e.getMessage());
     }
 
-    public void onPoorNetwork(){
+    public void onPoorNetwork() {
         onError("network connection is poor");
     }
 
     /**
      * 总时长超时了
      */
-    public void onTimeout(Throwable e){
-        onError("connect time out,please check your network:"+e.getMessage());
+    public void onTimeout(Throwable e) {
+        onError("connect time out,please check your network:" + e.getMessage());
     }
 
 
     /**
      * 401错误
      */
-    public  void onHttp401(String responseBodyStr){
+    public void onHttp401(String responseBodyStr) {
         onError("unlogin");
     }
 
     /**
      * 50x错误
      */
-    public void onServerError(int code,String message,String responseBodyStr){
-        onError("onServerError:code:"+code+" message:"+message);
+    public void onServerError(int code, String message, String responseBodyStr) {
+        onError("onServerError:code:" + code + " message:" + message);
     }
 
-    public void onHttpError(int code,String message,String responseBodyStr){
+    public void onHttpError(int code, String message, String responseBodyStr) {
         //onError("OtherHttpError:code-"+code+" message:"+message);
         //HTTP 405 Method Not Allowed
-        if(code >=500){
-            onServerError(code,message,responseBodyStr);
-        }else if(code == 401){
+        if (code >= 500) {
+            onServerError(code, message, responseBodyStr);
+        } else if (code == 401) {
             onHttp401(responseBodyStr);
-        }else {
-            onError("HttpError:code:"+code+"\nmessage:"+message+"\nresponseStr:"+responseBodyStr);
+        } else {
+            onError("HttpError:code:" + code + "\nmessage:" + message + "\nresponseStr:" + responseBodyStr);
         }
     }
 
 
-
-    public void onJsonParseError(Throwable e){
+    public void onJsonParseError(Throwable e) {
         onError(e.getMessage());
     }
 
 
-    public void onEmpty(){
+    public void onEmpty() {
         onError("data is empty");
     }
-
-
 
 
     public void onCodeError(int code, String msg, String dataStr, String codeStr,
@@ -230,16 +221,15 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     }
 
     /**
-     *
      * @param transPortedBytes
      * @param totalBytes
      * @param fileIndex
-     * @param filesCount 总的上传文件数量
+     * @param filesCount       总的上传文件数量
      */
     @Override
-    public void onFilesUploadProgress(long transPortedBytes, long totalBytes,int fileIndex,int filesCount, ConfigInfo info) {
-        GlobalConfig.get().getTool().logd("FilesUploadprogress:"+transPortedBytes+"--totalBytes:"+totalBytes+"--fileIndex:"+fileIndex+"-----filecount:"+filesCount);
-        onProgressChange(transPortedBytes,totalBytes,info);
+    public void onFilesUploadProgress(long transPortedBytes, long totalBytes, int fileIndex, int filesCount, ConfigInfo info) {
+        GlobalConfig.get().getTool().logd("FilesUploadprogress:" + transPortedBytes + "--totalBytes:" + totalBytes + "--fileIndex:" + fileIndex + "-----filecount:" + filesCount);
+        onProgressChange(transPortedBytes, totalBytes, info);
     }
 
 }

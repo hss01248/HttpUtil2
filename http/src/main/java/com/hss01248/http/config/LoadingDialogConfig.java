@@ -14,7 +14,7 @@ public class LoadingDialogConfig {
     private String msg = "loading...";
     private Activity activity;
     private boolean showProgress;
-    private boolean cancelable;
+    private boolean cancelable = true;
 
     public static LoadingDialogConfig newInstance(){
         return new LoadingDialogConfig();

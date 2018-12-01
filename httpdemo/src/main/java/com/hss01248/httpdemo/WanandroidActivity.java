@@ -13,6 +13,7 @@ import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.response.ResponseBean;
 import com.hss01248.httpdemo.threadpool.ThreadPoolFactory;
 import com.hss01248.httpdemo.wanandroid.ReqUrls;
+import com.hss01248.httpdemo.wanandroid.WanDataCodeMsgConfig;
 import com.hss01248.httpdemo.wanandroid.bean.HomeTabsBean;
 import com.orhanobut.logger.MyLog;
 
@@ -94,8 +95,9 @@ public class WanandroidActivity extends AppCompatActivity {
             @Override
             public void run() {
                 MyLog.e("before.....");
-                HttpUtil.requestAsJsonArray(ReqUrls.HOME_TABS, HomeTabsBean.class)
+                HttpUtil.requestAsJsonArray(ReqUrls.BASE_URL+ReqUrls.HOME_TABS, HomeTabsBean.class)
                         .setSync(true)
+                        .setDataCodeMsgJsonConfig(WanDataCodeMsgConfig.build())
                         .callback(new MyNetCallback<ResponseBean<List<HomeTabsBean>>>() {
                             @Override
                             public void onSuccess(ResponseBean<List<HomeTabsBean>> response) {
