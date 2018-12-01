@@ -79,7 +79,30 @@ public class LoadingDialogConfig {
 
 
 public interface ILoadingDialog{
-        Dialog showLoadingDialog(Context context,String msg);
+
+    /**
+     * 注意: 如果是自定义的dialog,那么setContentView应该在onShowListener的回调里调用:
+     *
+     * .setDefaultLoadingDialog(new LoadingDialogConfig.ILoadingDialog() {
+                @Override
+                public Dialog buildLoadingDialog(Context context, String msg) {
+                    ProgressDialog dialog =  new ProgressDialog(context);
+                    //dialog.setContentView(R.layout.toast_layout);
+                    dialog.setMessage(msg);
+                    dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface dialog0) {
+                            dialog.setContentView(R.layout.toast_layout);
+                            }
+                        });
+                return dialog;
+                }
+                })
+     * @param context
+     * @param msg
+     * @return
+     */
+    Dialog buildLoadingDialog(Context context, String msg);
 }
 
 }

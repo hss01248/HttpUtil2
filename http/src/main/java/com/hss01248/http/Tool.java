@@ -238,40 +238,43 @@ public class Tool {
         if(dialogConfig.getStringResId() != 0){
             msg = activity.getResources().getString(dialogConfig.getStringResId());
         }
-        Dialog dialog = null;
-        if(GlobalConfig.get().getDefaultLoadingDialog() != null){
-            dialog = GlobalConfig.get().getDefaultLoadingDialog().showLoadingDialog(activity,msg);
-        }else {
-            ProgressDialog progressDialog = new ProgressDialog(activity);
-
-            progressDialog.setMessage(msg);
-            if(dialogConfig.isShowProgress()){
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            }
-            dialog = progressDialog;
-        }
-
-
-
-        dialog.setCancelable(dialogConfig.isCancelable());
-        dialogConfig.setDialog(dialog);
-
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        final Dialog[] dialog = {null};
+        Activity finalActivity = activity;
+        String finalMsg = msg;
+        runOnUI(new Runnable() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
-                cancelByTag(tagForCancel,subscriber,false);
+            public void run() {
+                if(GlobalConfig.get().getDefaultLoadingDialog() != null){
+                    dialog[0] = GlobalConfig.get().getDefaultLoadingDialog().buildLoadingDialog(finalActivity, finalMsg);
+                }else {
+                    ProgressDialog progressDialog = new ProgressDialog(finalActivity);
+                    progressDialog.setMessage(finalMsg);
+                    if(dialogConfig.isShowProgress()){
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    }
+                    dialog[0] = progressDialog;
+                }
+
+                dialog[0].setCancelable(dialogConfig.isCancelable());
+                dialogConfig.setDialog(dialog[0]);
+
+                dialog[0].setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        cancelByTag(tagForCancel,subscriber,false);
+                    }
+                });
+
+                dialog[0].setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        cancelByTag(tagForCancel,subscriber,false);
+                    }
+                });
+                dialog[0].show();//在回调的start里去show
             }
         });
 
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                cancelByTag(tagForCancel,subscriber,false);
-            }
-        });
-
-
-        dialog.show();//在回调的start里去show
 
     }
 

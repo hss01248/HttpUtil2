@@ -5,6 +5,7 @@ import android.app.Application;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 
 import com.hss01248.http.GlobalConfig;
@@ -38,6 +39,7 @@ public class BaseApp extends Application {
         try {
             initTestTool();
             initHttp(this);
+            ActivityStackManager.init(this);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -45,7 +47,7 @@ public class BaseApp extends Application {
 
     private void initTestTool() {
         TestTool.init(this,true,false);
-        MyLog.init(true, "httpdemo",2, new IJsonToStr() {
+        MyLog.init(true, "httpdemo",3, new IJsonToStr() {
             @Override
             public String toStr(Object o) {
                 return MyJson.toJsonStr(o);
@@ -114,7 +116,7 @@ public class BaseApp extends Application {
 
             @Override
             public Activity getTopActivity() {
-                return null;
+                return ActivityStackManager.getInstance().getTopActivity();
             }
 
             @Override
@@ -124,16 +126,16 @@ public class BaseApp extends Application {
         };
 
 
-        HttpUtil.init(this,true,"http://api.qxinli.com:9005/api/",tool)
+        HttpUtil.init(this,true,"http://www.wanandroid.com/",tool)
                 .setDataCodeMsgJsonConfig(DataCodeMsgJsonConfig
                         .newBuilder()
                         .key_data("data")
-                        .key_code("code")
-                        .key_msg("message")
+                        .key_code("errorCode")
+                        .key_msg("errorMsg")
                         .successJudge(new DataCodeMsgJsonConfig.DataSuccessJudge() {
                             @Override
                             public boolean isResponseSuccess(JSONObject object) {
-                                int code = object.optInt("code");
+                                int code = object.optInt("errorCode");
                                 return code==0;
                             }
                         })
@@ -141,17 +143,22 @@ public class BaseApp extends Application {
                         .build())
                 .setDefaultLoadingDialog(new LoadingDialogConfig.ILoadingDialog() {
                     @Override
-                    public Dialog showLoadingDialog(Context context,String msg) {
+                    public Dialog buildLoadingDialog(Context context, String msg) {
                         ProgressDialog dialog =  new ProgressDialog(context);
-                        dialog.setContentView(R.layout.toast_layout);
+                        //dialog.setContentView(R.layout.toast_layout);
                         dialog.setMessage(msg);
-                        dialog.show();
+                        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialog0) {
+                                dialog.setContentView(R.layout.toast_layout);
+                            }
+                        });
                         return dialog;
                     }
                 })
                 // .addCrtificateRaw(R.raw.srca)
                 //.addCrtificateAssert("srca.cer")
-                .setLogTag("okhttp")
+                .setLogTag("httpdemo")
                 .setCacheMode(CacheMode.NO_CACHE)
                 .setCookieMode(GlobalConfig.COOKIE_DISK)
                 .setDefaultUserAgent(System.getProperty("http.agent"))

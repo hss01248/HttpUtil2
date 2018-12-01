@@ -156,7 +156,13 @@ public class DownloadParser {
     public static void handleMedia(FileDownlodConfig configInfo) {
 
         if (configInfo.isNotifyMediaCenter) {
-            DownFileHandlerUtil.refreshMediaCenter(HttpUtil.context, configInfo.filePath);
+            Tool.runOnUI(new Runnable() {
+                @Override
+                public void run() {
+                    DownFileHandlerUtil.refreshMediaCenter(HttpUtil.context, configInfo.filePath);
+                }
+            });
+
         } else {
             if (configInfo.isHideFolder) {
                 DownFileHandlerUtil.hideFile(new File(configInfo.filePath));
@@ -164,7 +170,13 @@ public class DownloadParser {
         }
 
         if (configInfo.isOpenAfterSuccess) {
-            DownFileHandlerUtil.openFile(HttpUtil.context, new File(configInfo.filePath));
+            Tool.runOnUI(new Runnable() {
+                @Override
+                public void run() {
+                    DownFileHandlerUtil.openFile(HttpUtil.context, new File(configInfo.filePath));
+                }
+            });
+
         }
     }
 

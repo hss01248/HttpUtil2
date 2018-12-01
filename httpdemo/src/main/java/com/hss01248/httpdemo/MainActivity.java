@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this,MainActivityNew.class));
                 break;
             case R.id.button2:
+                WanandroidActivity.launch(this);
                 break;
         }
     }

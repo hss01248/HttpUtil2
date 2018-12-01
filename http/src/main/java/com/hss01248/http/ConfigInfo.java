@@ -466,13 +466,13 @@ public class ConfigInfo<T> {
         this.loadingDialogConfig = loadingDialogConfig;
         return this;
     }
-    public ConfigInfo<T> showLoadingDialog() {
+    public ConfigInfo<T> buildLoadingDialog() {
         if(loadingDialogConfig == null){
             loadingDialogConfig =  LoadingDialogConfig.newInstance();
         }
         return this;
     }
-    public ConfigInfo<T> showLoadingDialog(Activity activity) {
+    public ConfigInfo<T> buildLoadingDialog(Activity activity) {
         if(loadingDialogConfig == null){
             loadingDialogConfig = LoadingDialogConfig.newInstance();
         }
@@ -531,6 +531,13 @@ public class ConfigInfo<T> {
     ////public boolean responseAsNormalJsonArray;
     //public boolean responseAsDataCodeMsgInJsonArray;
 
+    public boolean showLoading;
+
+    public ConfigInfo<T> showLoadingDialog(boolean showLoading) {
+        this.showLoading = showLoading;
+        return this;
+    }
+
     public void callback(MyNetCallback<ResponseBean<T>> callback) {
         this.callback = callback;
         this.progressCallback = callback;
@@ -542,14 +549,15 @@ public class ConfigInfo<T> {
         return Runner.asObservable(this);
     }
 
+    /*public ResponseBean<T> executeSync() {
+        return SyncRunner.execute(this);
+    }*/
+
 
     private MyNetCallback<ResponseBean<T>> callback;
     private ProgressCallback progressCallback;
 
-    public ConfigInfo<T> setProgressCallback(ProgressCallback callback) {
-        this.progressCallback = callback;
-        return this;
-    }
+
 
 
     private List<Interceptor> interceptors;

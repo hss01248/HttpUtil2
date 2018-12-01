@@ -18,6 +18,7 @@
 			</intent-filter>
 		</activity>
         <activity android:name=".MainActivityNew" />
+        <activity android:name=".WanandroidActivity" />
     </application>
 
 </manifest>

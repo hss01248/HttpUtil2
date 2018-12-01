@@ -52,9 +52,8 @@ public class ErrorCallbackDispatcher {
             isFromCache = wrapper.fromCache;
             callback.info = info;
             callback.fromCache = isFromCache;
-            GlobalConfig.get().getTool().logw("e is instanceof ExceptionWrapper!!!!");
         }else {
-            GlobalConfig.get().getTool().logw("e not instanceof ExceptionWrapper!!!!");
+            Tool.logw("e not instanceof ExceptionWrapper!!!!");
         }
 
         if (GlobalConfig.get().isOpenLog()) {
@@ -93,7 +92,7 @@ public class ErrorCallbackDispatcher {
                     }
                 }
             }
-            GlobalConfig.get().getTool().logw(String.format("httpcode:%d,msg:%s,errorBody:%s", code, message, responseStr));
+            Tool.logw(String.format("httpcode:%d,msg:%s,errorBody:%s", code, message, responseStr));
             callback.onHttpError(code, message, responseStr);
         } else if (isJsonException(e)) {
             callback.onJsonParseError(e);

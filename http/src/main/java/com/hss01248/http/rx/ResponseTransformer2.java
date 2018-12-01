@@ -2,6 +2,7 @@ package com.hss01248.http.rx;
 
 
 import com.hss01248.http.ConfigInfo;
+import com.hss01248.http.Tool;
 import com.hss01248.http.exceptions.ExceptionWrapper;
 import com.hss01248.http.response.ResponseBean;
 import com.hss01248.http.StringParser;
@@ -23,15 +24,19 @@ public class ResponseTransformer2 {
         return new ObservableTransformer<ResponseBody, ResponseBean<T>>() {
             @Override
             public ObservableSource<ResponseBean<T>> apply(Observable<ResponseBody> upstream) {
-                return upstream
-                        .subscribeOn(SchedulerProvider.getInstance().io())
-                        .onErrorResumeNext(new ErrorResumeFunction<T>(configInfo,false))
-                        .flatMap(new ResponseFunction<T>(configInfo, false))
-                        .subscribeOn(SchedulerProvider.getInstance().io());
+                if (!configInfo.isSync()) {
+                    upstream.subscribeOn(SchedulerProvider.getInstance().io());
+                }
+                upstream.onErrorResumeNext(new ErrorResumeFunction<T>(configInfo, false));
+                Observable<ResponseBean<T>> bean = upstream.flatMap(new ResponseFunction<T>(configInfo, false));
+                if (!configInfo.isSync()) {
+                    return bean.subscribeOn(SchedulerProvider.getInstance().io());
+                }
+                return bean;
+
             }
         };
     }
-
 
 
     /**
@@ -44,17 +49,17 @@ public class ResponseTransformer2 {
         ConfigInfo<T> info;
         boolean fromCache;
 
-        public ErrorResumeFunction(ConfigInfo<T> configInfo,boolean fromCache) {
+        public ErrorResumeFunction(ConfigInfo<T> configInfo, boolean fromCache) {
             this.info = configInfo;
             this.fromCache = fromCache;
         }
 
         @Override
         public ObservableSource<? extends ResponseBody> apply(Throwable throwable) throws Exception {
-            if(throwable instanceof  ExceptionWrapper){
+            if (throwable instanceof ExceptionWrapper) {
                 return Observable.error(throwable);
-            }else {
-                return Observable.error(new ExceptionWrapper(throwable,info,true));
+            } else {
+                return Observable.error(new ExceptionWrapper(throwable, info, true));
             }
         }
     }
@@ -91,6 +96,7 @@ public class ResponseTransformer2 {
             String data = object.getJSONObject("data").optString("menuList");//测试解析jsonarr
             T t = JSON.parseObject(data, new TypeReference<T>() {});*/
 
+            Tool.logd("StringParser.parseString....");
             String str = responseBody.string();
             ResponseBean<T> t = StringParser.parseString(str, info, fromCache);
             if (t == null) {

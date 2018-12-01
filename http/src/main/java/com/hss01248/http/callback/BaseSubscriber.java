@@ -46,6 +46,7 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     Object tagForCancel;
     public volatile ConfigInfo info;
     public volatile boolean fromCache;
+    public long startTime;
 
 
     public BaseSubscriber(){
@@ -75,17 +76,15 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     @Override
     protected void onStart() {
         Tool.logd("-->http is onStart");
+        startTime = System.currentTimeMillis();
         Tool.showLoadingDialog(dialogConfig,tagForCancel,this);
         Tool.addByTag(tagForCancel,this);
     }
 
-
-
-
     //原生的方法
 
     @Override
-    public void onNext(@NonNull T t) {
+    public final void onNext(@NonNull T t) {
         Tool.logd("-->http is onNext");
         Tool.logJson(t);
         onSuccess(t);
@@ -93,13 +92,14 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
 
     @Override
     public final void onError(Throwable e) {
-        Tool.dismissLoadingDialog(dialogConfig,tagForCancel,this);
+        //Tool.dismissLoadingDialog(dialogConfig,tagForCancel,this);
         ErrorCallbackDispatcher.dispatchException(this,e);
     }
 
     @Override
     public void onComplete() {
         Tool.logd("-->http is onComplete");
+        Tool.logd("cost time : "+ (System.currentTimeMillis() - startTime)+" ms");
         Tool.dismissLoadingDialog(dialogConfig,tagForCancel,this);
     }
 
