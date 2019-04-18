@@ -1,1 +1,1 @@
-include ':http', ':httpdemo', ':openuri', ':rxcache', ':ebusticket'
+include ':http', ':httpdemo', ':openuri', ':rxcache', ':ebusticket', ':akuhttpdemo', ':akuhttp'

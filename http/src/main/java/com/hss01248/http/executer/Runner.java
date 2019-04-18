@@ -152,7 +152,7 @@ public class Runner {
                         //在外层解析bodyStr
                         return StringParser.parseString(bean.bodyStr, info, bean.isFromCache);
                     }
-                });
+                }).onErrorResumeNext(ExceptionWrapper.wrapperException(info,false));
 
         return all.timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
                 .retry(info.getRetryCount());

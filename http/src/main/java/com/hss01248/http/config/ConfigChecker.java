@@ -53,6 +53,15 @@ public class ConfigChecker {
             }
         }
 
+        if(info.isAppendCommonHeaders()){
+            Map<String, String> commonParams = GlobalConfig.get().getCommonHeaders();
+            if(commonParams != null && !commonParams.isEmpty()){
+                for (Map.Entry<String,String> entry : commonParams.entrySet()) {
+                    info.addHeader(entry.getKey(),entry.getValue());
+                }
+            }
+        }
+
 
         if(TextUtils.isEmpty(info.getParamsStr())){
             return;

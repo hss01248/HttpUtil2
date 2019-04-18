@@ -27,9 +27,11 @@ public class ResponseTransformer2 {
                 if (!configInfo.isSync()) {
                     upstream = upstream.subscribeOn(SchedulerProvider.getInstance().io());
                 }
-                upstream = upstream.onErrorResumeNext(new ErrorResumeFunction<T>(configInfo, false));
-                Observable<ResponseBean<T>> bean =
-                        upstream.flatMap(new ResponseFunction<T>(configInfo, false));
+                //upstream = upstream.onErrorResumeNext(new ErrorResumeFunction<T>(configInfo, false));
+                upstream = upstream.onErrorResumeNext(ExceptionWrapper.wrapperException(configInfo,false));
+                Observable<ResponseBean<T>> bean = upstream
+                        .flatMap(new ResponseFunction<T>(configInfo, false))
+                        .onErrorResumeNext(ExceptionWrapper.wrapperException(configInfo,false));
                 if (!configInfo.isSync()) {
                     return bean.subscribeOn(SchedulerProvider.getInstance().io());
                 }

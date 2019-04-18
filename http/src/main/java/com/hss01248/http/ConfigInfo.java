@@ -558,7 +558,10 @@ public class ConfigInfo<T> {
     private MyNetCallback<ResponseBean<T>> callback;
     private ProgressCallback progressCallback;
 
-
+    public ConfigInfo<T> setProgressCallback(ProgressCallback progressCallback){
+        this.progressCallback = progressCallback;
+        return this;
+    }
 
 
     private List<Interceptor> interceptors;
@@ -593,8 +596,8 @@ public class ConfigInfo<T> {
         return this;
     }
 
-    private boolean appendCommonHeaders;
-    private boolean appendCommonParams;
+    private boolean appendCommonHeaders = GlobalConfig.get().isAppendCommonHeaders();
+    private boolean appendCommonParams = GlobalConfig.get().isAppendCommonParams();
 
 
     private boolean sync;
