@@ -10,7 +10,7 @@ android {
         applicationId "com.hss01248.akuhttpdemo"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 174
+        versionCode 200
         versionName "1.0"
 
 
