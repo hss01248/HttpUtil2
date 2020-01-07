@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/HttpUtilNew.iml" filepath="$PROJECT_DIR$/HttpUtilNew.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ebusticket/ebusticket.iml" filepath="$PROJECT_DIR$/ebusticket/ebusticket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/http/http.iml" filepath="$PROJECT_DIR$/http/http.iml" />
+      <module fileurl="file://$PROJECT_DIR$/httpdemo/httpdemo.iml" filepath="$PROJECT_DIR$/httpdemo/httpdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/openuri/openuri.iml" filepath="$PROJECT_DIR$/openuri/openuri.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rxcache/rxcache.iml" filepath="$PROJECT_DIR$/rxcache/rxcache.iml" />
+    </modules>
+  </component>
+</project>
