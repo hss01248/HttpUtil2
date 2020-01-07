@@ -12,9 +12,7 @@ import com.hss01248.http.callback.ProgressCallback;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.FileDownlodConfig;
 import com.hss01248.http.response.ResponseBean;
-import com.hss01248.testtool.TestTool;
-import com.orhanobut.logger.IJsonToStr;
-import com.orhanobut.logger.MyLog;
+import com.silvrr.testtool.TestTool;
 
 import org.json.JSONObject;
 
@@ -24,6 +22,8 @@ import java.util.List;
 import es.dmoral.toasty.MyToast;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
+import io.silvrr.installment.common.utils.IJsonToStr;
+import io.silvrr.installment.common.utils.XLogUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -50,11 +50,11 @@ public class NetUtil {
         ActivityStackManager.init(application);
         NetUtil.getUploadTokenPath = getUploadTokenPath;
         try {
-            TestTool.init(application,showLog,false);
-            MyLog.init(showLog, "httpdemo",3, new IJsonToStr() {
+            TestTool.init(application,showLog,null);
+            XLogUtil.init(showLog, "http", new IJsonToStr() {
                 @Override
-                public String toStr(Object o) {
-                    return MyJson.toJsonStr(o);
+                public String toStr(Object obj) {
+                    return MyJson.toJsonStr(obj);
                 }
             });
             MyToast.init(application,showLog,false);
@@ -84,22 +84,22 @@ public class NetUtil {
 
             @Override
             public void logi(String str) {
-                MyLog.i(str);
+                XLogUtil.i(str);
             }
 
             @Override
             public void logd(String str) {
-                MyLog.d(str);
+                XLogUtil.d(str);
             }
 
             @Override
             public void logw(String str) {
-                MyLog.w(str);
+                XLogUtil.w(str);
             }
 
             @Override
             public void logdJson(String json) {
-                MyLog.json(json);
+                XLogUtil.json(json);
             }
 
             @Override
@@ -109,12 +109,12 @@ public class NetUtil {
 
             @Override
             public void addChuckInterceptor(OkHttpClient.Builder builder) {
-                //TestTool.addChuckInterceptorForOkhttp(builder);
+                TestTool.addChuckInterceptorForOkhttp(builder);
             }
 
             @Override
             public void addStethoInterceptor(OkHttpClient.Builder builder) {
-                //TestTool.addStethoInterceptorForOkhttp(builder);
+                TestTool.addStethoInterceptorForOkhttp(builder);
             }
 
             @Override
@@ -129,7 +129,7 @@ public class NetUtil {
 
             @Override
             public void logObj(Object t) {
-                MyLog.obj(t);
+                XLogUtil.obj(t);
             }
         };
         HttpUtil

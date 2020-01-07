@@ -10,7 +10,7 @@ import com.hss01248.http.Tool;
 import com.hss01248.http.callback.BaseSubscriber;
 import com.hss01248.http.response.ResponseBean;
 import com.hss01248.http.rx.SchedulerProvider;
-import com.orhanobut.logger.MyLog;
+import io.silvrr.installment.common.utils.XLogUtil;
 import com.silvrr.akuhttp.NetUtil;
 import com.silvrr.akuhttp.S3Info;
 import com.silvrr.akuhttp.other.HttpReqUrl;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(String msgCanShow) {
-                                MyLog.w(msgCanShow);
+                                XLogUtil.w(msgCanShow);
                             }
                         });*/
             }
@@ -93,12 +93,12 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(ResponseBean<S3Info> response) {
                                 response.bean = (S3Info) response.extraFromOut;
-                                MyLog.objAsJson(response);
+                                XLogUtil.objAsJson(response);
                             }
 
                             @Override
                             public void onError(String msgCanShow) {
-                                MyLog.e(msgCanShow);
+                                XLogUtil.e(msgCanShow);
                             }
                         });
 
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(String msgCanShow) {
-                                MyLog.e(msgCanShow);
+                                XLogUtil.e(msgCanShow);
 
                             }
                         });

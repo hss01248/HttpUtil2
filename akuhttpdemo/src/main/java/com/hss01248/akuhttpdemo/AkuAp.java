@@ -18,7 +18,7 @@ public class AkuAp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        NetUtil.init(this, true, "http://testapp.akulaku.com",
+        NetUtil.init(this, true, "https://test-id-app.akulaku.com",
                 "http://test.risk.akulaku.com", HttpReqUrl.UPLOAD_FILE_URL);
        // GlobalConfig.get().addCommonHeader("cv",181+"").addCommonHeader("dt","4");
 

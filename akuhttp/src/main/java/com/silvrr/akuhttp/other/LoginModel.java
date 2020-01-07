@@ -2,11 +2,13 @@ package com.silvrr.akuhttp.other;
 
 import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.response.ResponseBean;
-import com.orhanobut.logger.MyLog;
+
 import com.silvrr.akuhttp.NetUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import io.silvrr.installment.common.utils.XLogUtil;
 
 /**
  * Created by hss on 2018/8/18.
@@ -39,7 +41,7 @@ public class LoginModel {
 
                     @Override
                     public void onError(String msgCanShow) {
-                        MyLog.e(msgCanShow);
+                        XLogUtil.e(msgCanShow);
 
                     }
                 });
