@@ -6,7 +6,8 @@ import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.FileDownlodConfig;
 import com.hss01248.http.config.LoadingDialogConfig;
-import com.hss01248.http.exceptions.OkHttpOutCrashInterceptor;
+import com.hss01248.http.interceptors.OkHttpExceptionInterceptor;
+import com.hss01248.http.interceptors.SameRequestInterceptor;
 import com.hss01248.http.response.DownloadParser;
 import com.hss01248.http.utils.HttpHeaders;
 import com.hss01248.http.utils.SslUtil;
@@ -110,7 +111,10 @@ public class GlobalConfig {
 
     private GlobalConfig() {
         commonInterceptors = new ArrayList<>();
-        commonInterceptors.add(new OkHttpOutCrashInterceptor());
+        commonInterceptors.add(new OkHttpExceptionInterceptor());
+        commonInterceptors.add(new SameRequestInterceptor());
+        //commonHeaders = new HashMap<>();
+        //commonHeaders.put(SameRequestFilterInterceptor.HEAD_REQUEST,"YES");
 
     }
 

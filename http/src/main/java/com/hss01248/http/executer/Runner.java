@@ -1,5 +1,6 @@
 package com.hss01248.http.executer;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.hss01248.http.ConfigInfo;
@@ -10,6 +11,7 @@ import com.hss01248.http.Tool;
 import com.hss01248.http.cache.CacheKeyHandler;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.ConfigChecker;
+import com.hss01248.http.config.LoadingDialogConfig;
 import com.hss01248.http.exceptions.ExceptionWrapper;
 import com.hss01248.http.exceptions.RequestConfigCheckException;
 import com.hss01248.http.response.DownloadParser;
@@ -22,6 +24,8 @@ import com.zchu.rxcache.data.ResultFrom;
 import com.zchu.rxcache.stategy.CacheStrategy;
 import com.zchu.rxcache.stategy.IObservableStrategy;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -38,10 +42,13 @@ public class Runner {
     public static <T> void asCallback(final ConfigInfo<T> info) {
         Observable<ResponseBean<T>> observable = asObservable(info);
         if (!info.isSync()) {
-          observable =   observable.observeOn(SchedulerProvider.getInstance().ui());
+            observable = observable.observeOn(SchedulerProvider.getInstance().ui());
         }
        /* observable.subscribeOn(SchedulerProvider.getInstance().io())
         .compose(SchedulerProvider.getInstance().toUI())*/
+        if (info.showLoading) {
+            info.getCallback().dialogConfig = LoadingDialogConfig.newInstance();
+        }
         observable.subscribe(info.getCallback());
 
     }
@@ -50,20 +57,17 @@ public class Runner {
 
         ConfigChecker.convertParams(info);
         String checkedStr = ConfigChecker.check(info);
-        Tool.logJson(info);
+        Tool.logd(info.toString());
         if (!TextUtils.isEmpty(checkedStr)) {
             //todo 定义一个异常类型
             return Observable.error(new RequestConfigCheckException(info, checkedStr));
         }
 
-        /*if(info.isDownload){
-            return DownloadRunner.executeDownload(info);
-        }*/
 
         //下载
         if (info.isDownload()) {
             Observable<ResponseBody> net = RetrofitHelper.getResponseObservable(info);
-            if(!info.isSync()){
+            if (!info.isSync()) {
                 net = net.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程  //todo 处理同步请求
             }
             return net
@@ -72,7 +76,7 @@ public class Runner {
                         public ResponseBean<T> apply(ResponseBody responseBody) throws Exception {
                             return DownloadParser.receiveInputStream(info, responseBody);
                         }
-                    }) .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ResponseBean<T>>>() {
+                    }).onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ResponseBean<T>>>() {
                         @Override
                         public ObservableSource<? extends ResponseBean<T>> apply(Throwable throwable) throws Exception {
                             if (throwable instanceof ExceptionWrapper) {
@@ -85,8 +89,8 @@ public class Runner {
                    /* .doOnNext(new Consumer<ResponseBean<T>>() {
                         @Override
                         public void accept(ResponseBean<T> tResponseBean) throws Exception {
-                            if (tResponseBean.bean instanceof FileDownlodConfig) {
-                                DownloadParser.handleMedia((FileDownlodConfig) tResponseBean.bean);
+                            if (tResponseBean.data instanceof FileDownlodConfig) {
+                                DownloadParser.handleMedia((FileDownlodConfig) tResponseBean.data);
                             }
 
                         }
@@ -95,8 +99,8 @@ public class Runner {
 
         //上传
         if (info.isUploadBinary() || info.isUploadMultipart()) {
-            Observable<ResponseBody> net = RetrofitHelper.getResponseObservable(info);
-            net.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程  //todo 处理同步请求
+            Observable<ResponseBody> net = RetrofitHelper.getResponseObservable(info)
+                    .subscribeOn(SchedulerProvider.getInstance().io());
             return net.compose(ResponseTransformer2.handleResult(info))
                     .timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
                     .retry(info.getRetryCount());
@@ -108,19 +112,21 @@ public class Runner {
 
     private static <T> Observable<ResponseBean<T>> handleStringRequst(ConfigInfo<T> info) {
 
+        //不需要自定义缓存时，采用okhttp本身的缓存
         if (info.getCacheMode() == CacheMode.NO_CACHE || info.getCacheMode() == CacheMode.DEFAULT) {
             Observable<ResponseBody> observable = RetrofitHelper.getResponseObservable(info);
             if (!info.isSync()) {
-                observable =   observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
+                observable = observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
             }
             return observable.compose(ResponseTransformer2.handleResult(info))
                     .timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
                     .retry(info.getRetryCount());
         }
 
+        //需要用自定义缓存模式时，采用rxcache
         Observable<ResponseBody> observable = RetrofitHelper.getResponseObservable(info);
         if (!info.isSync()) {
-            observable =  observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
+            observable = observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
         }
         //.observeOn(SchedulerProvider.getInstance().io())//修改下面的线程
         Observable<ResponseBean<T>> net = observable.compose(ResponseTransformer2.handleResult(info));
@@ -129,38 +135,71 @@ public class Runner {
         RxCache rxCache = HttpUtil.getRxCache();
         String cacheKey = CacheKeyHandler.getCacheKey(info);
         IObservableStrategy strategy = getStrategy(info);
-        Observable<ResponseBean<T>> all = net.compose(rxCache.transformObservable(cacheKey, ResponseBean.class, strategy))
-                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends CacheResult<ResponseBean<T>>>>() {
+        final ResponseBean<T>[] responseBean = new ResponseBean[1];
+        Type type = info.getClazz();
+        if (info.isResponseAsJsonArray()) {
+            //type = new TypeToken<T>(){}.getType();
+            type = com.google.gson.internal.$Gson$Types.newParameterizedTypeWithOwner(null, ArrayList.class, info.getClazz());
+
+        }
+
+        Observable<ResponseBean<T>> all = net
+                .map(new Function<ResponseBean<T>, T>() {
                     @Override
-                    public ObservableSource<? extends CacheResult<ResponseBean<T>>> apply(Throwable throwable) throws Exception {
-                        if (throwable instanceof ExceptionWrapper) {
-                            return Observable.error(throwable);
-                        } else {
-                            return Observable.error(new ExceptionWrapper(throwable, info, true));
-                        }
+                    public T apply(ResponseBean<T> tResponseBean) throws Exception {
+                        responseBean[0] = tResponseBean;
+                        return tResponseBean.data;
                     }
                 })
-                .map(new Function<CacheResult<ResponseBean<T>>, ResponseBean<T>>() {
+                //new TypeToken<T>(){}.getType()
+
+                .compose(rxCache.transformObservable(cacheKey, type, strategy))
+                .map(new Function<CacheResult<T>, ResponseBean<T>>() {
                     @Override
-                    public ResponseBean<T> apply(CacheResult<ResponseBean<T>> cacheResult) throws Exception {
+                    public ResponseBean<T> apply(CacheResult<T> cacheResult) throws Exception {
                         if (cacheResult == null) {
+                            Tool.logw("cacheResult == null, cache is empty");
+                            if (info.getCallback() != null) {
+                                info.getCallback().onCache(false);
+                            }
                             return null;
                         }
                         Tool.logObj(cacheResult);
-                        ResponseBean<T> bean = cacheResult.getData();
-                        bean.isFromCache = !ResultFrom.Remote.equals(cacheResult.getFrom());
-                        //在外层解析bodyStr
-                        return StringParser.parseString(bean.bodyStr, info, bean.isFromCache);
-                    }
-                }).onErrorResumeNext(ExceptionWrapper.wrapperException(info,false));
+                        boolean isFromCache = !ResultFrom.Remote.equals(cacheResult.getFrom());
+                        if(isFromCache){
+                            Tool.logw("cacheResult read success");
+                            ResponseBean<T> bean = getResponseBeanOfCache(cacheResult);
+                            return bean;
+                        }
 
+                        if (responseBean[0] != null) {
+                            return responseBean[0];
+                        }
+                        ResponseBean<T> bean = new ResponseBean<>();
+                        bean.data = cacheResult.getData();
+                        bean.isFromCache = false;
+                        //在外层解析bodyStr
+                        return StringParser.parseString(bean.bodyStr, info, false);
+                    }
+
+                    @NonNull
+                    private ResponseBean<T> getResponseBeanOfCache(CacheResult<T> cacheResult) throws Exception {
+                        ResponseBean<T> bean = responseBean[0] == null ? new ResponseBean() : responseBean[0];
+                        if (info.getCallback() != null) {
+                            info.getCallback().onCache(true);
+                        }
+                        bean.data = cacheResult.getData();
+                        bean.isFromCache = !ResultFrom.Remote.equals(cacheResult.getFrom());
+                        bean.setInfo(info);
+                        bean.url = info.getUrl();
+                        return bean;
+                    }
+                }).onErrorResumeNext(ExceptionWrapper.wrapperException(info, false));
         return all.timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
                 .retry(info.getRetryCount());
     }
 
     /**
-     *
-     *
      * @param info
      * @param <T>
      * @return
@@ -168,43 +207,43 @@ public class Runner {
     private static <T> IObservableStrategy getStrategy(ConfigInfo<T> info) {
         switch (info.getCacheMode()) {
             case CacheMode.NO_CACHE:
-                if(info.isSync()){
+                if (info.isSync()) {
                     return CacheStrategy.onlyRemoteSync();
-                }else {
+                } else {
                     return CacheStrategy.onlyRemote();
                 }
             case CacheMode.ONLY_CACHE:
-                if(info.isSync()){
+                if (info.isSync()) {
                     return CacheStrategy.onlyCache();
-                }else {
+                } else {
                     return CacheStrategy.onlyCache();
                 }
             case CacheMode.IF_NONE_CACHE_REQUEST:
-                if(info.isSync()){
+                if (info.isSync()) {
                     return CacheStrategy.firstCacheSync();
-                }else {
+                } else {
                     return CacheStrategy.firstCache();
                 }
             case CacheMode.FIRST_CACHE_THEN_REQUEST:
-                if(info.isSync()){
+                if (info.isSync()) {
                     return CacheStrategy.cacheAndRemoteSync();
-                }else {
+                } else {
                     return CacheStrategy.cacheAndRemote();
                 }
             case CacheMode.DEFAULT:
                 return CacheStrategy.none();
             case CacheMode.REQUEST_FAILED_READ_CACHE:
-                if(info.isSync()){
+                if (info.isSync()) {
                     return CacheStrategy.firstRemoteSync();
-                }else {
+                } else {
                     return CacheStrategy.firstRemote();
                 }
-                default:
-                    if(info.isSync()){
-                        return CacheStrategy.onlyRemoteSync();
-                    }else {
-                        return CacheStrategy.onlyRemote();
-                    }
+            default:
+                if (info.isSync()) {
+                    return CacheStrategy.onlyRemoteSync();
+                } else {
+                    return CacheStrategy.onlyRemote();
+                }
         }
 
     }

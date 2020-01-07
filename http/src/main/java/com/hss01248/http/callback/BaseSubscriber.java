@@ -81,21 +81,34 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
        }
     }
 
+
+
     //原生的方法
 
     @Override
     public final void onNext(@NonNull T t) {
-        Tool.logd("-->http is onNext");
-        Tool.logJson(t);
-        onSuccess(t);
+        Tool.logd("-->http is onNext/onsuccess");
+        Tool.logObj(t);
+        try {
+            onSuccess(t);
+            //UndeliverableException: The exception could not be delivered to the consumer
+            // because it has already canceled/disposed the flow or the exception
+        }catch (Throwable e){
+            ErrorCallbackDispatcher.dispatchException(this, e);
+            //ErrorCallbackDispatcher.dispatchException(this, ExceptionWrapper.wrapperException());
+        }
+
     }
 
     @Override
     public final void onError(Throwable e) {
         Tool.logd("-->http is onError,cost time : " + (System.currentTimeMillis() - startTime) + " ms");
         Tool.dismissLoadingDialog(dialogConfig, tagForCancel, this);
-        ErrorCallbackDispatcher.dispatchException(this, e);
-
+        try {
+            ErrorCallbackDispatcher.dispatchException(this, e);
+        }catch (Throwable e2){
+            e2.printStackTrace();
+        }
     }
 
     @Override
@@ -106,7 +119,7 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
 
 
     /**
-     * 真正类型是ResponseBean,内部已有各种数据封装,核心是ResponseBean.bean
+     * 真正类型是ResponseBean,内部已有各种数据封装,核心是ResponseBean.data
      *
      * @param response
      */
@@ -127,7 +140,7 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
         onError("no network connection:" + e.getMessage());
     }
 
-    public void onPoorNetwork() {
+    public void onPoorNetwork(Throwable e) {
         onError("network connection is poor");
     }
 
@@ -193,6 +206,8 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     public void onCancel() {
         //onError("请求已取消");
     }
+
+    public void onCache(boolean hasCache){}
 
 
     public void onClassCastException(Throwable e) {

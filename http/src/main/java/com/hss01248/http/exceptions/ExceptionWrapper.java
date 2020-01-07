@@ -28,7 +28,14 @@ public class ExceptionWrapper extends Exception {
         return e;
     }
 
-
+    /**
+     * 非服务器产生的异常，比如本地无无网络请求，Json数据解析错误,HttpException,socket超时等等。
+     *
+     * 无法捕获rxjava内部产生的异常,比如设置的超时异常:
+     * ObservableTimeoutTimed$TimeoutObserver.onTimeout(ObservableTimeoutTimed.java:132)
+     *
+     * @param <T>
+     */
     public static <T> Function<Throwable, ObservableSource<? extends T>> wrapperException(ConfigInfo info,boolean fromCache){
         return new Function<Throwable, ObservableSource<? extends T>>() {
             @Override

@@ -23,5 +23,9 @@ public abstract class MyNetCallback<T>  extends BaseSubscriber<T>{
         super(dialogConfig, tagForCancel);
     }
 
+    public void onCache(boolean hasCache){
+
+    }
+
 
 }

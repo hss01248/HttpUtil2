@@ -3,6 +3,7 @@ package com.hss01248.http.config;
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.cache.CacheMode;
+import com.hss01248.http.callback.HttpEventListener;
 import com.hss01248.http.cookie.DiskCookieJar;
 import com.hss01248.http.cookie.MemoryCookieJar;
 import com.hss01248.http.interceptors.NoCacheInterceptor;
@@ -42,6 +43,8 @@ public class Configer {
         if(GlobalConfig.get().getCacheMode() != CacheMode.DEFAULT){
             builder.addInterceptor(new NoCacheInterceptor());
         }
+        builder.eventListenerFactory(HttpEventListener.FACTORY);
+        //builder.dns(new TimeoutableDns(GlobalConfig.get().getConnectTimeout()));
     }
 
     static void setCustomConfig(OkHttpClient.Builder builder,ConfigInfo info){
@@ -64,6 +67,8 @@ public class Configer {
         if(info.getCacheMode() != CacheMode.DEFAULT){
             builder.addInterceptor(new NoCacheInterceptor());
         }
+        builder.eventListenerFactory(HttpEventListener.FACTORY);
+        //builder.dns(new TimeoutableDns(info.getConnectTimeout()));
     }
 
 

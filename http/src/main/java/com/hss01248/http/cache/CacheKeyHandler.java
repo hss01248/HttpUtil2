@@ -53,7 +53,6 @@ public class CacheKeyHandler {
                 //todo 顺序的影响: 需要预先将key排序以排除. 并且,有的key需要根据具体请求来过滤掉
                 stringBuilder.append(entry.getKey()).append(entry.getValue());
             }
-
         }
         String str = stringBuilder.toString();
         Tool.logd("cache key pre:\n"+str);

@@ -3,8 +3,12 @@ package com.hss01248.http;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -29,11 +33,56 @@ import io.reactivex.disposables.Disposable;
 
 public class Tool {
 
+    public static Handler getMainHandler() {
+        if (mainHandler == null) {
+            mainHandler = new android.os.Handler(Looper.getMainLooper());
+        }
+        return mainHandler;
+    }
+
     private static android.os.Handler mainHandler;
 
     private static ConcurrentHashMap<Object,Set<Disposable>> callMap = new ConcurrentHashMap<>();
 
 
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager conManager = (ConnectivityManager) HttpUtil.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (conManager != null) {
+            NetworkInfo[] netInf = conManager.getAllNetworkInfo();
+            for (int i = 0; i < netInf.length; i++) {
+                if (netInf[i].getState() == NetworkInfo.State.CONNECTED) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 检查是否存在代理,System.getProperty,有io操作
+     * @param ctx
+     * @return
+     */
+    public static boolean detectIfProxyExist() {
+        boolean IS_ICS_OR_LATER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+        String proxyHost;
+        int proxyPort;
+        try {
+            if (IS_ICS_OR_LATER) {
+                proxyHost = System.getProperty("http.proxyHost");
+                String port = System.getProperty("http.proxyPort");
+                proxyPort = Integer.parseInt(port != null ? port : "-1");
+            } else {
+                proxyHost = android.net.Proxy.getHost(GlobalConfig.get().getContext());
+                proxyPort = android.net.Proxy.getPort(GlobalConfig.get().getContext());
+
+            }
+            return proxyHost != null && proxyPort != -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     /**
      * 取消请求,常在activity ondestory处调用.直接传入activity即可,不会保存引用,直接识别其名字作为tag
      * @param obj 内部以obj.tostring来保存
@@ -308,5 +357,18 @@ public class Tool {
             e.printStackTrace();
             return str;
         }
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager conManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (conManager != null) {
+            NetworkInfo[] netInf = conManager.getAllNetworkInfo();
+            for (int i = 0; i < netInf.length; i++) {
+                if (netInf[i].getState() == NetworkInfo.State.CONNECTED) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

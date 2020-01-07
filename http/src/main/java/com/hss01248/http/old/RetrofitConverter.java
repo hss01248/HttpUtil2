@@ -20,11 +20,11 @@ package com.hss01248.http.old;
             JsonReader jsonReader = gson.newJsonReader(new InputStreamReader(new ByteArrayInputStream(json.getBytes())));
             T data =  adapter.read(jsonReader);
            *//* if(data instanceof BaseNetBean){
-                BaseNetBean bean = (BaseNetBean) data;
+                BaseNetBean data = (BaseNetBean) data;
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(json);
-                    bean.dataStr = jsonObject.optString("data");
+                    data.dataStr = jsonObject.optString("data");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

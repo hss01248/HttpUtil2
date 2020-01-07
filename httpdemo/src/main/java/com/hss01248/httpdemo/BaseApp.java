@@ -125,6 +125,11 @@ public class BaseApp extends Application {
             public void logObj(Object t) {
                 MyLog.obj(t);
             }
+
+            @Override
+            public void reportError(String code, String msg, String url) {
+
+            }
         };
 
 

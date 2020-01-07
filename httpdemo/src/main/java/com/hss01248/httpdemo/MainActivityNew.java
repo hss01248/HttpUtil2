@@ -76,7 +76,7 @@ public class MainActivityNew extends Activity {
                         .callback(new MyNetCallback<ResponseBean<String>>(true,null) {
                             @Override
                             public void onSuccess(ResponseBean<String> response) {
-                                MyLog.i(response.bean);
+                                MyLog.i(response.data);
                             }
 
                             @Override
@@ -103,7 +103,7 @@ public class MainActivityNew extends Activity {
                                 .callback(new MyNetCallback<ResponseBean<String>>(true,null) {
                                     @Override
                                     public void onSuccess(ResponseBean<String> response) {
-                                        MyLog.i(response.bean);
+                                        MyLog.i(response.data);
                                     }
 
                                     @Override
@@ -227,7 +227,7 @@ public class MainActivityNew extends Activity {
                         .callback(new MyNetCallback<ResponseBean<GetStandardJsonBean>>(true,null) {
                             @Override
                             public void onSuccess(ResponseBean<GetStandardJsonBean> response) {
-                                MyLog.json(MyJson.toJsonStr(response.bean));
+                                MyLog.json(MyJson.toJsonStr(response.data));
                             }
 
                             @Override
@@ -248,7 +248,7 @@ public class MainActivityNew extends Activity {
                         .callback(new MyNetCallback<ResponseBean<List<PostStandardJsonArray>>>(true,null) {
                             @Override
                             public void onSuccess(ResponseBean<List<PostStandardJsonArray>> response) {
-                                MyLog.json(MyJson.toJsonStr(response.bean));
+                                MyLog.json(MyJson.toJsonStr(response.data));
                             }
 
                             @Override
@@ -282,7 +282,7 @@ public class MainActivityNew extends Activity {
                                 .callback(new MyNetCallback<ResponseBean<FileDownlodConfig>>() {
                                     @Override
                                     public void onSuccess(ResponseBean<FileDownlodConfig> response) {
-                                        MyLog.i("path:"+response.bean.filePath);
+                                        MyLog.i("path:"+response.data.filePath);
                                     }
 
 
@@ -312,7 +312,7 @@ public class MainActivityNew extends Activity {
                         .callback(new MyNetCallback<ResponseBean<String>>() {
                             @Override
                             public void onSuccess(ResponseBean<String> response) {
-                                MyLog.i(response.bean);
+                                MyLog.i(response.data);
                             }
 
                             @Override
@@ -350,7 +350,7 @@ public class MainActivityNew extends Activity {
                         .callback(new MyNetCallback<ResponseBean<String>>() {
                             @Override
                             public void onSuccess(ResponseBean<String> response) {
-                                MyLog.i(response.bean);
+                                MyLog.i(response.data);
                             }
 
                             @Override

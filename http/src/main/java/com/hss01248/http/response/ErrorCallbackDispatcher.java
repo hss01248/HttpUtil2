@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
+import com.hss01248.http.HttpUtil;
 import com.hss01248.http.Tool;
 import com.hss01248.http.callback.BaseSubscriber;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
@@ -103,7 +104,7 @@ public class ErrorCallbackDispatcher {
         } else if (e instanceof ClassCastException) {
             callback.onClassCastException(e);
         } else if (e instanceof ConnectException) {
-            callback.onNoNetwork(e);
+            callback.onPoorNetwork(e);
             // ex.message = "连接失败";
 
         } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
@@ -111,15 +112,20 @@ public class ErrorCallbackDispatcher {
             // ex.message = "证书验证失败";
 
         } else if (e instanceof ConnectTimeoutException) {
-            callback.onNoNetwork(e);
+            callback.onPoorNetwork(e);
             //  ex.message = "连接超时";
 
         } else if (e instanceof java.net.SocketTimeoutException) {
-            callback.onNoNetwork(e);
+            callback.onPoorNetwork(e);
             // ex.message = "连接超时";
 
         } else if (e instanceof UnknownHostException) {
-            callback.onNoNetwork(e);
+            if(Tool.isNetworkAvailable(HttpUtil.context)){
+                callback.onNoNetwork(e);
+            }else {
+                callback.onPoorNetwork(e);
+            }
+
             // ex.message = "无法解析该域名";
 
         } else if (e instanceof NullPointerException) {

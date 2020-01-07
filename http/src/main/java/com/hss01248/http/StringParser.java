@@ -36,7 +36,7 @@ public class StringParser {
                     return response;
                 }
             }
-            response.bean = (T) str;
+            response.data = (T) str;
             return response;
         }
 
@@ -74,7 +74,7 @@ public class StringParser {
         return null;
     }
 
-    private static <T> void processDataStr(String data, ResponseBean<T> response, ConfigInfo<T> info) throws Exception {
+    public static <T> void processDataStr(String data, ResponseBean<T> response, ConfigInfo<T> info) throws Exception {
         if (judgeIsResponseStrEmpty(data)) {
             if (!info.isTreatEmptyDataAsSuccess()) {
                 throw new ResponseStrEmptyException(info, "content of data is empty");//在回调里当做onempty处理
@@ -108,9 +108,9 @@ public class StringParser {
             t2 = GlobalConfig.get().getTool().parseObject(data, info.getClazz());
         }
 
-        //GlobalConfig.get().getTool().logi("type of response.bean:" + t2.getClass());
+        //GlobalConfig.get().getTool().logi("type of response.data:" + t2.getClass());
 
-        response.bean = (T) t2;
+        response.data = (T) t2;
     }
 
 
@@ -118,10 +118,16 @@ public class StringParser {
         if (TextUtils.isEmpty(data)) {
             return true;
         }
-        if ("null".equalsIgnoreCase(data)) {
+        if ("null".equals(data)) {
             return true;
         }
-        if (" ".equalsIgnoreCase(data)) {
+        if (" ".equals(data)) {
+            return true;
+        }
+        if ("{}".equals(data)) {
+            return true;
+        }
+        if ("[]".equals(data)) {
             return true;
         }
         return false;

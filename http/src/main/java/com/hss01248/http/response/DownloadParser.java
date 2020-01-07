@@ -76,7 +76,7 @@ public class DownloadParser {
             Tool.logd(String.format("file from %s  saved in path:%s", info.getUrl(), config.filePath));
 
             try {
-                bean.bean = (T) config;
+                bean.data = (T) config;
             } catch (Exception e) {
                 e.printStackTrace();
             }

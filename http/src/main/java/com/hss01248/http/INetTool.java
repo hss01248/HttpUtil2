@@ -44,4 +44,6 @@ public interface INetTool {
     Activity getTopActivity();
 
     void logObj(Object t);
+
+    void reportError(String code,String msg,String url);
 }

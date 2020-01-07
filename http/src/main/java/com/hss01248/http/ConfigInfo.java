@@ -772,4 +772,48 @@ public class ConfigInfo<T> {
     }
 
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ConfigInfo{");
+        sb.append("appendCommonHeaders:").append(appendCommonHeaders);
+        sb.append(",\n appendCommonParams:").append(appendCommonParams);
+        sb.append(",\n cacheMode:").append(cacheMode);
+        sb.append(",\n callback:").append(callback);
+        sb.append(",\n clazz:").append(clazz);
+        sb.append(",\n connectTimeout:").append(connectTimeout);
+        sb.append(",\n cookieMode:").append(cookieMode);
+        sb.append(",\n dataCodeMsgJsonConfig:").append(dataCodeMsgJsonConfig);
+        sb.append(",\n download:").append(download);
+        sb.append(",\n downlodConfig:").append(downlodConfig);
+        sb.append(",\n extraFromOut:").append(extraFromOut);
+        sb.append(",\n files:").append(files);
+        sb.append(",\n files2:").append(files2);
+        sb.append(",\n headers:").append(headers);
+        sb.append(",\n ignoreCer:").append(ignoreCer);
+        sb.append(",\n interceptors:").append(interceptors);
+        sb.append(",\n method:").append(method);
+        sb.append(",\n paramKeysSetNotForCacheKey:").append(paramKeysSetNotForCacheKey);
+        sb.append(",\n params:").append(params);
+        sb.append(",\n paramsAsJson:").append(paramsAsJson);
+        sb.append(",\n paramsStr:'").append(paramsStr).append('\'');
+        sb.append(",\n progressCallback:").append(progressCallback);
+        sb.append(",\n responseAsDataCodeMsgInJson:").append(responseAsDataCodeMsgInJson);
+        sb.append(",\n responseAsDownload:").append(responseAsDownload);
+        sb.append(",\n responseAsJsonArray:").append(responseAsJsonArray);
+        sb.append(",\n responseAsNormalJson:").append(responseAsNormalJson);
+        sb.append(",\n responseAsString:").append(responseAsString);
+        sb.append(",\n responseBodyStr:'").append(responseBodyStr).append('\'');
+        sb.append(",\n retryCount:").append(retryCount);
+        sb.append(",\n retryOnConnectionFailure:").append(retryOnConnectionFailure);
+        sb.append(",\n showLoading:").append(showLoading);
+        sb.append(",\n sync:").append(sync);
+        sb.append(",\n tagForCancle:").append(tagForCancle);
+        sb.append(",\n totalTimeOut:").append(totalTimeOut);
+        sb.append(",\n treatEmptyDataAsSuccess:").append(treatEmptyDataAsSuccess);
+        sb.append(",\n uploadBinary:").append(uploadBinary);
+        sb.append(",\n uploadMultipart:").append(uploadMultipart);
+        sb.append(",\n url:'").append(url).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

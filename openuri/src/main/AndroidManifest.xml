@@ -7,13 +7,13 @@
         android:supportsRtl="true">
         <!--http://blog.csdn.net/R3lish/article/details/58147225-->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="com.hss01248.openuri.HttpFileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths2" />
+                android:resource="@xml/file_paths_http" />
         </provider>
 
     </application>
