@@ -78,8 +78,8 @@ public class HttpErrorReporter {
                     }
                 }else {
                     //java.io.IOException: UnknownHostException exception:
-                    // Unable to resolve host "dev-id-app.akulaku.com": No address associated with hostname
-                    //java.net.UnknownHostException: Unable to resolve host "dev-id-app.akulaku.com": No address associated with hostname
+                    // Unable to resolve host "dev-id-app.xxx.com": No address associated with hostname
+                    //java.net.UnknownHostException: Unable to resolve host "dev-id-app.xxx.com": No address associated with hostname
                     if(e.getMessage().startsWith("UnknownHostException exception: ")){
                         String msg2 = e.getMessage().substring(e.getMessage().indexOf(": "));
                         e = new UnknownHostException(msg2);
@@ -102,9 +102,9 @@ public class HttpErrorReporter {
 
 
             //java.io.IOException: UnknownHostException exception:
-            // Unable to resolve host "dev-id-app.akulaku.com": No address associated with hostname
+            // Unable to resolve host "dev-id-app.xxx.com": No address associated with hostname
 
-            //java.net.UnknownHostException: Unable to resolve host "dev-id-app.akulaku.com": No address associated with hostname
+            //java.net.UnknownHostException: Unable to resolve host "dev-id-app.xxx.com": No address associated with hostname
 
             String code2 = code+"";
             /*if(Config.enableLog()){
