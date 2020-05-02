@@ -72,7 +72,7 @@ public class WanandroidActivity extends AppCompatActivity {
                 .callback(new MyNetCallback<ResponseBean<List<HomeTabsBean>>>(true,null) {
                     @Override
                     public void onSuccess(ResponseBean<List<HomeTabsBean>> response) {
-                        Tool.logJson(response.bean);
+                        Tool.logJson(response.data);
                     }
 
                     @Override
@@ -101,7 +101,7 @@ public class WanandroidActivity extends AppCompatActivity {
                         .callback(new MyNetCallback<ResponseBean<List<HomeTabsBean>>>() {
                             @Override
                             public void onSuccess(ResponseBean<List<HomeTabsBean>> response) {
-                                Tool.logJson(response.bean);
+                                Tool.logJson(response.data);
                             }
 
                             @Override
