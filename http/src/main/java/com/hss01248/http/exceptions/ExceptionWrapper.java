@@ -13,19 +13,21 @@ import io.reactivex.functions.Function;
 public class ExceptionWrapper extends Exception {
 
 
-    public Throwable e;
+
     public ConfigInfo info;
     public boolean fromCache;
 
 
-    public ExceptionWrapper(Throwable e, ConfigInfo info,boolean fromCache){
-        this.e = e;
+
+
+    public ExceptionWrapper(Throwable cause, ConfigInfo info, boolean fromCache) {
+        super( cause);
         this.info = info;
         this.fromCache = fromCache;
     }
 
     public Throwable getRealThrowable(){
-        return e;
+        return getCause();
     }
 
     /**

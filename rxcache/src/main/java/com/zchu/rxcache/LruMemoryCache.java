@@ -2,14 +2,12 @@ package com.zchu.rxcache;
 
 
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 
-import com.zchu.rxcache.data.CacheResult;
 import com.zchu.rxcache.utils.LogUtils;
 import com.zchu.rxcache.utils.MemorySizeOf;
 import com.zchu.rxcache.utils.Occupy;
 
-import java.security.Key;
 import java.util.HashMap;
 
 /**

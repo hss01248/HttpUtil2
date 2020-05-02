@@ -1,6 +1,6 @@
 package com.hss01248.http.executer;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.hss01248.http.ConfigInfo;

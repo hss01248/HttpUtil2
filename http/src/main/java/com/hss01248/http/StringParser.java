@@ -20,6 +20,7 @@ public class StringParser {
         info.responseBodyStr = str;
 
         ResponseBean<T> response = new ResponseBean<>();
+        response.url = info.getUrl();
         response.bodyStr = str;
         response.isFromCache = fromCache;
         //互相引用,可能导致json打印栈溢出.需要重新tostring方法或者打印方法

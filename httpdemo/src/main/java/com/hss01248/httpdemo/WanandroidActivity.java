@@ -3,17 +3,21 @@ package com.hss01248.httpdemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.Tool;
 import com.hss01248.http.callback.MyNetCallback;
+import com.hss01248.http.exceptions.ExceptionWrapper;
 import com.hss01248.http.response.ResponseBean;
 import com.hss01248.httpdemo.threadpool.ThreadPoolFactory;
 import com.hss01248.httpdemo.wanandroid.ReqUrls;
 import com.hss01248.httpdemo.wanandroid.WanDataCodeMsgConfig;
+import com.hss01248.httpdemo.wanandroid.bean.ArticleListBean;
+import com.hss01248.httpdemo.wanandroid.bean.BannerInfo;
 import com.hss01248.httpdemo.wanandroid.bean.HomeTabsBean;
 import com.orhanobut.logger.MyLog;
 
@@ -22,9 +26,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 
 /**
  * Created by hss on 2018/12/1.
+ * 接口文档: https://www.wanandroid.com/blog/show/2
  */
 
 public class WanandroidActivity extends AppCompatActivity {
@@ -81,6 +91,69 @@ public class WanandroidActivity extends AppCompatActivity {
 
                     }
                 });
+
+    }
+
+    @OnClick(R.id.combine)
+    public void combine() {
+      Observable<ResponseBean<List<HomeTabsBean>>> observable1 =  HttpUtil.requestAsJsonArray(ReqUrls.BASE_URL+ReqUrls.HOME_TABS, HomeTabsBean.class)
+                .setDataCodeMsgJsonConfig(WanDataCodeMsgConfig.build()).asObservable();
+
+      Observable observable2 =   HttpUtil.requestAsJsonArray(ReqUrls.BASE_URL+ReqUrls.HOME_articles, ArticleListBean.class)
+                .setDataCodeMsgJsonConfig(WanDataCodeMsgConfig.build()).asObservable();//允许失败,必失败
+
+        Observable observable3 =   HttpUtil.request(ReqUrls.BASE_URL+ReqUrls.HOME_banners, BannerInfo.class)
+                .setDataCodeMsgJsonConfig(WanDataCodeMsgConfig.build()).asObservable();
+        //.setTotalTimeOut(200)
+
+        Observable.merge(observable1,observable2,observable3)
+                .onErrorResumeNext(new Function<Throwable, ObservableSource>() {
+                    @Override
+                    public ObservableSource apply(Throwable throwable) throws Exception {
+                        if(throwable instanceof ExceptionWrapper){
+                            ExceptionWrapper wrapper = (ExceptionWrapper) throwable;
+                            if((ReqUrls.BASE_URL+ReqUrls.HOME_articles).equals(wrapper.info.getUrl())){
+                                return Observable.just(new Object());
+                            }
+
+                        }
+                        return Observable.error(throwable);
+                    }
+                })
+                .subscribe(new Observer() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        MyLog.d("onSubscribe",d.toString());
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        MyLog.obj("onNext",o);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        MyLog.e("onError",e.getMessage());
+                        if(e.getCause() != null){
+                            e.getCause().printStackTrace();
+                        }else {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        MyLog.i("onComplete","finish");
+                    }
+                });
+
+
+
+
+
+
 
     }
 

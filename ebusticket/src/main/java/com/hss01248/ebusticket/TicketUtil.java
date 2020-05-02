@@ -37,7 +37,7 @@ public class TicketUtil {
                 .callback(new MyNetCallback<ResponseBean<TicketLeftInfo>>(false,null) {
                     @Override
                     public void onSuccess(ResponseBean<TicketLeftInfo> response) {
-                        TicketLeftInfo info = response.bean;
+                        TicketLeftInfo info = response.data;
                         MyToast.info("619还有余票:"+info.getTicketNum());
                         if(info.getTicketNum() >0){
                             tellme();

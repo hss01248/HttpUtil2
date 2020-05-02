@@ -56,6 +56,7 @@ public class ErrorCallbackDispatcher {
         }else {
             Tool.logw("e not instanceof ExceptionWrapper!!!!");
             //rxjava本身超时机制抛出的异常无法用onerrorresume捕获,所以无法包裹,所以拿不到info
+            //java.util.concurrent.TimeoutException: The source did not signal an event for 200 milliseconds and has been terminated.
         }
 
         if (GlobalConfig.get().isOpenLog()) {

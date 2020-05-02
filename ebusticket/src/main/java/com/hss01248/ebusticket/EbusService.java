@@ -2,7 +2,7 @@ package com.hss01248.ebusticket;
 
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.xdandroid.hellodaemon.AbsWorkService;

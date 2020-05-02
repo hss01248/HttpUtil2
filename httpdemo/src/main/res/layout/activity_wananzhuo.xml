@@ -7,7 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="接口聚合请求"
+        android:textAllCaps="false"
+        android:id="@+id/combine"/>
 
     <Button
         android:layout_width="match_parent"

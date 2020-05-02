@@ -2,7 +2,7 @@ package com.zchu.rxcache;
 
 import android.os.Environment;
 import android.os.StatFs;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.zchu.rxcache.data.CacheResult;
 import com.zchu.rxcache.diskconverter.IDiskConverter;

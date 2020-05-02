@@ -11,4 +11,11 @@ public class ReqUrls {
     public static final String BASE_URL = "http://www.wanandroid.com/";
 
     public static final String HOME_TABS = "wxarticle/chapters/json";
+
+    public static final String HOME_articles = "article/list/0/json";
+
+    public static final String HOME_banners = "banner/json";
+
+
+
 }

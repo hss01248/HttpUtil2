@@ -1,7 +1,7 @@
 package com.hss01248.http.callback;
 
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.hss01248.http.config.LoadingDialogConfig;
 

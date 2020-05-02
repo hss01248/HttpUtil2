@@ -1,6 +1,6 @@
 package com.hss01248.http.callback;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.hss01248.http.Tool;
 
@@ -48,18 +48,18 @@ public class HttpEventListener extends EventListener {
     /**
      * 每次请求的开始时间，单位纳秒
      */
-    private final long callStartNanos;
+    private final long preStart;
 
     private StringBuilder sbLog;
 
     public HttpEventListener(long callId, HttpUrl url, long callStartNanos) {
         this.callId = callId;
-        this.callStartNanos = callStartNanos;
+        this.preStart = callStartNanos;
         this.sbLog = new StringBuilder(url.toString()).append(" ").append(callId).append(":\n");
     }
 
     private void recordEventLog(String name) {
-        long elapseNanos = System.nanoTime() - callStartNanos;
+        long elapseNanos = System.nanoTime() - preStart;
         sbLog.append(String.format(Locale.CHINA, "%.3f-%s", elapseNanos / 1000000000d, name)).append(";");
         if(name.endsWith("End")|| name.endsWith("Acquired")){
             sbLog.append("\n");
