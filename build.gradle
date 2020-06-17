@@ -3,6 +3,10 @@
 buildscript {
 
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }  // <= here
+        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google' }  // <= here
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }  // <= here
         google()
         jcenter()
         mavenCentral()
@@ -20,6 +24,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }  // <= here
+        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google' }  // <= here
         mavenCentral()
         google()
         jcenter()
