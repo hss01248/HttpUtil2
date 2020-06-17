@@ -1,9 +1,12 @@
 package com.hss01248.http.config;
 
+import com.codahale.metrics.MetricRegistry;
+import com.hss01248.gsonconverter.validator.GsonConverterFactoryWithBeanValidator;
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.request.ApiService;
+import com.raskasa.metrics.okhttp.InstrumentedOkHttpClients;
 
 import java.io.File;
 
@@ -57,6 +60,7 @@ public class GlobalClient {
          retrofit = new Retrofit.Builder()
                  .baseUrl(config.getBaseUrl())
                  .client(okHttpClient)
+                 .addConverterFactory(GsonConverterFactoryWithBeanValidator.create())
                  .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                  .build();
          apiService = retrofit.create(ApiService.class);
@@ -79,7 +83,12 @@ public class GlobalClient {
                 .writeTimeout(0, TimeUnit.MILLISECONDS)*/
                 .cache(cache)
                 .build();
-        return client;
+
+
+        MetricRegistry registry = new MetricRegistry();
+
+        OkHttpClient client2 = InstrumentedOkHttpClients.create(registry, client);
+        return client2;
     }
 
     public static <T> ApiService getApiService(ConfigInfo<T> info){
@@ -119,6 +128,7 @@ public class GlobalClient {
        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GlobalConfig.get().getBaseUrl())
                 .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactoryWithBeanValidator.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         ApiService  apiService = retrofit.create(ApiService.class);
@@ -142,7 +152,11 @@ public class GlobalClient {
                 .writeTimeout(0, TimeUnit.MILLISECONDS)*/
                 .cache(cache)
                 .build();
-        return client;
+
+        MetricRegistry registry = new MetricRegistry();
+
+        OkHttpClient client2 = InstrumentedOkHttpClients.create(registry, client);
+        return client2;
     }
 
 

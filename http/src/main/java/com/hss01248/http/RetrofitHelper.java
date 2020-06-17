@@ -30,6 +30,7 @@ public class RetrofitHelper {
     public static final String UPLOAD_BINARY_KEY = "uploadBinary666";
 
 
+    //@RxLogObservable
     public static <T> Observable<ResponseBody> getResponseObservable(ConfigInfo<T> info) {
         ApiService service = GlobalClient.getApiService(info);
         Observable<ResponseBody> observable = null;

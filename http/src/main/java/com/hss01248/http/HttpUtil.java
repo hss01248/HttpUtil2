@@ -3,6 +3,7 @@ package com.hss01248.http;
 import android.app.Application;
 import android.content.Context;
 
+import com.hss01248.beanvalidator.BeanValidator;
 import com.hss01248.http.config.FileDownlodConfig;
 import com.hss01248.http.netstate.NetStateChangeReceiver;
 import com.zchu.rxcache.RxCache;
@@ -41,6 +42,7 @@ public class HttpUtil {
     public static GlobalConfig init(Application context0, boolean openlog, String baseUrl, INetTool tool) {
         context = context0;
         LogUtils.DEBUG = openlog;
+        BeanValidator.init(context0);
         NetStateChangeReceiver.registerReceiver(context0);
 
 

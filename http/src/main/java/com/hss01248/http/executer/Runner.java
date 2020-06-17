@@ -1,7 +1,8 @@
 package com.hss01248.http.executer;
 
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.HttpUtil;
@@ -53,6 +54,7 @@ public class Runner {
 
     }
 
+    //@RxLogObservable
     public static <T> Observable<ResponseBean<T>> asObservable(ConfigInfo<T> info) {
 
         ConfigChecker.convertParams(info);
