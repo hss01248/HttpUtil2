@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.MyToast;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
@@ -88,6 +89,7 @@ public class WanandroidActivity extends AppCompatActivity {
                     @Override
                     public void onError(String msgCanShow) {
                         Tool.logw(msgCanShow);
+                        MyToast.errorBigL(msgCanShow);
 
                     }
                 });

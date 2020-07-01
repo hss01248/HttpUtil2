@@ -118,6 +118,7 @@ dependencies {
 
 	api project(path: ':openuri')
 	api project(path: ':rxcache')
+	api project(path: ':friendlymsg')
 
 	implementation 'com.github.hss01248.AndroidBeanValidator:gsonconvertervalidator:1.0.1'
 	implementation 'com.github.hss01248.AndroidBeanValidator:beanvalidator:1.0.1'

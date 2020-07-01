@@ -1,12 +1,16 @@
 package com.hss01248.http.response;
 
 
-import android.net.ParseException;
+
 import android.text.TextUtils;
 
+import com.hss01248.friendlymsg.ExceptionFriendlyMsg;
+
+import com.hss01248.friendlymsg.ReturnMsg;
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
+import com.hss01248.http.R;
 import com.hss01248.http.Tool;
 import com.hss01248.http.callback.BaseSubscriber;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
@@ -16,16 +20,9 @@ import com.hss01248.http.exceptions.FileDownloadException;
 import com.hss01248.http.exceptions.RequestConfigCheckException;
 import com.hss01248.http.exceptions.ResponseStrEmptyException;
 
-import org.apache.http.conn.ConnectTimeoutException;
-import org.json.JSONException;
+
 import org.json.JSONObject;
 
-import java.io.NotSerializableException;
-import java.net.ConnectException;
-import java.net.UnknownHostException;
-import java.util.concurrent.TimeoutException;
-
-import retrofit2.HttpException;
 
 /**
  * Created by hss on 2018/7/24.
@@ -79,17 +76,37 @@ public class ErrorCallbackDispatcher {
             //callback.onCodeError(e1.info.);
             preParseCodeError(e1, callback);
         } else  {
-            ReturnMsg msg = ExceptionFriendlyMsg.toFriendlyMsg(e);
-            if("ResponseStrEmptyException".equals(msg.code)){
+            ReturnMsg bean = ExceptionFriendlyMsg.toFriendlyMsg(e);
+
+            if (e instanceof ResponseStrEmptyException) {
+                bean = ReturnMsg.newBuilder()
+                        .code("ResponseStrEmptyException")
+                        //.realMsg(e.getMessage())
+                        .friendlyMsg(Tool.getString(R.string.httputl_empty_error))
+                        .build();
+            } else if (e instanceof RequestConfigCheckException) {
+                bean = ReturnMsg.newBuilder()
+                        .code("RequestParamException")
+                        .realMsg(e.getMessage())
+                        .friendlyMsg(Tool.getString(R.string.json_param_error))
+                        .build();
+            }else if (e instanceof FileDownloadException) {
+                bean = ReturnMsg.newBuilder()
+                        .code("FileDownloadException")
+                        .realMsg(e.getMessage())
+                        .friendlyMsg(Tool.getString(R.string.httputl_filedownload_error))
+                        .build();
+            }
+            if("ResponseStrEmptyException".equals(bean.code)){
                 callback.onEmpty();
                 return;
             }
-            if("401".equals(msg.code)){
-                callback.onUnlogin(msg.responseBody);
+            if("401".equals(bean.code)){
+                callback.onUnlogin(bean.responseBody);
                 return;
             }
 
-            callback.onError(msg.code,msg.friendlyMsg,msg.realMsg,msg.responseBody);
+            callback.onError(bean.code,bean.friendlyMsg+"",bean.realMsg,bean.responseBody);
         }
     }
 

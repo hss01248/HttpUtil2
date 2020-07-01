@@ -138,7 +138,8 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     }
 
     public void onError(String code, String msgCanShow, String exceptionMsg, String responseBodyStr) {
-        onError(code,msgCanShow);
+        String friendlyMsg = msgCanShow +"\n\n(" + code + "\n" + exceptionMsg+ ")";
+        onError(code,friendlyMsg);
     }
 
     public void onCodeError(int code, String msg, String dataStr, String codeStr,

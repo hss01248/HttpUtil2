@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/openuri/HttpUtil2-openuri.iml" filepath="$PROJECT_DIR$/.idea/modules/openuri/HttpUtil2-openuri.iml" group="HttpUtil2/openuri" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rxcache/HttpUtil2-rxcache.iml" filepath="$PROJECT_DIR$/.idea/modules/rxcache/HttpUtil2-rxcache.iml" group="HttpUtil2/rxcache" />
       <module fileurl="file://$PROJECT_DIR$/ebusticket/ebusticket.iml" filepath="$PROJECT_DIR$/ebusticket/ebusticket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/friendlymsg/friendlymsg.iml" filepath="$PROJECT_DIR$/.idea/modules/friendlymsg/friendlymsg.iml" group="HttpUtil2/friendlymsg" />
       <module fileurl="file://$PROJECT_DIR$/http/http.iml" filepath="$PROJECT_DIR$/http/http.iml" />
       <module fileurl="file://$PROJECT_DIR$/httpdemo/httpdemo.iml" filepath="$PROJECT_DIR$/httpdemo/httpdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/openuri/openuri.iml" filepath="$PROJECT_DIR$/openuri/openuri.iml" />

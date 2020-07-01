@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="json_parse_error">data parse error,please try again later</string>
+    <string name="json_param_error">wrong request params</string>
+    <string name="some_error">some error happened, please try again later</string>
+    <string name="httputl_poor_network">fail to connect to the server, please check your network connection</string>
+    <string name="httputl_timeout">connection timeout, please check your network connection</string>
+    <string name="httputl_no_network">network not connected, please turn it on and retry</string>
+    <string name="httputil_ssl_error">ssl certificate error, please check your network environment</string>
+    <string name="httputl_filedownload_error">file download failed, please try again later</string>
+    <string name="httputl_unlogin_error">unlogin or login expired, please relogin</string>
+    <string name="httputl_server_error">server error happened, please contact the customer service</string>
+    <string name="httputl_empty_error">data is empty</string>
+</resources>

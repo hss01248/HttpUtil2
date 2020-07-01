@@ -1,1 +1,2 @@
+include ':friendlymsg'
 include ':http', ':httpdemo', ':openuri', ':rxcache', ':ebusticket'//, ':akuhttpdemo', ':akuhttp'

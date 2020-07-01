@@ -2,6 +2,8 @@ package com.hss01248.http;
 
 import android.app.Application;
 
+import com.hss01248.friendlymsg.ExceptionFriendlyMsg;
+import com.hss01248.friendlymsg.IFriendlyMsg;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.FileDownlodConfig;
@@ -457,6 +459,11 @@ public class GlobalConfig {
 
     public GlobalConfig setLogTag(String logTag) {
         this.logTag = logTag;
+        return this;
+    }
+
+    public GlobalConfig setFriendMsgImpl(IFriendlyMsg friendlyMsg) {
+        ExceptionFriendlyMsg.init(context,friendlyMsg);
         return this;
     }
 

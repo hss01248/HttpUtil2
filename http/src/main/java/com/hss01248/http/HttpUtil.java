@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.hss01248.beanvalidator.BeanValidator;
+import com.hss01248.friendlymsg.ExceptionFriendlyMsg;
 import com.hss01248.http.config.FileDownlodConfig;
 import com.hss01248.http.netstate.NetStateChangeReceiver;
 import com.zchu.rxcache.RxCache;
@@ -44,6 +45,7 @@ public class HttpUtil {
         LogUtils.DEBUG = openlog;
         BeanValidator.init(context0);
         NetStateChangeReceiver.registerReceiver(context0);
+        ExceptionFriendlyMsg.init(context0,null);
 
 
 

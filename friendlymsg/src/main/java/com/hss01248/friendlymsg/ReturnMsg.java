@@ -1,14 +1,14 @@
-package com.hss01248.http.response;
+package com.hss01248.friendlymsg;
 
 /**
  * by hss
  * data:2020/7/1
  * desc:
  */
-class ReturnMsg {
+public class ReturnMsg {
     public String code;
     public String realMsg;
-    public String friendlyMsg;
+    public CharSequence friendlyMsg;
     public String responseBody;
 
     private ReturnMsg(Builder builder) {
@@ -26,7 +26,7 @@ class ReturnMsg {
     public static final class Builder {
         private String code;
         private String realMsg;
-        private String friendlyMsg;
+        private CharSequence friendlyMsg;
         private String responseBody;
 
         private Builder() {
@@ -42,7 +42,7 @@ class ReturnMsg {
             return this;
         }
 
-        public Builder friendlyMsg(String friendlyMsg) {
+        public Builder friendlyMsg(CharSequence friendlyMsg) {
             this.friendlyMsg = friendlyMsg;
             return this;
         }
