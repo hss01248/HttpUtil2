@@ -131,9 +131,9 @@ public class ExceptionFriendlyMsg {
                     .friendlyMsg(getString(R.string.some_error))
                     .build();
         }
-        if(e.getCause() != null && !TextUtils.isEmpty(e.getCause().getMessage())){
+        /*if(e.getCause() != null && !TextUtils.isEmpty(e.getCause().getMessage())){
             bean.realMsg = e.getCause().getMessage();
-        }
+        }*/
         if(friendlyMsg != null){
             bean.friendlyMsg = friendlyMsg.toMsg(bean.code);
         }
