@@ -3,6 +3,10 @@
 buildscript {
 
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }  // <= here
+        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google' }  // <= here
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }  // <= here
         google()
         jcenter()
         mavenCentral()
@@ -10,6 +14,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath "com.github.skyNet2017.frodo2:frodo2-plugin:0.9.3"
         //classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         //classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         // NOTE: Do not place your application dependencies here; they belong
@@ -20,6 +25,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }  // <= here
+        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google' }  // <= here
         mavenCentral()
         google()
         jcenter()

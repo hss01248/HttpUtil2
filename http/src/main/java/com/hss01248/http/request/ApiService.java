@@ -1,6 +1,8 @@
 package com.hss01248.http.request;
 
 
+import com.fernandocejas.frodo2.annotation.RxLogObservable;
+
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -26,7 +28,7 @@ import retrofit2.http.Url;
 
 public interface ApiService {
 
-
+    @RxLogObservable
     @GET()
     Observable<ResponseBody> get(@Url String url,
                                  @QueryMap Map<String, String> params,
@@ -44,7 +46,7 @@ public interface ApiService {
      * @param map
      * @return
      */
-
+    @RxLogObservable
     @FormUrlEncoded
     @POST()
     Observable<ResponseBody> post(@Url String url,
@@ -58,27 +60,28 @@ public interface ApiService {
      * @param body
      * @return
      */
+    @RxLogObservable
     @POST()
     Observable<ResponseBody> jsonPost(@Url String url,
                                       @Body RequestBody body,
                                       @HeaderMap Map<String, String> headers);
 
-
+    @RxLogObservable
     @Streaming //流式下载,不加这个注解的话,会整个文件字节数组全部加载进内存,可能导致oom
     @GET
     Observable<ResponseBody> download(@Url String fileUrl,
                                       @QueryMap Map<String, String> params,
                                       @HeaderMap Map<String, String> headers);
-
+    @RxLogObservable
     @POST()
     @Multipart
     Observable<ResponseBody> uploadMultipart(@Url String url, @PartMap Map<String, RequestBody> params,
                                              @PartMap Map<String, RequestBody> files,
                                              @HeaderMap Map<String, String> headers);
-
+    @RxLogObservable
     @PUT()
     Observable<ResponseBody> uploadRawByPut(@Url String url, @Body RequestBody file, @HeaderMap Map<String, String> headers);
-
+    @RxLogObservable
     @POST()
     Observable<ResponseBody> uploadRawByPost(@Url String url, @Body RequestBody file, @HeaderMap Map<String, String> headers);
 

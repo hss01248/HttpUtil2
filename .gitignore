@@ -66,3 +66,5 @@ fastlane/readme.md
 
 # akuhttp/
 # akuhttpdemo/
+.idea/
+*.txt
