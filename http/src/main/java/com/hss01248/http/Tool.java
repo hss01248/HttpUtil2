@@ -58,9 +58,12 @@ public class Tool {
         return false;
     }
 
+    public static String getString(int id){
+        return HttpUtil.context.getResources().getString(id);
+    }
+
     /**
      * 检查是否存在代理,System.getProperty,有io操作
-     * @param ctx
      * @return
      */
     public static boolean detectIfProxyExist() {

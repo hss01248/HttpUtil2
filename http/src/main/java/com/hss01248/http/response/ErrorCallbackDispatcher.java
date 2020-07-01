@@ -73,101 +73,26 @@ public class ErrorCallbackDispatcher {
         Tool.logd("is from cache : "+isFromCache);
 
 
-        if (e instanceof ResponseStrEmptyException) {
-            callback.onEmpty();
-        } else if (e instanceof DataCodeMsgCodeErrorException) {
+        if (e instanceof DataCodeMsgCodeErrorException) {
             DataCodeMsgCodeErrorException e1 = (DataCodeMsgCodeErrorException) e;
             //callback.onCodeError();//todo
             //callback.onCodeError(e1.info.);
             preParseCodeError(e1, callback);
-        } else if (e instanceof RequestConfigCheckException) {
-            callback.onError(e.getMessage());
-        } else if (e instanceof HttpException) {
-            HttpException httpException = (HttpException) e;
-            int code = httpException.code();
-            String message = httpException.message();
-            // e.getMessage(): HTTP 405 Method Not Allowed .
-
-            String responseStr = "";
-            if (httpException.response() != null && httpException.response().errorBody() != null) {
-                try {
-                    responseStr = httpException.response().errorBody().string();
-                } catch (Exception e2) {
-                    if (GlobalConfig.get().isOpenLog()) {
-                        e2.printStackTrace();
-                    }
-                }
+        } else  {
+            ReturnMsg msg = ExceptionFriendlyMsg.toFriendlyMsg(e);
+            if("ResponseStrEmptyException".equals(msg.code)){
+                callback.onEmpty();
+                return;
             }
-            Tool.logw(String.format("httpcode:%d,msg:%s,errorBody:\n%s", code, message, responseStr));
-            callback.onHttpError(code, message, responseStr);
-        } else if (isJsonException(e)) {
-            callback.onJsonParseError(e);
-        } else if (e instanceof ClassCastException) {
-            callback.onClassCastException(e);
-        } else if (e instanceof ConnectException) {
-            callback.onPoorNetwork(e);
-            // ex.message = "连接失败";
-
-        } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
-            callback.onSSLError(e);
-            // ex.message = "证书验证失败";
-
-        } else if (e instanceof ConnectTimeoutException) {
-            callback.onPoorNetwork(e);
-            //  ex.message = "连接超时";
-
-        } else if (e instanceof java.net.SocketTimeoutException) {
-            callback.onPoorNetwork(e);
-            // ex.message = "连接超时";
-
-        } else if (e instanceof UnknownHostException) {
-            if(Tool.isNetworkAvailable(HttpUtil.context)){
-                callback.onNoNetwork(e);
-            }else {
-                callback.onPoorNetwork(e);
+            if("401".equals(msg.code)){
+                callback.onUnlogin(msg.responseBody);
+                return;
             }
 
-            // ex.message = "无法解析该域名";
-
-        } else if (e instanceof NullPointerException) {
-
-            callback.onNullPointerException(e);
-            // ex.message = "NullPointerException";
-
-        } else if (e instanceof FileDownloadException) {
-            FileDownloadException exception = (FileDownloadException) e;
-            callback.onError(exception.getMessage());
-        } else if (e instanceof TimeoutException) {
-            callback.onTimeout(e);
-        } else {
-            callback.onUnknowError(e);
+            callback.onError(msg.code,msg.friendlyMsg,msg.realMsg,msg.responseBody);
         }
     }
 
-    private static boolean isJsonException(Throwable e) {
-        if(e ==null){
-            return false;
-        }
-        if(e instanceof JSONException){
-            return true;
-        }
-        if(e instanceof  NotSerializableException){
-            return true;
-        }
-        if(e instanceof ParseException){
-            return true;
-        }
-        if("com.alibaba.fastjson.JSONException".equalsIgnoreCase(e.getClass().getName())){
-            return true;
-        }
-        if("com.google.gson.JsonParseException".equalsIgnoreCase(e.getClass().getName())){
-            return true;
-        }
-        if("com.google.gson.JsonIOException".equalsIgnoreCase(e.getClass().getName())){
-            return true;
-        }
-        return false;
-    }
 
     private static void preParseCodeError(DataCodeMsgCodeErrorException e, BaseSubscriber callback) {
         ResponseBean bean = e.responseBean;

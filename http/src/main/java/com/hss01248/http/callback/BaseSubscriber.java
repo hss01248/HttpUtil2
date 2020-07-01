@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
+import com.hss01248.http.R;
 import com.hss01248.http.Tool;
 import com.hss01248.http.config.LoadingDialogConfig;
 import com.hss01248.http.response.ErrorCallbackDispatcher;
@@ -132,73 +133,38 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
      */
     public abstract void onError(String msgCanShow);
 
-
-    /**
-     * dns解析异常,socket timout异常等等
-     */
-    public void onNoNetwork(Throwable e) {
-        onError("no network connection:" + e.getMessage());
+    public  void onError(String code,String msgCanShow){
+        onError(msgCanShow);
     }
 
-    public void onPoorNetwork(Throwable e) {
-        onError("network connection is poor");
+    public void onError(String code, String msgCanShow, String exceptionMsg, String responseBodyStr) {
+        onError(code,msgCanShow);
     }
-
-    /**
-     * 总时长超时了
-     */
-    public void onTimeout(Throwable e) {
-        onError("connect time out,please check your network:" + e.getMessage());
-    }
-
-
-    /**
-     * 401错误
-     */
-    public void onHttp401(String responseBodyStr) {
-        onError("unlogin");
-    }
-
-    /**
-     * 50x错误
-     */
-    public void onServerError(int code, String message, String responseBodyStr) {
-        onError("onServerError:code:" + code + " message:" + message);
-    }
-
-    public void onHttpError(int code, String message, String responseBodyStr) {
-        //onError("OtherHttpError:code-"+code+" message:"+message);
-        //HTTP 405 Method Not Allowed
-        if (code >= 500) {
-            onServerError(code, message, responseBodyStr);
-        } else if (code == 401) {
-            onHttp401(responseBodyStr);
-        } else {
-            onError("HttpError:code:" + code + "\nmessage:" + message + "\nresponseStr:" + responseBodyStr);
-        }
-    }
-
-
-    public void onJsonParseError(Throwable e) {
-        onError(e.getMessage());
-    }
-
-
-    public void onEmpty() {
-        onError("data is empty");
-    }
-
 
     public void onCodeError(int code, String msg, String dataStr, String codeStr,
                             String extra1, String extra2, String extra3,
                             ResponseBean responseBean, ConfigInfo info) {
-        onError(msg);
+        onError(code+"",msg,"",dataStr);
     }
 
 
-    public void onError(String code, String serverMsg, String exceptionMsg) {
-        onError(serverMsg);
+
+
+    /**
+     * 401错误
+     * 类型: 没有登录, 登录过期,被踢
+     */
+    public void onUnlogin(String responseBodyStr) {
+        onError(Tool.getString(R.string.http_unlogin));
     }
+
+
+    public void onEmpty() {
+        onError(Tool.getString(R.string.httputl_empty_error));
+    }
+
+
+
 
     /**
      * 取消的请求走空,不要再回调到onError
@@ -208,23 +174,6 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     }
 
     public void onCache(boolean hasCache){}
-
-
-    public void onClassCastException(Throwable e) {
-        onError(e.getMessage());
-    }
-
-    public void onSSLError(Throwable e) {
-        onError(e.getMessage());
-    }
-
-    public void onNullPointerException(Throwable e) {
-        onError(e.getMessage());
-    }
-
-    public void onUnknowError(Throwable e) {
-        onError(e.getMessage());
-    }
 
 
     /**

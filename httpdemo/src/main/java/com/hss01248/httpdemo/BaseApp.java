@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
@@ -52,7 +54,7 @@ public class BaseApp extends Application {
         MyLog.init(true, "httpdemo",3, new IJsonToStr() {
             @Override
             public String toStr(Object o) {
-                return MyJson.toJsonStr(o);
+                return new Gson().toJson(o);
             }
         });
         MyToast.init(this,true,false);
@@ -63,7 +65,7 @@ public class BaseApp extends Application {
         INetTool tool = new INetTool() {
             @Override
             public String toJsonStr(Object obj) {
-                return MyJson.toJsonStr(obj);
+                return new Gson().toJson(obj);
             }
 
             @Override
@@ -150,7 +152,7 @@ public class BaseApp extends Application {
                 .setDefaultLoadingDialog(new LoadingDialogConfig.ILoadingDialog() {
                     @Override
                     public Dialog buildLoadingDialog(Context context, String msg) {
-                        ProgressDialog dialog =  new ProgressDialog(context);
+                        ProgressDialog dialog =  new ProgressDialog(ActivityStackManager.getInstance().getTopActivity());
                         //dialog.setContentView(R.layout.toast_layout);
                         dialog.getWindow().setGravity(Gravity.CENTER);
                         dialog.setMessage(msg);

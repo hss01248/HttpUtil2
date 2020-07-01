@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.fernandocejas.frodo2'
 android {
 	compileSdkVersion 28
 
@@ -125,4 +125,3 @@ dependencies {
 	implementation("com.github.skyNet2017.frodo2:frodo2-api:0.9.2")
 }
 
-apply plugin: 'com.fernandocejas.frodo2'
