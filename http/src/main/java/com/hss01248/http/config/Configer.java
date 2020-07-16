@@ -2,6 +2,7 @@ package com.hss01248.http.config;
 
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
+import com.hss01248.http.SafetyUtil;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.callback.HttpEventListener;
 import com.hss01248.http.cookie.DiskCookieJar;
@@ -9,6 +10,7 @@ import com.hss01248.http.cookie.MemoryCookieJar;
 import com.hss01248.http.interceptors.NoCacheInterceptor;
 import com.hss01248.http.utils.SslUtil;
 
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.CacheControl;
@@ -33,6 +35,7 @@ public class Configer {
         builder.retryOnConnectionFailure(GlobalConfig.get().isRetryOnConnectionFailure());
         builder.readTimeout(GlobalConfig.get().getReadTimeout(),TimeUnit.MILLISECONDS);
         builder.writeTimeout(GlobalConfig.get().getWriteTimeout(),TimeUnit.MILLISECONDS);
+        SafetyUtil.setCertificatePinner(builder);
         //todo 拦截器的区分
 
         for(Interceptor interceptor : GlobalConfig.get().commonInterceptors){

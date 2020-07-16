@@ -25,8 +25,9 @@
             android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="post String"
-        android:id="@+id/post_string"/>
+        android:text="ssl pinner"
+        android:onClick="sslPinner"
+        />
 
     <Button
             android:textAllCaps="false"

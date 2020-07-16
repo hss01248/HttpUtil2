@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
+import com.hss01248.http.SafetyUtil;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.LoadingDialogConfig;
@@ -182,5 +183,8 @@ public class BaseApp extends Application {
                 .setRetryCount(0)
                 .setRetryOnConnectionFailure(false)
                 .addCommonHeader("clienttype","android");
+
+        SafetyUtil.addSSLPinner("*.zhihu.com","sha256/RUZBQThBMjU3RTk2MDhENDkwNThBQkU3NTI1NTA0RUIwNURFMUNFMjYyMjlGQTIwREU2Qjg4NDM0RTZERkZCNg==");
+        SafetyUtil.setSSLPinnerConfig("*.zhihu.com",true);
     }
 }

@@ -3,6 +3,7 @@ package com.hss01248.http.utils;
 import android.util.Log;
 
 import com.hss01248.http.HttpUtil;
+import com.hss01248.http.Tool;
 
 
 import java.io.File;
@@ -27,6 +28,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
+import okio.ByteString;
 
 /**
  * Created by Administrator on 2016/12/20 0020.
@@ -163,6 +165,11 @@ public class SslUtil {
 
             @Override
             public void checkServerTrusted(X509Certificate[] chain, String authType) {
+                for (int i = 0; i < chain.length; i++) {
+                    X509Certificate certificate = chain[i];
+                    Tool.logw(ByteString.of(certificate.getPublicKey().getEncoded()).sha256().hex().toString());
+                    //Tool.logJson(certificate);
+                }
             }
 
             @Override

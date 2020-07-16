@@ -3,6 +3,7 @@ package com.hss01248.httpdemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -43,8 +44,7 @@ public class WanandroidActivity extends AppCompatActivity {
 
     @BindView(R.id.get_string)
     Button getString;
-    @BindView(R.id.post_string)
-    Button postString;
+
     @BindView(R.id.get_json)
     Button getJson;
     @BindView(R.id.post_json)
@@ -159,9 +159,7 @@ public class WanandroidActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.post_string)
-    public void onPostStringClicked() {
-    }
+
 
     @OnClick(R.id.get_json)
     public void onGetJsonClicked() {
@@ -228,5 +226,20 @@ public class WanandroidActivity extends AppCompatActivity {
 
     @OnClick(R.id.unbind)
     public void onUnbindClicked() {
+    }
+
+    public void sslPinner(View view) {
+        HttpUtil.requestString("https://zhuanlan.zhihu.com/p/58308036")
+                .callback(new MyNetCallback<ResponseBean<String>>() {
+                    @Override
+                    public void onSuccess(ResponseBean<String> response) {
+
+                    }
+
+                    @Override
+                    public void onError(String msgCanShow) {
+
+                    }
+                });
     }
 }
