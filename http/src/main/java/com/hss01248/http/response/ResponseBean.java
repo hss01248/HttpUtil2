@@ -45,4 +45,24 @@ public class ResponseBean<T> {
     public transient Throwable errorInfo;
 
 
+    public static <T> ResponseBean<T> success(T data){
+        ResponseBean<T> bean = new ResponseBean<>();
+        bean.data = data;
+        bean.success = true;
+        return bean;
+    }
+
+    public static <T> ResponseBean<T> error(String code,String msg){
+        ResponseBean<T> bean = new ResponseBean<>();
+        bean.code = code;
+        bean.msg = msg;
+        return bean;
+    }
+    public static <T> ResponseBean<T> error(Throwable throwable){
+        ResponseBean<T> bean = new ResponseBean<>();
+        bean.errorInfo = throwable;
+        return bean;
+    }
+
+
 }

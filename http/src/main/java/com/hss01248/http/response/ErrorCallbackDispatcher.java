@@ -13,6 +13,7 @@ import com.hss01248.http.HttpUtil;
 import com.hss01248.http.R;
 import com.hss01248.http.Tool;
 import com.hss01248.http.callback.BaseSubscriber;
+import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.exceptions.DataCodeMsgCodeErrorException;
 import com.hss01248.http.exceptions.ExceptionWrapper;
@@ -38,7 +39,7 @@ public class ErrorCallbackDispatcher {
      * @param callback
      * @param e        rx框架接我们各处代码发出的异常
      */
-    public static void dispatchException(BaseSubscriber callback, Throwable e) {
+    public static void dispatchException(MyNetCallback callback, Throwable e) {
 
 
         ConfigInfo info = null;
@@ -111,7 +112,7 @@ public class ErrorCallbackDispatcher {
     }
 
 
-    private static void preParseCodeError(DataCodeMsgCodeErrorException e, BaseSubscriber callback) {
+    private static void preParseCodeError(DataCodeMsgCodeErrorException e, MyNetCallback callback) {
         ResponseBean bean = e.responseBean;
         ConfigInfo info = e.info;
         DataCodeMsgJsonConfig config = info.getDataCodeMsgJsonConfig();

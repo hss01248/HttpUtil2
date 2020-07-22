@@ -2,9 +2,11 @@ package com.hss01248.http;
 
 import android.util.Log;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 
+import com.hss01248.http.callback.BaseObserver;
 import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.callback.ProgressCallback;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
@@ -555,6 +557,10 @@ public class ConfigInfo<T> {
         this.callback = callback;
         this.progressCallback = callback;
         Runner.asCallback(this);
+    }
+
+    public void callbackByLiveData(LifecycleOwner lifecycleOwner,MyNetCallback<ResponseBean<T>> callback){
+        asLiveData().observe(lifecycleOwner,new BaseObserver<>(callback));
     }
 
     public LiveData<ResponseBean<T>> asLiveData() {

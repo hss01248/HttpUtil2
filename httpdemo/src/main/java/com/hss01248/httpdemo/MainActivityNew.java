@@ -31,6 +31,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.MyToast;
 
 public class MainActivityNew extends AppCompatActivity {
 
@@ -149,13 +150,25 @@ public class MainActivityNew extends AppCompatActivity {
                         .post()
                         .responseAsNormalJson()
                         .setTotalTimeOut(10)
-                        .asLiveData()
+                        .callbackByLiveData(this, new MyNetCallback<ResponseBean<List<PostCommonJsonBean>>>() {
+                            @Override
+                            public void onSuccess(ResponseBean<List<PostCommonJsonBean>> response) {
+                                MyLog.json(response);
+                            }
+
+                            @Override
+                            public void onError(String msgCanShow) {
+                                MyLog.w(msgCanShow);
+                                MyToast.error(msgCanShow);
+                            }
+                        });
+                        /*.asLiveData()
                         .observe(this, new Observer<ResponseBean<List<PostCommonJsonBean>>>() {
                             @Override
                             public void onChanged(ResponseBean<List<PostCommonJsonBean>> listResponseBean) {
                                 MyLog.json(listResponseBean);
                             }
-                        });
+                        });*/
                        /* .asObservable()
                         .subscribe(new BaseSubscriber<ResponseBean<List<PostCommonJsonBean>>>(true,null) {
                             @Override

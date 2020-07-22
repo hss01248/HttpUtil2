@@ -95,7 +95,7 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
             //UndeliverableException: The exception could not be delivered to the consumer
             // because it has already canceled/disposed the flow or the exception
         }catch (Throwable e){
-            ErrorCallbackDispatcher.dispatchException(this, e);
+            //ErrorCallbackDispatcher.dispatchException(this, e);
             //ErrorCallbackDispatcher.dispatchException(this, ExceptionWrapper.wrapperException());
         }
 
@@ -104,9 +104,9 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     @Override
     public final void onError(Throwable e) {
         Tool.logd("-->http is onError,cost time : " + (System.currentTimeMillis() - startTime) + " ms");
-        Tool.dismissLoadingDialog(dialogConfig, tagForCancel, this);
+        Tool.dismissLoadingDialog(dialogConfig, tagForCancel);
         try {
-            ErrorCallbackDispatcher.dispatchException(this, e);
+            //ErrorCallbackDispatcher.dispatchException(this, e);
         }catch (Throwable e2){
             e2.printStackTrace();
         }
@@ -115,7 +115,7 @@ public abstract class BaseSubscriber<T> extends DisposableObserver<T> implements
     @Override
     public void onComplete() {
         Tool.logd("-->http is onComplete,cost time : " + (System.currentTimeMillis() - startTime) + " ms");
-        Tool.dismissLoadingDialog(dialogConfig, tagForCancel, this);
+        Tool.dismissLoadingDialog(dialogConfig, tagForCancel);
     }
 
 

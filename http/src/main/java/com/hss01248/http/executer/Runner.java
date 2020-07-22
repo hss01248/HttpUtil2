@@ -12,6 +12,7 @@ import com.hss01248.http.StringParser;
 import com.hss01248.http.Tool;
 import com.hss01248.http.cache.CacheKeyHandler;
 import com.hss01248.http.cache.CacheMode;
+import com.hss01248.http.callback.BaseSubscriber2;
 import com.hss01248.http.config.ConfigChecker;
 import com.hss01248.http.config.LoadingDialogConfig;
 import com.hss01248.http.exceptions.ExceptionWrapper;
@@ -51,7 +52,7 @@ public class Runner {
         if (info.showLoading) {
             info.getCallback().dialogConfig = LoadingDialogConfig.newInstance();
         }
-        observable.subscribe(info.getCallback());
+        observable.subscribe(new BaseSubscriber2<>(info.getCallback()));
 
     }
 
@@ -79,16 +80,8 @@ public class Runner {
                         public ResponseBean<T> apply(ResponseBody responseBody) throws Exception {
                             return DownloadParser.receiveInputStream(info, responseBody);
                         }
-                    }).onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ResponseBean<T>>>() {
-                        @Override
-                        public ObservableSource<? extends ResponseBean<T>> apply(Throwable throwable) throws Exception {
-                            if (throwable instanceof ExceptionWrapper) {
-                                return Observable.error(throwable);
-                            } else {
-                                return Observable.error(new ExceptionWrapper(throwable, info, false));
-                            }
-                        }
-                    });//.compose(SchedulerProvider.getInstance().toUI())//todo 为何一定要有这个才不报错:networkonmainthread?compose才能转换整个的线程
+                    }).onErrorResumeNext(ExceptionWrapper.wrapperException(info, false));
+            //.compose(SchedulerProvider.getInstance().toUI())//todo 为何一定要有这个才不报错:networkonmainthread?compose才能转换整个的线程
                    /* .doOnNext(new Consumer<ResponseBean<T>>() {
                         @Override
                         public void accept(ResponseBean<T> tResponseBean) throws Exception {

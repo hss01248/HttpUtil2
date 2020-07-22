@@ -333,7 +333,7 @@ public class Tool {
         return true;
     }
 
-    public static <T> boolean dismissLoadingDialog(LoadingDialogConfig dialogConfig, Object tagForCancel, BaseSubscriber<T> subscriber) {
+    public static <T> boolean dismissLoadingDialog(LoadingDialogConfig dialogConfig, Object tagForCancel) {
         if(dialogConfig == null){
             return false;
         }

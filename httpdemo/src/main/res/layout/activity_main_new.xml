@@ -20,21 +20,21 @@
             android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="post String"
+        android:text="post String-同步请求"
         android:id="@+id/post_string"/>
 
     <Button
             android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="get json"
+        android:text="get json-网络错误ConnectException"
         android:id="@+id/get_json"/>
 
     <Button
             android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="post json"
+        android:text="post json-livedata"
         android:id="@+id/post_json"/>
 
     <Button
