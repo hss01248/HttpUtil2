@@ -104,8 +104,8 @@ public class Runner {
         if (info.isUploadBinary() || info.isUploadMultipart()) {
             Observable<ResponseBody> net = RetrofitHelper.getResponseObservable(info)
                     .subscribeOn(SchedulerProvider.getInstance().io());
-            return net.compose(ResponseTransformer2.handleResult(info))
-                    .timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
+            return net.timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
+                    .compose(ResponseTransformer2.handleResult(info))
                     .retry(info.getRetryCount());
         } else {
             return handleStringRequst(info);
@@ -121,8 +121,8 @@ public class Runner {
             if (!info.isSync()) {
                 observable = observable.subscribeOn(SchedulerProvider.getInstance().io());//修改上面的线程
             }
-            return observable.compose(ResponseTransformer2.handleResult(info))
-                    .timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
+            return observable.timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
+                    .compose(ResponseTransformer2.handleResult(info))
                     .retry(info.getRetryCount());
         }
 
@@ -197,9 +197,9 @@ public class Runner {
                         bean.url = info.getUrl();
                         return bean;
                     }
-                }).onErrorResumeNext(ExceptionWrapper.wrapperException(info, false));
-        return all.timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
-                .retry(info.getRetryCount());
+                }).timeout(info.getTotalTimeOut(), TimeUnit.MILLISECONDS)
+                .onErrorResumeNext(ExceptionWrapper.wrapperException(info, false));
+        return all.retry(info.getRetryCount());
     }
 
     /**
