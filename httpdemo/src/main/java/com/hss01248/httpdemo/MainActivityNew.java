@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.callback.BaseSubscriber;
@@ -29,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivityNew extends Activity {
+public class MainActivityNew extends AppCompatActivity {
 
 
     @BindView(R.id.get_string)
@@ -138,33 +141,6 @@ public class MainActivityNew extends Activity {
                 break;
             case R.id.post_json:
 
-               /* login("159893675769965","123456",new MyNetListener<UserInfo>() {
-                    @Override
-                    public void onSuccess(UserInfo response, String responseStr, boolean isFromCache) {
-                        MyLog.json(MyJson.toJsonStr(response));
-                        GlobalConfig.get().updateToken(response.sessionId);
-
-
-                        if(isFromCache){
-                            MyLog.e("---from cache-----listener: method:"+Thread.currentThread() .getStackTrace()[0].getMethodName());
-                        }else {
-                            MyLog.e("---from net  -----listener: method:"+Thread.currentThread() .getStackTrace()[0].getMethodName());
-                        }
-                    }
-                    @Override
-                    public void onError(String msgCanShow) {
-                        super.onError(msgCanShow);
-                        MyLog.e(msgCanShow);
-                        if(isResponseFromCache()){
-                            MyLog.e("---from cache-----listener: method:"+Thread.currentThread() .getStackTrace()[0].getMethodName());
-                        }else {
-                            MyLog.e("---from net  -----listener: method:"+Thread.currentThread() .getStackTrace()[0].getMethodName());
-                        }
-                    }
-                });*/
-
-
-
                 HttpUtil.requestAsJsonArray("article/getArticleCommentList/v1.json",PostCommonJsonBean.class)
                         .addParam("pageSize","30")
                         .addParam("articleId","1738")
@@ -172,7 +148,14 @@ public class MainActivityNew extends Activity {
                         .addParam("pageIndex","1")
                         .post()
                         .responseAsNormalJson()
-                        .asObservable()
+                        .asLiveData()
+                        .observe(this, new Observer<ResponseBean<List<PostCommonJsonBean>>>() {
+                            @Override
+                            public void onChanged(ResponseBean<List<PostCommonJsonBean>> listResponseBean) {
+                                MyLog.json(listResponseBean);
+                            }
+                        });
+                       /* .asObservable()
                         .subscribe(new BaseSubscriber<ResponseBean<List<PostCommonJsonBean>>>(true,null) {
                             @Override
                             public void onSuccess(ResponseBean<List<PostCommonJsonBean>> response) {
@@ -183,7 +166,7 @@ public class MainActivityNew extends Activity {
                             public void onError(String msgCanShow) {
                                 MyLog.e(msgCanShow);
                             }
-                        });
+                        });*/
 
                 break;
             case R.id.get_standard_json:

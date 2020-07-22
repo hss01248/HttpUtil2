@@ -34,10 +34,15 @@ public class ResponseBean<T> {
     public Map<String, String> headers;
 
     public transient T data;//解析得到的有效javabean
+    public boolean success;
+    public String code;
+    public String msg;
 
     //public Map<String,Object> bodyMap;//仅适用于data-code-msg
     public transient JSONObject json;//仅适用于data-code-msg
     public transient String dataStr;//仅适用于data-code-msg结构
+
+    public transient Throwable errorInfo;
 
 
 }

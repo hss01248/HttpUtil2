@@ -3,6 +3,8 @@ package com.hss01248.http;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import com.hss01248.beanvalidator.BeanValidator;
 import com.hss01248.friendlymsg.ExceptionFriendlyMsg;
 import com.hss01248.http.config.FileDownlodConfig;
@@ -98,6 +100,9 @@ public class HttpUtil {
     public static void cancelByTag(Object obj){
         Tool.cancelByTag(obj,null,true);
     }
+
+
+
 
 
 

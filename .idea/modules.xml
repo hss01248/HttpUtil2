@@ -2,19 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HttpUtil.iml" filepath="$PROJECT_DIR$/HttpUtil.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HttpUtil2.iml" filepath="$PROJECT_DIR$/.idea/modules/HttpUtil2.iml" group="HttpUtil2" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ebusticket/HttpUtil2-ebusticket.iml" filepath="$PROJECT_DIR$/.idea/modules/ebusticket/HttpUtil2-ebusticket.iml" group="HttpUtil2/ebusticket" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http/HttpUtil2-http.iml" filepath="$PROJECT_DIR$/.idea/modules/http/HttpUtil2-http.iml" group="HttpUtil2/http" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/httpdemo/HttpUtil2-httpdemo.iml" filepath="$PROJECT_DIR$/.idea/modules/httpdemo/HttpUtil2-httpdemo.iml" group="HttpUtil2/httpdemo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openuri/HttpUtil2-openuri.iml" filepath="$PROJECT_DIR$/.idea/modules/openuri/HttpUtil2-openuri.iml" group="HttpUtil2/openuri" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rxcache/HttpUtil2-rxcache.iml" filepath="$PROJECT_DIR$/.idea/modules/rxcache/HttpUtil2-rxcache.iml" group="HttpUtil2/rxcache" />
-      <module fileurl="file://$PROJECT_DIR$/ebusticket/ebusticket.iml" filepath="$PROJECT_DIR$/ebusticket/ebusticket.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/friendlymsg/friendlymsg.iml" filepath="$PROJECT_DIR$/.idea/modules/friendlymsg/friendlymsg.iml" group="HttpUtil2/friendlymsg" />
-      <module fileurl="file://$PROJECT_DIR$/http/http.iml" filepath="$PROJECT_DIR$/http/http.iml" />
-      <module fileurl="file://$PROJECT_DIR$/httpdemo/httpdemo.iml" filepath="$PROJECT_DIR$/httpdemo/httpdemo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/openuri/openuri.iml" filepath="$PROJECT_DIR$/openuri/openuri.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rxcache/rxcache.iml" filepath="$PROJECT_DIR$/rxcache/rxcache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HttpUtil2.iml" filepath="$PROJECT_DIR$/.idea/modules/HttpUtil2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ebusticket/HttpUtil2.ebusticket.iml" filepath="$PROJECT_DIR$/.idea/modules/ebusticket/HttpUtil2.ebusticket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/friendlymsg/HttpUtil2.friendlymsg.iml" filepath="$PROJECT_DIR$/.idea/modules/friendlymsg/HttpUtil2.friendlymsg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http/HttpUtil2.http.iml" filepath="$PROJECT_DIR$/.idea/modules/http/HttpUtil2.http.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/httpdemo/HttpUtil2.httpdemo.iml" filepath="$PROJECT_DIR$/.idea/modules/httpdemo/HttpUtil2.httpdemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openuri/HttpUtil2.openuri.iml" filepath="$PROJECT_DIR$/.idea/modules/openuri/HttpUtil2.openuri.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rxcache/HttpUtil2.rxcache.iml" filepath="$PROJECT_DIR$/.idea/modules/rxcache/HttpUtil2.rxcache.iml" />
     </modules>
   </component>
 </project>

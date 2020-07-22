@@ -2,6 +2,9 @@ package com.hss01248.http;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
+
 import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.callback.ProgressCallback;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
@@ -11,13 +14,22 @@ import com.hss01248.http.response.ResponseBean;
 import com.hss01248.http.utils.HttpHeaders;
 import com.hss01248.http.utils.HttpMethod;
 
+import org.reactivestreams.Publisher;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableTransformer;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 import okhttp3.Interceptor;
 
 /**
@@ -543,6 +555,23 @@ public class ConfigInfo<T> {
         this.callback = callback;
         this.progressCallback = callback;
         Runner.asCallback(this);
+    }
+
+    public LiveData<ResponseBean<T>> asLiveData() {
+        Observable<ResponseBean<T>> observable =  Runner.asObservable(this);
+        observable =  observable.onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ResponseBean<T>>>() {
+            @Override
+            public ObservableSource<? extends ResponseBean<T>> apply(@NonNull Throwable throwable) throws Exception {
+                ResponseBean<T> bean = new ResponseBean();
+                bean.errorInfo = throwable;
+                if(throwable != null){
+                    bean.code = throwable.getClass().getSimpleName();
+                    bean.msg = throwable.getMessage();
+                }
+                return Observable.just(bean);
+            }
+        }).observeOn(AndroidSchedulers.mainThread());
+         return   LiveDataReactiveStreams.fromPublisher(observable.toFlowable(BackpressureStrategy.LATEST));
     }
 
 
