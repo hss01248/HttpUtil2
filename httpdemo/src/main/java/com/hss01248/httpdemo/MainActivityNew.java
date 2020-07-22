@@ -148,6 +148,7 @@ public class MainActivityNew extends AppCompatActivity {
                         .addParam("pageIndex","1")
                         .post()
                         .responseAsNormalJson()
+                        .setTotalTimeOut(10)
                         .asLiveData()
                         .observe(this, new Observer<ResponseBean<List<PostCommonJsonBean>>>() {
                             @Override
