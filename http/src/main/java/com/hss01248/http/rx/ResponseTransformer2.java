@@ -43,34 +43,6 @@ public class ResponseTransformer2 {
 
 
     /**
-     * 非服务器产生的异常，比如本地无无网络请求，Json数据解析错误,HttpException,socket超时等等。
-     *
-     * 无法捕获rxjava内部产生的异常,比如设置的超时异常:
-     * ObservableTimeoutTimed$TimeoutObserver.onTimeout(ObservableTimeoutTimed.java:132)
-     *
-     * @param <T>
-     */
-    private static class ErrorResumeFunction<T> implements Function<Throwable, ObservableSource<? extends ResponseBody>> {
-
-        ConfigInfo<T> info;
-        boolean fromCache;
-
-        public ErrorResumeFunction(ConfigInfo<T> configInfo, boolean fromCache) {
-            this.info = configInfo;
-            this.fromCache = fromCache;
-        }
-
-        @Override
-        public ObservableSource<? extends ResponseBody> apply(Throwable throwable) throws Exception {
-            if (throwable instanceof ExceptionWrapper) {
-                return Observable.error(throwable);
-            } else {
-                return Observable.error(new ExceptionWrapper(throwable, info, fromCache));
-            }
-        }
-    }
-
-    /**
      * 服务其返回的数据解析
      * 正常服务器返回数据和服务器可能返回的exception
      *

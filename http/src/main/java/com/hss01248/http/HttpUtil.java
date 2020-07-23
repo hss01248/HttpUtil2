@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.akaita.java.rxjava2debug.RxJava2Debug;
 import com.hss01248.beanvalidator.BeanValidator;
 import com.hss01248.friendlymsg.ExceptionFriendlyMsg;
 import com.hss01248.http.config.FileDownlodConfig;
@@ -48,9 +49,7 @@ public class HttpUtil {
         BeanValidator.init(context0);
         NetStateChangeReceiver.registerReceiver(context0);
         ExceptionFriendlyMsg.init(context0,null);
-
-
-
+        RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.hss01248.http"});
         //初始化uploader
 
         // initDownloader(context0);

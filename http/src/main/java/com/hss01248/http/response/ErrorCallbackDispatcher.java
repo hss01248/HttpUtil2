@@ -4,6 +4,7 @@ package com.hss01248.http.response;
 
 import android.text.TextUtils;
 
+import com.akaita.java.rxjava2debug.RxJava2Debug;
 import com.hss01248.friendlymsg.ExceptionFriendlyMsg;
 
 import com.hss01248.friendlymsg.ReturnMsg;
@@ -49,7 +50,6 @@ public class ErrorCallbackDispatcher {
             info = wrapper.info;
             e = wrapper.getRealThrowable();
             isFromCache = wrapper.fromCache;
-            callback.info = info;
             callback.fromCache = isFromCache;
         }else {
             Tool.logw("e not instanceof ExceptionWrapper!!!!");
@@ -58,10 +58,8 @@ public class ErrorCallbackDispatcher {
         }
 
         if (GlobalConfig.get().isOpenLog()) {
-            e.printStackTrace();
+            RxJava2Debug.getEnhancedStackTrace(e).printStackTrace();
         }
-
-        callback.info = info;
         if(info != null){
            // Tool.logJson(info);
         }else {
@@ -143,10 +141,12 @@ public class ErrorCallbackDispatcher {
         }
 
 
-        String print = String.format("code:%d,codeStr:%s,msg:%s,data:%s,%s:%s,%s:%s,%s:%s",
-                code, codeStr, msg, bean.dataStr, config.getKey_extra1(), extra1,
-                config.getKey_extra2(), extra2, config.getKey_extra3(), extra3);
-        GlobalConfig.get().getTool().logd(print);
+        if(GlobalConfig.get().isOpenLog()){
+            String print = String.format("code:%d,codeStr:%s,msg:%s,data:%s,%s:%s,%s:%s,%s:%s",
+                    code, codeStr, msg, bean.dataStr, config.getKey_extra1(), extra1,
+                    config.getKey_extra2(), extra2, config.getKey_extra3(), extra3);
+            GlobalConfig.get().getTool().logd(print);
+        }
         callback.onCodeError(code, msg, bean.dataStr, codeStr, extra1, extra2, extra3, bean, info);
     }
 

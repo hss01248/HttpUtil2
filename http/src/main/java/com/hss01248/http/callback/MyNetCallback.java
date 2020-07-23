@@ -1,6 +1,8 @@
 package com.hss01248.http.callback;
 
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -29,13 +31,19 @@ public abstract class MyNetCallback<T>  implements ProgressCallback{
         this(false, null);
     }
 
+    public String getUrl(){
+        if(info != null){
+            return info.getUrl();
+        }
+        return "";
+    }
+
     /**
      * @param showLoadingDialog
      * @param tagForCancel      activity,或者某些特殊
      */
     public MyNetCallback(boolean showLoadingDialog, @Nullable Object tagForCancel) {
         this.tagForCancel = tagForCancel;
-        onStart();
         if (!showLoadingDialog) {
             return;
         }
@@ -48,11 +56,10 @@ public abstract class MyNetCallback<T>  implements ProgressCallback{
     public MyNetCallback(LoadingDialogConfig dialogConfig, @Nullable Object tagForCancel) {
         this.tagForCancel = tagForCancel;
         this.dialogConfig = dialogConfig;
-        onStart();
     }
 
 
-    protected void onStart() {
+     void onStart() {
         Tool.logd("-->http is onStart");
         startTime = System.currentTimeMillis();
         boolean hasShow =  Tool.showLoadingDialog(dialogConfig, tagForCancel, null);
@@ -63,41 +70,9 @@ public abstract class MyNetCallback<T>  implements ProgressCallback{
 
 
 
-    //原生的方法
-
-
-     void onNext(@NonNull T t) {
-        Tool.logd("-->http is onNext/onsuccess");
-        Tool.logObj(t);
-        try {
-            onComplete();
-            onSuccess(t);
-            //UndeliverableException: The exception could not be delivered to the consumer
-            // because it has already canceled/disposed the flow or the exception
-        }catch (Throwable e){
-            ErrorCallbackDispatcher.dispatchException(this, e);
-            //ErrorCallbackDispatcher.dispatchException(this, ExceptionWrapper.wrapperException());
-        }
-
+    protected void onResult(T t){
+        CallbackDispatcher.dispatch(this,t);
     }
-
-
-     void onError(Throwable e) {
-        Tool.logd("-->http is onError,cost time : " + (System.currentTimeMillis() - startTime) + " ms");
-        Tool.dismissLoadingDialog(dialogConfig, tagForCancel);
-        try {
-            ErrorCallbackDispatcher.dispatchException(this, e);
-        }catch (Throwable e2){
-            e2.printStackTrace();
-        }
-    }
-
-
-     void onComplete() {
-        Tool.logd("-->http is onComplete,cost time : " + (System.currentTimeMillis() - startTime) + " ms");
-        Tool.dismissLoadingDialog(dialogConfig, tagForCancel);
-    }
-
 
     /**
      * 真正类型是ResponseBean,内部已有各种数据封装,核心是ResponseBean.data
@@ -118,7 +93,12 @@ public abstract class MyNetCallback<T>  implements ProgressCallback{
     }
 
     public void onError(String code, String msgCanShow, String exceptionMsg, String responseBodyStr) {
-        String friendlyMsg = msgCanShow +"\n\n(" + code + "\n" + exceptionMsg+ ")";
+        String friendlyMsg = "";
+        if(TextUtils.isEmpty(exceptionMsg)){
+            friendlyMsg = msgCanShow +"\n\n(" + code + ")";
+        }else {
+            friendlyMsg = msgCanShow +"\n\n(" + code + "\n" + exceptionMsg+ ")";
+        }
         onError(code,friendlyMsg);
     }
 
@@ -152,6 +132,7 @@ public abstract class MyNetCallback<T>  implements ProgressCallback{
      */
     public void onCancel() {
         //onError("请求已取消");
+        Tool.logw("request canceled:");
     }
 
     public void onCache(boolean hasCache){}

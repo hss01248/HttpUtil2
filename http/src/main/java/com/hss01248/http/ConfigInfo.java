@@ -556,10 +556,12 @@ public class ConfigInfo<T> {
     public void callback(MyNetCallback<ResponseBean<T>> callback) {
         this.callback = callback;
         this.progressCallback = callback;
+        callback.info = this;
         Runner.asCallback(this);
     }
 
     public void callbackByLiveData(LifecycleOwner lifecycleOwner,MyNetCallback<ResponseBean<T>> callback){
+        callback.info = this;
         asLiveData().observe(lifecycleOwner,new BaseObserver<>(callback));
     }
 
@@ -570,6 +572,7 @@ public class ConfigInfo<T> {
             public ObservableSource<? extends ResponseBean<T>> apply(@NonNull Throwable throwable) throws Exception {
                 ResponseBean<T> bean = new ResponseBean();
                 bean.errorInfo = throwable;
+                bean.success = false;
                 if(throwable != null){
                     bean.code = throwable.getClass().getSimpleName();
                     bean.msg = throwable.getMessage();

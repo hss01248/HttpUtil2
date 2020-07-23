@@ -14,12 +14,18 @@ public  class BaseSubscriber2<T> extends DisposableObserver<T>  {
     protected MyNetCallback<T> callback;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        callback.onStart();
+    }
+
+    @Override
     public void onNext(@NonNull T t) {
         onResult(t);
     }
 
     protected void onResult(T t) {
-        CallbackDispatcher.dispatch(callback,t);
+        callback.onResult(t);
     }
 
     @Override

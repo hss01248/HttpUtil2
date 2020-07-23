@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import com.akaita.java.rxjava2debug.RxJava2Debug;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hss01248.http.GlobalConfig;
@@ -45,6 +46,7 @@ public class BaseApp extends Application {
             initTestTool();
             initHttp(this);
             ActivityStackManager.init(this);
+            RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.hss01248.http","com.hss01248.httpdemo"});
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

@@ -5,16 +5,30 @@
 
 # 特性
 
-* 支持callback,也支持返回Observable,无缝对接rxjava.
+* 支持callback,callback既可以基于rxjava,也可以基于livedata
+
+* 支持返回Observable,无缝对接rxjava,
+
+* 支持返回livedata
+
 * 6种缓存模式,一行代码完成配置
+
 * 3种cookie模式
+
 * 类data-msg-code的json模式不用定义BaseResult<T>,直接指定各key的字符串即可,自行解析
+
 * 链式调用
+
 * 各种错误类型拆分细致,丰富的回调分支.
+
 * 丰富的debug日志
+
 * 可配置chuck,stecho等抓包工具
+
 * 丰富的下载后处理配置
- 
+
+  
+
  # todo 
  * 同步返回javabean的方法
 
@@ -269,9 +283,40 @@ public class FileDownlodConfig {
 
  [MyNetCallback](https://github.com/hss01248/HttpUtil/blob/c2e03e41c884b50729c938230ee9d90fabeb9de9/http/src/main/java/com/hss01248/http/callback/MyNetCallback.java)
 
-[BaseSubscriber](https://github.com/hss01248/HttpUtil/blob/c2e03e41c884b50729c938230ee9d90fabeb9de9/http/src/main/java/com/hss01248/http/callback/BaseSubscriber.java)
-
 不用每次都蛋疼的if/else判断,需要什么处理,直接复写相关方法即可,与as结合后,敲两三个字母就开出一个分支.
+
+## 基于observable的回调:
+
+```java
+.callback(new MyNetCallback<ResponseBean<GetCommonJsonBean>>(true,null) {
+    @Override
+    public void onSuccess(ResponseBean<GetCommonJsonBean> response) {
+        MyLog.i("---from cache-----listener: method:"+response.isFromCache);
+    }
+
+    @Override
+    public void onError(String msgCanShow) {
+        MyLog.e(msgCanShow);
+    }
+});
+```
+
+## 结合livedata:
+
+```java
+.callbackByLiveData(this, new MyNetCallback<ResponseBean<List<PostCommonJsonBean>>>() {
+    @Override
+    public void onSuccess(ResponseBean<List<PostCommonJsonBean>> response) {
+        MyLog.json(response);
+    }
+
+    @Override
+    public void onError(String msgCanShow) {
+        MyLog.w(msgCanShow);
+        MyToast.error(msgCanShow);
+    }
+});
+```
 
 # 内部设计
 
@@ -281,15 +326,43 @@ public class FileDownlodConfig {
 
 两者均有日志打印,便于debug.
 
+# 与LiveData的结合:
+
+```java
+//configInfo提供的api:
+public void callbackByLiveData(LifecycleOwner lifecycleOwner,MyNetCallback<ResponseBean<T>> callback){
+    callback.info = this;
+    asLiveData().observe(lifecycleOwner,new BaseObserver<>(callback));
+}
+
+public LiveData<ResponseBean<T>> asLiveData() {
+    Observable<ResponseBean<T>> observable =  Runner.asObservable(this);
+    observable =  observable.onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ResponseBean<T>>>() {
+        @Override
+        public ObservableSource<? extends ResponseBean<T>> apply(@NonNull Throwable throwable) throws Exception {
+            ResponseBean<T> bean = new ResponseBean();
+            bean.errorInfo = throwable;
+            bean.success = false;
+            if(throwable != null){
+                bean.code = throwable.getClass().getSimpleName();
+                bean.msg = throwable.getMessage();
+            }
+            return Observable.just(bean);
+        }
+    }).observeOn(AndroidSchedulers.mainThread());
+     return   LiveDataReactiveStreams.fromPublisher(observable.toFlowable(BackpressureStrategy.LATEST));
+}
+```
+
 # loadingdialog:
 
 在构造回调时传入:
 
 ```
-BaseSubscriber(boolean showLoadingDialog,@Nullable Object tagForCancel)
+MyNetCallback(boolean showLoadingDialog,@Nullable Object tagForCancel)
 
 或者:
-BaseSubscriber(LoadingDialogConfig dialogConfig,@Nullable Object tagForCancel)
+MyNetCallback(LoadingDialogConfig dialogConfig,@Nullable Object tagForCancel)
 ```
 
 也可以全局配置loadingdialog的样式:
@@ -593,6 +666,10 @@ public static io.reactivex.Observable<ResponseBean<S3Info>> uploadImgs(String ty
 # 彩蛋
 
 不断更新的开发/调试工具包:[TestTools](https://github.com/hss01248/TestTools)
+
+# metrics
+
+![image-20200723145617123](https://cdn.jsdelivr.net/gh/hss01248/picbed@master/uPic/image-20200723145617123.png)
 
 # thanks
 

@@ -38,6 +38,7 @@ public class StringParser {
                 }
             }
             response.data = (T) str;
+            response.success = true;
             return response;
         }
 
@@ -80,11 +81,14 @@ public class StringParser {
             if (!info.isTreatEmptyDataAsSuccess()) {
                 throw new ResponseStrEmptyException(info, "content of data is empty");//在回调里当做onempty处理
             }
-            if (info.isResponseAsJsonArray()) {
+            /*if (info.isResponseAsJsonArray()) {
                 data = "[]";
             } else {
                 data = "{}";
-            }
+            }*/
+            response.data = null;
+            response.success = true;
+            return;
         }
 
            /*
@@ -112,6 +116,7 @@ public class StringParser {
         //GlobalConfig.get().getTool().logi("type of response.data:" + t2.getClass());
 
         response.data = (T) t2;
+        response.success = true;
     }
 
 

@@ -57,4 +57,6 @@ dependencies {
 	compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 	compile 'com.alibaba:fastjson:1.1.64.android'
 	//compile 'com.github.hss01248:Mylog:1.0.5'
+
+	implementation 'com.akaita.java:rxjava2-debug:1.4.0'
 }

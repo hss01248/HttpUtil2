@@ -34,7 +34,7 @@ public class ResponseBean<T> {
     public Map<String, String> headers;
 
     public transient T data;//解析得到的有效javabean
-    public boolean success;
+    public boolean success = false;
     public String code;
     public String msg;
 
@@ -56,11 +56,13 @@ public class ResponseBean<T> {
         ResponseBean<T> bean = new ResponseBean<>();
         bean.code = code;
         bean.msg = msg;
+        bean.success = false;
         return bean;
     }
     public static <T> ResponseBean<T> error(Throwable throwable){
         ResponseBean<T> bean = new ResponseBean<>();
         bean.errorInfo = throwable;
+        bean.success = false;
         return bean;
     }
 
