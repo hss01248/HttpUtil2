@@ -2,15 +2,14 @@ package com.hss01248.http.config;
 
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
-import com.hss01248.http.SafetyUtil;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.callback.HttpEventListener;
 import com.hss01248.http.cookie.DiskCookieJar;
 import com.hss01248.http.cookie.MemoryCookieJar;
+import com.hss01248.http.https.SafetyUtil;
 import com.hss01248.http.interceptors.NoCacheInterceptor;
-import com.hss01248.http.utils.SslUtil;
+import com.hss01248.http.https.SslUtil;
 
-import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.CacheControl;

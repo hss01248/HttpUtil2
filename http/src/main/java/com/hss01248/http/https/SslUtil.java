@@ -1,4 +1,4 @@
-package com.hss01248.http.utils;
+package com.hss01248.http.https;
 
 import android.util.Log;
 
@@ -67,7 +67,8 @@ public class SslUtil {
 
     public static void setHttps(OkHttpClient.Builder builder) {
         //if(certificateFiles!= null && certificateFiles.size()>0){
-        builder.sslSocketFactory(getSSLSocketFactory());
+        getSSLSocketFactory(builder);
+
         // }
     }
 
@@ -75,7 +76,7 @@ public class SslUtil {
     /**
      * @return
      */
-    private static SSLSocketFactory getSSLSocketFactory() {
+    private static SSLSocketFactory getSSLSocketFactory(OkHttpClient.Builder builder) {
 
         // List<String> certificateFiles = HttpsUtil.certificateFiles;
 
@@ -85,6 +86,7 @@ public class SslUtil {
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             keyStore.load(null, null);
 
+            ArrayList<InputStream> inputStreams = new ArrayList<>();
 
             if (certificateFiles != null && certificateFiles.size() > 0) {
                 for (String filePath : certificateFiles) {
@@ -93,29 +95,42 @@ public class SslUtil {
                         continue;
                     }
                     InputStream certificate = new FileInputStream(file);
-                    setCertificateEntry(keyStore, certificateFactory, certificate, file.getName());
+                    inputStreams.add(certificate);
                 }
 
             }
             if (certificateRaws != null && certificateRaws.size() > 0) {
                 for (Integer rawIds : certificateRaws) {
                     InputStream inputStream = HttpUtil.context.getResources().openRawResource(rawIds);
-                    setCertificateEntry(keyStore, certificateFactory, inputStream, rawIds + "");
+                    inputStreams.add(inputStream);
                 }
             }
 
             if (certificateAsserts != null && certificateAsserts.size() > 0) {
                 for (String fileName : certificateAsserts) {
                     InputStream inputStream = HttpUtil.context.getAssets().open(fileName);
-                    setCertificateEntry(keyStore, certificateFactory, inputStream, fileName);
+                    inputStreams.add(inputStream);
                 }
-
             }
 
             SSLContext sslContext = SSLContext.getInstance("TLS");
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(keyStore);
-            sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
+
+
+            InputStream[] streams = new InputStream[inputStreams.size()];
+            for (int i = 0; i < inputStreams.size(); i++) {
+                streams[i] = inputStreams.get(i);
+            }
+            if(inputStreams.isEmpty()){
+                streams = new InputStream[]{};
+            }
+            HttpsCertificateUtil.SSLParams sslParams = HttpsCertificateUtil.getSslSocketFactory(null, null,
+                    streams);//添加自签名证书
+            builder.sslSocketFactory(sslParams.mSSLSocketFactory, sslParams.mX509TrustManager);
+
+            //builder.sslSocketFactory()
+            //sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
             return sslContext.getSocketFactory();
         } catch (Exception e) {
             e.printStackTrace();

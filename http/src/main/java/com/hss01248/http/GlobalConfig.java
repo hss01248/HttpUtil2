@@ -12,7 +12,7 @@ import com.hss01248.http.interceptors.OkHttpExceptionInterceptor;
 import com.hss01248.http.interceptors.SameRequestInterceptor;
 import com.hss01248.http.response.DownloadParser;
 import com.hss01248.http.utils.HttpHeaders;
-import com.hss01248.http.utils.SslUtil;
+import com.hss01248.http.https.SslUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -12,14 +12,13 @@ import android.widget.TextView;
 
 import com.akaita.java.rxjava2debug.RxJava2Debug;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
-import com.hss01248.http.SafetyUtil;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.LoadingDialogConfig;
+import com.hss01248.http.https.SafetyUtil;
 import com.hss01248.testtool.TestTool;
 import com.orhanobut.logger.IJsonToStr;
 import com.orhanobut.logger.MyLog;
