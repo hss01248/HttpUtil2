@@ -1,4 +1,4 @@
-package com.hss01248.http;
+package com.hss01248.http.https;
 
 import android.content.Context;
 import android.net.Proxy;
