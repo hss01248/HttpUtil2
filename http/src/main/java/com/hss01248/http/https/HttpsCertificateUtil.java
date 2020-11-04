@@ -11,16 +11,18 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
+import javax.net.SocketFactory;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 public class HttpsCertificateUtil {
 
     public static class SSLParams {
-        public TLSSocketFactory mSSLSocketFactory;
+        public SSLSocketFactory mSSLSocketFactory;
         public X509TrustManager mX509TrustManager;
     }
 
@@ -37,7 +39,7 @@ public class HttpsCertificateUtil {
                 trustManager = new UnSafeTrustManager();
             }
             sslContext.init(keyManagers, new javax.net.ssl.TrustManager[]{trustManager}, null);
-            sslParams.mSSLSocketFactory = new TLSSocketFactory(sslContext);
+            sslParams.mSSLSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();//new TLSSocketFactory(sslContext);
             sslParams.mX509TrustManager = trustManager;
             return sslParams;
         } catch (NoSuchAlgorithmException e) {

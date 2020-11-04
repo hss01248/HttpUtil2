@@ -130,7 +130,7 @@ public class SslUtil {
             builder.sslSocketFactory(sslParams.mSSLSocketFactory, sslParams.mX509TrustManager);
 
             //builder.sslSocketFactory()
-            //sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
             return sslContext.getSocketFactory();
         } catch (Exception e) {
             e.printStackTrace();

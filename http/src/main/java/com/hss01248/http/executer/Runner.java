@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.fernandocejas.frodo2.annotation.RxLogObservable;
+
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.RetrofitHelper;

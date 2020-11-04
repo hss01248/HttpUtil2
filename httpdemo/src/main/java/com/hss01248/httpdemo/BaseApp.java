@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
+import com.hss01248.http.aop.IgnoreSslVerifyForAll;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.LoadingDialogConfig;
@@ -176,7 +177,7 @@ public class BaseApp extends Application {
                 .setCacheMode(CacheMode.NO_CACHE)
                 .setCookieMode(GlobalConfig.COOKIE_DISK)
                 .setDefaultUserAgent(System.getProperty("http.agent"))
-                .setIgnoreCertificateVerify(true)
+                .setIgnoreCertificateVerify(false)
                 //.setReadTimeout(15000)
                 .setConnectTimeout(10000)
                 //.setWriteTimeout(10000)
@@ -185,7 +186,9 @@ public class BaseApp extends Application {
                 .setRetryOnConnectionFailure(false)
                 .addCommonHeader("clienttype","android");
 
-        SafetyUtil.addSSLPinner("*.zhihu.com","sha256/RUZBQThBMjU3RTk2MDhENDkwNThBQkU3NTI1NTA0RUIwNURFMUNFMjYyMjlGQTIwREU2Qjg4NDM0RTZERkZCNg==");
-        SafetyUtil.setSSLPinnerConfig("*.zhihu.com",true);
+        IgnoreSslVerifyForAll.enable = true;
+
+        //SafetyUtil.addSSLPinner("*.zhihu.com","sha256/RUZBQThBMjU3RTk2MDhENDkwNThBQkU3NTI1NTA0RUIwNURFMUNFMjYyMjlGQTIwREU2Qjg4NDM0RTZERkZCNg==");
+        //SafetyUtil.setSSLPinnerConfig("*.zhihu.com",true);
     }
 }

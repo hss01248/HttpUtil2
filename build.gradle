@@ -13,7 +13,8 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath "com.android.tools.build:gradle:4.0.0"
+        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'
         classpath "com.github.skyNet2017.frodo2:frodo2-plugin:0.9.3"
         //classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         //classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'

@@ -1,2 +1,4 @@
+include ':logforaop'
+include ':httpaop'
 include ':friendlymsg'
-include ':http', ':httpdemo', ':openuri', ':rxcache', ':ebusticket'//, ':akuhttpdemo', ':akuhttp'
+include ':http', ':httpdemo', ':openuri', ':rxcache', ':ebusticket'

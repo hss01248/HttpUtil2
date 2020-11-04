@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.fernandocejas.frodo2'
+//apply plugin: 'com.fernandocejas.frodo2'
+apply from:'aspectjconfig.gradle'
 
 android {
 	compileSdkVersion 28
@@ -8,7 +9,7 @@ android {
 
 	defaultConfig {
 		applicationId "com.hss01248.httpdemo"
-		minSdkVersion 15
+		minSdkVersion 16
 		targetSdkVersion 28
 		versionCode 1
 		versionName "1.0"
@@ -48,6 +49,7 @@ dependencies {
 	annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 	//implementation "com.google.guava:guava:23.0-android"
     compile project(path: ':http')
+	implementation project(path: ':httpaop')
 	compile 'com.mylhyl:acp:1.0.0'
 	//compile 'com.alibaba:fastjson:1.1.64.android'
 	compile'com.github.hss01248.TestTools:testtool:1.0.4'/*){
@@ -60,3 +62,6 @@ dependencies {
 
 	implementation 'com.akaita.java:rxjava2-debug:1.4.0'
 }
+
+
+
