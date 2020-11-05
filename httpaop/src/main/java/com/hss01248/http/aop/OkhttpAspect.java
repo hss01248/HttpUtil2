@@ -33,8 +33,9 @@ public class OkhttpAspect {
     static {
         hooks = new ArrayList<>();
         hooks.add(new Tls2AdapterBelowAndroid5());
-        hooks.add(new IgnoreSslVerifyForAll());
+        //hooks.add(new IgnoreSslVerifyForAll());
         //hooks.add(new SSLPinerAspect());//与上面的ignore互斥
+        hooks.add(new HostNameAspect());
     }
 
     public static void addHook(OkhttpHook hook){

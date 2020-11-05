@@ -16,7 +16,7 @@ import java.util.Map;
 
 import okio.ByteString;
 
-@Aspect
+//@Aspect
 public class CertificateCheckAspect {
 
     public static Map<String,String> piners = new HashMap<>();//*.zhihu.com  ,   7f97cd62f0c950a16c3b9d54a302a4c8a025597657a5a18ae816a1e325fdce62
@@ -24,7 +24,7 @@ public class CertificateCheckAspect {
 
 
 
-    @Around("execution(void javax.net.ssl.X509TrustManager.checkServerTrusted(..))")
+    //@Around("execution(void javax.net.ssl.X509TrustManager.checkServerTrusted(..))")
     public Object weaveJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
        return LogMethodAspect.logAround(true, OkhttpAspect.TAG, false, joinPoint, new LogMethodAspect.IAround() {
             @Override

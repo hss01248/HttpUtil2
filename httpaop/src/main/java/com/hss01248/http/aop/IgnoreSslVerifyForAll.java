@@ -6,21 +6,25 @@ import android.util.Log;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
+import okio.ByteString;
 
 
 public class IgnoreSslVerifyForAll implements OkhttpAspect.OkhttpHook {
 
-    public static boolean enable = false;
+    public static boolean enable = true;
     @Override
     public void beforeBuild(OkHttpClient.Builder builder) {
         if(enable){
@@ -40,7 +44,7 @@ public class IgnoreSslVerifyForAll implements OkhttpAspect.OkhttpHook {
         X509TrustManager xtm = new X509TrustManager() {
             @Override
             public void checkClientTrusted(X509Certificate[] chain, String authType) {
-                Log.d(OkhttpAspect.TAG,"checkClientTrusted-证书校验开始,直接忽略校验:"+ Arrays.toString(chain));
+                Log.d(OkhttpAspect.TAG,"checkClientTrusted-证书校验开始,直接忽略校验:"+ chain);
             }
 
             @Override
@@ -50,7 +54,7 @@ public class IgnoreSslVerifyForAll implements OkhttpAspect.OkhttpHook {
                     //Tool.logw(ByteString.of(certificate.getPublicKey().getEncoded()).sha256().hex().toString());
                     //Tool.logJson(certificate);
                 }
-                Log.d(OkhttpAspect.TAG,"checkServerTrusted-证书校验开始,直接忽略校验:"+ Arrays.toString(chain));
+                Log.d(OkhttpAspect.TAG,"checkServerTrusted-证书校验开始,直接忽略校验:"+ chain);
             }
 
             @Override

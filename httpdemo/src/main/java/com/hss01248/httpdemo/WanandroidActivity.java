@@ -285,8 +285,8 @@ public class WanandroidActivity extends AppCompatActivity {
      * okhttp的CertificatePinner配置的证书锁定是certificate.getPublicKey-sha256->base64
      */
     public void sslPinner(View view) {
-        SSLPinerAspect.testSSlPin("*.zhihu.com","https://zhuanlan.zhihu.com/p/58308036");
-        /*HttpUtil.requestString("https://zhuanlan.zhihu.com/p/58308036")
+        //SSLPinerAspect.testSSlPin("*.zhihu.com","https://zhuanlan.zhihu.com/p/58308036");
+        HttpUtil.requestString("https://zhuanlan.zhihu.com/p/58308036")
                 .callback(new MyNetCallback<ResponseBean<String>>() {
                     @Override
                     public void onSuccess(ResponseBean<String> response) {
@@ -297,7 +297,7 @@ public class WanandroidActivity extends AppCompatActivity {
                     public void onError(String msgCanShow) {
 
                     }
-                });*/
+                });
 
 
         /*String hostname = "zhihu.com";
