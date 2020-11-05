@@ -7,6 +7,10 @@ import com.hss01248.http.aop.OkhttpAspect;
 import com.hss01248.http.aop.cerverify.IGetCerConfigRequest;
 
 import java.security.cert.Certificate;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -48,15 +52,32 @@ public class HostNameCerChecker implements HostnameVerifier {
             Certificate[] peerCertificates = session.getPeerCertificates();
             for (int i = 0; i < peerCertificates.length; i++) {
                 Certificate certificate = peerCertificates[i];
+                Log.i(OkhttpAspect.TAG, "certificate.getClass():" + certificate.getClass().getName());//com.android.org.conscrypt.OpenSSLX509Certificate
+                if(certificate instanceof X509Certificate){
+                    X509Certificate x509 = (X509Certificate) certificate;
+                    Log.i(OkhttpAspect.TAG, "x509.getSubjectDN():" + x509.getSubjectDN());
+                    Log.i(OkhttpAspect.TAG, "x509.getIssuerDN():" + x509.getIssuerDN());
+                    try {
+                        x509.checkValidity(new Date(System.currentTimeMillis()+24*60*60*1000));
+                        Log.i(OkhttpAspect.TAG, "x509.checkValidity: 有效期大于1天:" );
+                    }catch (CertificateExpiredException expiredException){
+                        Log.i(OkhttpAspect.TAG, "x509.checkValidity: 有效期不足一天" );
+                    }
+                }
+
+
+
                 Log.i(OkhttpAspect.TAG, "getPublicKey().getAlgorithm:" + certificate.getPublicKey().getAlgorithm());
                 Log.i(OkhttpAspect.TAG, "getPublicKey().getFormat:" + certificate.getPublicKey().getFormat());
 
-                Log.i(OkhttpAspect.TAG, "certificate.getPublicKey-sha256->toAsciiUppercase:" + ByteString.of(certificate.getPublicKey().getEncoded()).sha256().toAsciiUppercase());
                 Log.i(OkhttpAspect.TAG, "certificate.getPublicKey-sha256->hex:" + ByteString.of(certificate.getPublicKey().getEncoded()).sha256().hex());
                 Log.i(OkhttpAspect.TAG, "certificate.getPublicKey-sha256->base64:" + ByteString.of(certificate.getPublicKey().getEncoded()).sha256().base64());
                 Log.i(OkhttpAspect.TAG, "certificate-sha256->hex:" + ByteString.of(certificate.getEncoded()).sha256().hex());
                 //Log.i(OkhttpAspect.TAG, "sha256->utf-8:"+ByteString.of(certificate.getPublicKey().getEncoded()).sha256().utf8());
+
+
             }
+            Log.i(OkhttpAspect.TAG, Arrays.toString(peerCertificates));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

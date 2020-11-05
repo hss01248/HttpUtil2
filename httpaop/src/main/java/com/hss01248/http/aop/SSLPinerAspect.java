@@ -11,6 +11,7 @@ import org.aspectj.lang.annotation.Before;
 
 
 import java.security.cert.Certificate;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.CertificatePinner;
@@ -27,7 +28,7 @@ public class SSLPinerAspect implements OkhttpAspect.OkhttpHook {
         builder.certificatePinner(certificatePinner.build());
     }
 
-    //static final String client = "execution(void okhttp3.CertificatePinner.check(..))";
+    static final String client = "execution(void okhttp3.CertificatePinner.check(..))";
 
     //@Before(client)
     public void addLog(JoinPoint joinPoint) throws Throwable {
@@ -47,6 +48,7 @@ public class SSLPinerAspect implements OkhttpAspect.OkhttpHook {
                         Log.i(OkhttpAspect.TAG,"certificate-sha256->hex:"+ByteString.of(certificate.getEncoded()).sha256().hex());
                         //Log.i(OkhttpAspect.TAG, "sha256->utf-8:"+ByteString.of(certificate.getPublicKey().getEncoded()).sha256().utf8());
                     }
+                    Log.i(OkhttpAspect.TAG, Arrays.toString(peerCertificates.toArray()));
                 }catch (Throwable throwable){
                     throwable.printStackTrace();
                 }
