@@ -51,8 +51,8 @@ public class BaseApp extends Application {
             initHttp(this);
             ActivityStackManager.init(this);
             //RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.hss01248.http","com.hss01248.httpdemo"});
-
-            HostNameCerChecker.init(new IGetCerConfigRequest() {
+            HostNameCerChecker.enableLog = true;
+            HostNameCerChecker.init(this,new IGetCerConfigRequest() {
                 @Override
                 public Map<String, String> requestConfig() {
                     try {
@@ -62,6 +62,13 @@ public class BaseApp extends Application {
                     }
                     Map<String, String> map = new HashMap<>();
                     map.put("zhihu.com","efaa8a257e9608d49058abe7525504eb05de1ce26229fa20de6b88434e6dffb6");
+                    return map;
+                }
+
+                @Override
+                public Map<String, String> defaultConfig() {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("zhihu.com","efaa8a257e9608d49058abe7525504eb05de1ce26229fa20de6b88434e6dffb6-");
                     return map;
                 }
             });

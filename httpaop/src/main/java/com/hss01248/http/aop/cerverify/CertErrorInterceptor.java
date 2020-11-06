@@ -12,7 +12,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
-
+@Deprecated
 public class CertErrorInterceptor implements Interceptor {
    //static ReentrantLock lock = new ReentrantLock();
    static AtomicBoolean requested = new AtomicBoolean(false);
