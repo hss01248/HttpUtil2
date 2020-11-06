@@ -9,6 +9,6 @@ public class HostNameAspect implements OkhttpAspect.OkhttpHook {
     @Override
     public void beforeBuild(OkHttpClient.Builder builder) {
         builder.hostnameVerifier(new HostNameCerChecker());
-        builder.addInterceptor(new CertErrorInterceptor());
+        //builder.addInterceptor(new CertErrorInterceptor());
     }
 }

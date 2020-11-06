@@ -16,6 +16,8 @@ import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
 import com.hss01248.http.aop.IgnoreSslVerifyForAll;
+import com.hss01248.http.aop.cerverify.HostNameCerChecker;
+import com.hss01248.http.aop.cerverify.IGetCerConfigRequest;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.LoadingDialogConfig;
@@ -26,7 +28,9 @@ import com.orhanobut.logger.MyLog;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.MyToast;
 import okhttp3.OkHttpClient;
@@ -46,7 +50,23 @@ public class BaseApp extends Application {
             initTestTool();
             initHttp(this);
             ActivityStackManager.init(this);
-            RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.hss01248.http","com.hss01248.httpdemo"});
+            //RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.hss01248.http","com.hss01248.httpdemo"});
+
+            HostNameCerChecker.init(new IGetCerConfigRequest() {
+                @Override
+                public Map<String, String> requestConfig() {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Map<String, String> map = new HashMap<>();
+                    map.put("zhihu.com","efaa8a257e9608d49058abe7525504eb05de1ce26229fa20de6b88434e6dffb6");
+                    return map;
+                }
+            });
+
+
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

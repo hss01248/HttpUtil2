@@ -286,18 +286,22 @@ public class WanandroidActivity extends AppCompatActivity {
      */
     public void sslPinner(View view) {
         //SSLPinerAspect.testSSlPin("*.zhihu.com","https://zhuanlan.zhihu.com/p/58308036");
-        HttpUtil.requestString("https://zhuanlan.zhihu.com/p/58308036")
-                .callback(new MyNetCallback<ResponseBean<String>>() {
-                    @Override
-                    public void onSuccess(ResponseBean<String> response) {
 
-                    }
+        for (int i = 0; i < 3; i++) {
+            HttpUtil.requestString("https://zhuanlan.zhihu.com/p/58308036")
+                    .callback(new MyNetCallback<ResponseBean<String>>() {
+                        @Override
+                        public void onSuccess(ResponseBean<String> response) {
 
-                    @Override
-                    public void onError(String msgCanShow) {
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onError(String msgCanShow) {
+
+                        }
+                    });
+        }
+
 
 
         /*String hostname = "zhihu.com";
