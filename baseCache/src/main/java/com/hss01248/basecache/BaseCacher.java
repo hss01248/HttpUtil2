@@ -24,6 +24,12 @@ public abstract class BaseCacher<T> {
 
     }
 
+    protected BaseCacher(){
+
+    }
+
+
+
     /**
      * 进入app时调用
      */

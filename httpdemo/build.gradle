@@ -50,6 +50,7 @@ dependencies {
 	//implementation "com.google.guava:guava:23.0-android"
     compile project(path: ':http')
 	implementation project(path: ':httpaop')
+	implementation project(path: ':baseCache')
 	compile 'com.mylhyl:acp:1.0.0'
 	//compile 'com.alibaba:fastjson:1.1.64.android'
 	compile'com.github.hss01248.TestTools:testtool:1.0.4'/*){

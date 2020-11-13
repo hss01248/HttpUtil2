@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.akaita.java.rxjava2debug.RxJava2Debug;
 import com.google.gson.Gson;
+import com.hss01248.basecache.BaseCacher;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
@@ -47,9 +48,12 @@ public class BaseApp extends Application {
 
 
         try {
+            BaseCacher.init(this);
+
             initTestTool();
             initHttp(this);
             ActivityStackManager.init(this);
+            TestCache.getInstance().prefetch();
             //RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.hss01248.http","com.hss01248.httpdemo"});
             HostNameCerChecker.enableLog = true;
             HostNameCerChecker.init(this,new IGetCerConfigRequest() {
