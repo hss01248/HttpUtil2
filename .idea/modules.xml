@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/HttpUtil2.iml" filepath="$PROJECT_DIR$/.idea/modules/HttpUtil2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/baseCache/HttpUtil2.baseCache.iml" filepath="$PROJECT_DIR$/.idea/modules/baseCache/HttpUtil2.baseCache.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ebusticket/HttpUtil2.ebusticket.iml" filepath="$PROJECT_DIR$/.idea/modules/ebusticket/HttpUtil2.ebusticket.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/friendlymsg/HttpUtil2.friendlymsg.iml" filepath="$PROJECT_DIR$/.idea/modules/friendlymsg/HttpUtil2.friendlymsg.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http/HttpUtil2.http.iml" filepath="$PROJECT_DIR$/.idea/modules/http/HttpUtil2.http.iml" />

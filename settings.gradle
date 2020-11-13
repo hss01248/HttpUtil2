@@ -1,3 +1,4 @@
+include ':baseCache'
 include ':logforaop'
 include ':httpaop'
 include ':friendlymsg'
