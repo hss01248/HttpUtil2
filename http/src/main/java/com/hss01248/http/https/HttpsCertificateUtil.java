@@ -26,12 +26,26 @@ public class HttpsCertificateUtil {
         public X509TrustManager mX509TrustManager;
     }
 
+    /**
+     * https://www.jianshu.com/p/54afe380b83b
+     * https://www.jianshu.com/p/2c9820bed794
+     * @param bksFile
+     * @param password
+     * @param certificates
+     * @return
+     */
     public static SSLParams getSslSocketFactory(InputStream bksFile, String password, InputStream[] certificates) {
         SSLParams sslParams = new SSLParams();
         try {
+            //如果是双向通信，还需要一个 KeyManager
+            //KeyManager 负责提供证书和私钥，证书发给对方peer
+            //双向https认证 需要服务端向客户端发送一个 Certificate Request,客户端才发送客户端证书  即服务端开启sslContext.createSSLEngine().setNeedClientAuth(true)
             KeyManager[] keyManagers = prepareKeyManager(bksFile, password);
+            //TrustManager 负责验证peer 发来的证书
             javax.net.ssl.TrustManager[] trustManagers = prepareTrustManager(certificates);
             SSLContext sslContext = SSLContext.getInstance("TLS");
+
+
             X509TrustManager trustManager;
             if (trustManagers != null) {
                 trustManager = new TrustManager(chooseTrustManager(trustManagers));
