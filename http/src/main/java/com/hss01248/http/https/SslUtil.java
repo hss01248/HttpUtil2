@@ -17,6 +17,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
@@ -27,6 +28,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okio.ByteString;
 
@@ -217,6 +219,7 @@ public class SslUtil {
 
         httpBuilder.sslSocketFactory(new TLSCompactSocketFactory(sslContext))
                 //sslContext.getSocketFactory()
+                //.connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS))
                 .hostnameVerifier(DO_NOT_VERIFY);
     }
 
