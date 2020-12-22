@@ -39,7 +39,8 @@ public class HttpsCertificateUtil {
                 trustManager = new UnSafeTrustManager();
             }
             sslContext.init(keyManagers, new javax.net.ssl.TrustManager[]{trustManager}, null);
-            sslParams.mSSLSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();//new TLSSocketFactory(sslContext);
+            sslParams.mSSLSocketFactory = new TLSCompactSocketFactory(sslContext);
+            //打开tls1.1,1.2 (SSLSocketFactory) SSLSocketFactory.getDefault();
             sslParams.mX509TrustManager = trustManager;
             return sslParams;
         } catch (NoSuchAlgorithmException e) {

@@ -209,13 +209,14 @@ public class SslUtil {
 
 
         HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-            //@Override
+            @Override
             public boolean verify(String hostname, SSLSession session) {
                 return true;
             }
         };
 
-        httpBuilder.sslSocketFactory(sslContext.getSocketFactory())
+        httpBuilder.sslSocketFactory(new TLSCompactSocketFactory(sslContext))
+                //sslContext.getSocketFactory()
                 .hostnameVerifier(DO_NOT_VERIFY);
     }
 

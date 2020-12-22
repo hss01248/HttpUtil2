@@ -671,6 +671,47 @@ public static io.reactivex.Observable<ResponseBean<S3Info>> uploadImgs(String ty
 
 ![image-20200723145617123](https://cdn.jsdelivr.net/gh/hss01248/picbed@master/uPic/image-20200723145617123.png)
 
+
+
+# https的相关兼容配置
+
+## Android7.0以上抓包
+
+```xml
+<application
+		android:networkSecurityConfig="@xml/network_security_config_httputil">
+```
+
+## Android5以下访问不支持TLS1.0的服务端时握手失败
+
+使用TLSCompactSocketFactory来作为SSLFactory构建SSLContext.
+
+框架内已实现.
+
+# 请求体的gzip压缩
+
+非http协议,需要和后端一同实现. 对文本内容可压缩50%-80%不等.
+
+### 客户端:
+
+增加GzipRequestInterceptor,
+
+且指定哪些请求使用gzip压缩请求体(白名单):
+
+```
+builder.addInterceptor(new GzipRequestInterceptor());(默认未添加,需手动添加)
+
+GzipRequestInterceptor.useGzip(path)
+```
+
+### 后台
+
+spring boot:  增加filter,对content-encoding=gzip的进行解压缩
+
+可参考:https://blog.csdn.net/ifwinds/article/details/97243892
+
+
+
 # thanks
 
 [Rxcache](https://github.com/z-chu/RxCache)

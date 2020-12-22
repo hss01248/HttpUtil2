@@ -17,14 +17,14 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * 开启TLSv1.1,TLSv1.2
+ * 5.0以下开启TLSv1.1,TLSv1.2
  * https://developer.android.com/reference/javax/net/ssl/SSLSocket
  *
  * @author daixiaogang
  * @version 1.0
  * @since 2019-06-12
  */
-public class TLSSocketFactory extends SSLSocketFactory {
+public class TLSCompactSocketFactory extends SSLSocketFactory {
 
     private SSLSocketFactory delegate;
 
@@ -40,11 +40,11 @@ public class TLSSocketFactory extends SSLSocketFactory {
         }
     }
 
-    public TLSSocketFactory() {
+    public TLSCompactSocketFactory() {
         delegate = getDefaultSslContext().getSocketFactory();
     }
 
-    public TLSSocketFactory(SSLContext sslContext) {
+    public TLSCompactSocketFactory(SSLContext sslContext) {
         if (sslContext == null) {
             sslContext = getDefaultSslContext();
         }
