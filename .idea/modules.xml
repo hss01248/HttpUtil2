@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/logforaop/HttpUtil2.logforaop.iml" filepath="$PROJECT_DIR$/.idea/modules/logforaop/HttpUtil2.logforaop.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/openuri/HttpUtil2.openuri.iml" filepath="$PROJECT_DIR$/.idea/modules/openuri/HttpUtil2.openuri.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rxcache/HttpUtil2.rxcache.iml" filepath="$PROJECT_DIR$/.idea/modules/rxcache/HttpUtil2.rxcache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ssldemo/HttpUtil2.ssldemo.iml" filepath="$PROJECT_DIR$/.idea/modules/ssldemo/HttpUtil2.ssldemo.iml" />
     </modules>
   </component>
 </project>

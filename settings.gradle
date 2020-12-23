@@ -1,3 +1,4 @@
+include ':ssldemo'
 include ':baseCache'
 include ':logforaop'
 include ':httpaop'
