@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import android.util.Log;
 
+import com.hss01248.logforaop.LogProxy;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -356,7 +358,7 @@ public class ActivityStackManager {
     }
 
     public static void init(Application application){
-        application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        application.registerActivityLifecycleCallbacks(LogProxy.getProxy(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 ActivityStackManager.getInstance().addActivity(activity);
@@ -391,6 +393,6 @@ public class ActivityStackManager {
             public void onActivityDestroyed(Activity activity) {
                 ActivityStackManager.getInstance().removeActivity(activity);
             }
-        });
+        }));
     }
 }
