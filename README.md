@@ -663,30 +663,11 @@ public static io.reactivex.Observable<ResponseBean<S3Info>> uploadImgs(String ty
     }
 ```
 
-# 彩蛋
-
-不断更新的开发/调试工具包:[TestTools](https://github.com/hss01248/TestTools)
-
-# metrics
-
-![image-20200723145617123](https://cdn.jsdelivr.net/gh/hss01248/picbed@master/uPic/image-20200723145617123.png)
 
 
 
-# https的相关兼容配置
 
-## Android7.0以上抓包
 
-```xml
-<application
-		android:networkSecurityConfig="@xml/network_security_config_httputil">
-```
-
-## Android5以下访问不支持TLS1.0的服务端时握手失败
-
-使用TLSCompactSocketFactory来作为SSLFactory构建SSLContext.
-
-框架内已实现.
 
 # 请求体的gzip压缩
 
@@ -711,6 +692,55 @@ spring boot:  增加filter,对content-encoding=gzip的进行解压缩
 可参考:https://blog.csdn.net/ifwinds/article/details/97243892
 
 
+
+# https相关处理
+
+* Android5以下开启tls1.0,1.1
+* Android7以上开启debugable=true时可抓包功能. 以及忽略证书开关
+* 证书锁定/公钥锁定的实现
+
+参考 [Https和安全](https://github.com/hss01248/notebook2/blob/master/%E5%9F%BA%E7%A1%80/Https%E5%92%8C%E5%AE%89%E5%85%A8.md)
+
+## Android7.0以上抓包
+
+```xml
+<application
+		android:networkSecurityConfig="@xml/network_security_config_httputil">
+```
+
+## Android5以下访问不支持TLS1.0的服务端时握手失败
+
+使用TLSCompactSocketFactory来作为SSLFactory构建SSLContext.
+
+可使用github网页进行测试
+
+框架内已实现.
+
+
+
+# 防止重复请求
+
+
+
+
+
+# 抓包,日志和监测体系
+
+
+
+# metrics
+
+![image-20200723145617123](https://cdn.jsdelivr.net/gh/hss01248/picbed@master/uPic/image-20200723145617123.png)
+
+
+
+
+
+
+
+# 彩蛋
+
+不断更新的开发/调试工具包:[TestTools](https://github.com/hss01248/TestTools)
 
 # thanks
 
