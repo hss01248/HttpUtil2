@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 
+import com.google.gson.Gson;
 import com.hss01248.http.callback.BaseObserver;
 import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.callback.ProgressCallback;
@@ -18,11 +19,15 @@ import com.hss01248.http.utils.HttpMethod;
 
 import org.reactivestreams.Publisher;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.xml.transform.sax.TemplatesHandler;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -812,46 +817,27 @@ public class ConfigInfo<T> {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ConfigInfo{");
-        sb.append("appendCommonHeaders:").append(appendCommonHeaders);
-        sb.append(",\n appendCommonParams:").append(appendCommonParams);
-        sb.append(",\n cacheMode:").append(cacheMode);
-        sb.append(",\n callback:").append(callback);
-        sb.append(",\n clazz:").append(clazz);
-        sb.append(",\n connectTimeout:").append(connectTimeout);
-        sb.append(",\n cookieMode:").append(cookieMode);
-        sb.append(",\n dataCodeMsgJsonConfig:").append(dataCodeMsgJsonConfig);
-        sb.append(",\n download:").append(download);
-        sb.append(",\n downlodConfig:").append(downlodConfig);
-        sb.append(",\n extraFromOut:").append(extraFromOut);
-        sb.append(",\n files:").append(files);
-        sb.append(",\n files2:").append(files2);
-        sb.append(",\n headers:").append(headers);
-        sb.append(",\n ignoreCer:").append(ignoreCer);
-        sb.append(",\n interceptors:").append(interceptors);
-        sb.append(",\n method:").append(method);
-        sb.append(",\n paramKeysSetNotForCacheKey:").append(paramKeysSetNotForCacheKey);
-        sb.append(",\n params:").append(params);
-        sb.append(",\n paramsAsJson:").append(paramsAsJson);
-        sb.append(",\n paramsStr:'").append(paramsStr).append('\'');
-        sb.append(",\n progressCallback:").append(progressCallback);
-        sb.append(",\n responseAsDataCodeMsgInJson:").append(responseAsDataCodeMsgInJson);
-        sb.append(",\n responseAsDownload:").append(responseAsDownload);
-        sb.append(",\n responseAsJsonArray:").append(responseAsJsonArray);
-        sb.append(",\n responseAsNormalJson:").append(responseAsNormalJson);
-        sb.append(",\n responseAsString:").append(responseAsString);
-        sb.append(",\n responseBodyStr:'").append(responseBodyStr).append('\'');
-        sb.append(",\n retryCount:").append(retryCount);
-        sb.append(",\n retryOnConnectionFailure:").append(retryOnConnectionFailure);
-        sb.append(",\n showLoading:").append(showLoading);
-        sb.append(",\n sync:").append(sync);
-        sb.append(",\n tagForCancle:").append(tagForCancle);
-        sb.append(",\n totalTimeOut:").append(totalTimeOut);
-        sb.append(",\n treatEmptyDataAsSuccess:").append(treatEmptyDataAsSuccess);
-        sb.append(",\n uploadBinary:").append(uploadBinary);
-        sb.append(",\n uploadMultipart:").append(uploadMultipart);
-        sb.append(",\n url:'").append(url).append('\'');
-        sb.append('}');
+       Field[] fields =  ConfigInfo.class.getDeclaredFields();
+        StringBuilder sb = new StringBuilder("ConfigInfo@")
+                .append(hashCode())
+                .append("\n");
+        try {
+            for (int i = 0; i < fields.length; i++) {
+                if(!Modifier.isStatic(fields[i].getModifiers())){
+                    Field field = fields[i];
+                    field.setAccessible(true);
+                    Object val =  field.get(this);
+                    if(val != null){
+                        sb.append(field.getName())
+                                .append(": ")
+                                .append(val)
+                                .append("\n");
+                    }
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         return sb.toString();
     }
 }

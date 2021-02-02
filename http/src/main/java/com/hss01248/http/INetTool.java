@@ -2,10 +2,17 @@ package com.hss01248.http;
 
 import android.app.Activity;
 import android.app.Application;
+import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by huangshuisheng on 2017/12/25.
@@ -13,37 +20,71 @@ import okhttp3.OkHttpClient;
 
 public interface INetTool {
 
-     String toJsonStr(Object obj);
+    default String toJsonStr(Object obj){
+      return   Tool.getGson().toJson(obj);
+    }
 
-     <T> T parseObject(String str, Class<T> clazz);
+   default   <T> T parseObject(String str, Class<T> clazz){
+       return Tool.getGson().fromJson(str,clazz);
+   }
 
    /* public static <T> T parse(String str, Class<T> clazz) {
         // return new Gson().fromJson(str,clazz);
         return JSON.parseObject(str, clazz);
     }*/
 
-     <E> List<E> parseArray(String str, Class<E> clazz);
+    default  <E> List<E> parseArray(String str, Class<E> clazz){
+        return Tool.getGson().fromJson(str,new TypeToken<ArrayList<E>>(){}.getType());
+     }
 
 
-     void logi(String str);
+    default void logi(String str){
+        if(GlobalConfig.get().isDebug()){
+            Log.i("httputil",str);
+        }
+    }
 
-    void logd(String str);
+  default   void logd(String str){
+      if(GlobalConfig.get().isDebug()){
+          Log.d("httputil",str);
+      }
+  }
 
-    void logw(String str);
+   default void logw(String str){
+       if(GlobalConfig.get().isDebug()){
+           Log.w("httputil",str);
+       }
+   }
 
-    void logdJson(String json);
+   default void logdJson(String json){
+       if(GlobalConfig.get().isDebug()){
+           Log.d("httputil",json);
+       }
+   }
 
-    void initialStetho(Application application);
+   default void initialStetho(Application application){}
 
-    void addChuckInterceptor(OkHttpClient.Builder builder);
+  default   void addChuckInterceptor(OkHttpClient.Builder builder){}
 
-    void addStethoInterceptor(OkHttpClient.Builder builder);
+   default void addStethoInterceptor(OkHttpClient.Builder builder){}
 
-    void addHttpLogInterceptor(OkHttpClient.Builder builder);
+   default void addHttpLogInterceptor(OkHttpClient.Builder builder){
+       if(GlobalConfig.get().isDebug()){
+           builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+       }
+   }
 
-    Activity getTopActivity();
+   default Activity getTopActivity(){
+        return HActivityCallback.getTop();
+   }
 
-    void logObj(Object t);
+   default void logObj(Object t){
+       if(GlobalConfig.get().isDebug()){
+           Log.d("httputil",new GsonBuilder().setPrettyPrinting().serializeNulls().create().toJson(t));
+       }
+   }
 
-    void reportError(String code,String msg,String url);
+   default void reportError(String code,String msg,String url){
+       logw( code+" ,"+msg+" , "+url );
+   }
 }

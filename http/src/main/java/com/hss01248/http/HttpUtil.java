@@ -27,6 +27,7 @@ public class HttpUtil {
 
 
     public static Context context;
+    static HActivityCallback callback;
 
     public static RxCache getRxCache() {
         if(rxCache == null){
@@ -46,8 +47,16 @@ public class HttpUtil {
     public static GlobalConfig init(Application context0, boolean openlog, String baseUrl, INetTool tool) {
         context = context0;
         LogUtils.DEBUG = openlog;
+        if(callback != null){
+            context0.unregisterActivityLifecycleCallbacks(callback);
+        }else {
+            NetStateChangeReceiver.registerReceiver(context0);
+        }
+        callback = new HActivityCallback();
+        context0.registerActivityLifecycleCallbacks(callback);
+
         BeanValidator.init(context0);
-        NetStateChangeReceiver.registerReceiver(context0);
+
         ExceptionFriendlyMsg.init(context0,null);
         RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.hss01248.http"});
         //初始化uploader

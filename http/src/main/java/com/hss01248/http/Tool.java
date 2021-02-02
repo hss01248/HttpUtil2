@@ -12,8 +12,11 @@ import android.os.Handler;
 import android.os.Looper;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hss01248.http.callback.BaseSubscriber;
 import com.hss01248.http.config.LoadingDialogConfig;
 
@@ -373,5 +376,13 @@ public class Tool {
             }
         }
         return false;
+    }
+
+   static Gson gson;
+    public static Gson getGson() {
+        if(gson == null){
+            gson = new GsonBuilder().serializeNulls().create();
+        }
+        return gson;
     }
 }
