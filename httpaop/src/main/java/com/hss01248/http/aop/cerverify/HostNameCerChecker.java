@@ -189,13 +189,13 @@ public class HostNameCerChecker implements HostnameVerifier {
 
     void w(String tag, String msg) {
         if (enableLog) {
-            w(tag, msg);
+            Log.w(tag, msg);
         }
     }
 
     void i(String tag, String msg) {
         if (enableLog) {
-            i(tag, msg);
+            Log.i(tag, msg);
         }
     }
 
