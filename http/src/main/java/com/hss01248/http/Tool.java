@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -35,6 +38,31 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class Tool {
+
+
+     static String userAgent = "";
+
+    public static String getDefalutUserAgent() {
+        if (TextUtils.isEmpty(userAgent)) {
+            userAgent = System.getProperty("http.agent");
+            //系统默认: Dalvik/2.1.0 (Linux; U; Android 10; SM-A505F Build/QP1A.190711.020)
+            //需要加上app版本号以方便问题定位:  htpdemo-4.2.1-common/1140
+            try {
+                PackageManager pm = HttpUtil.context.getPackageManager();
+                PackageInfo info = pm.getPackageInfo(HttpUtil.context.getPackageName(), 0);
+
+                //pi.applicationInfo.loadLabel(pm).toString()
+                userAgent = userAgent+" "+ info.applicationInfo.loadLabel(pm).toString()+"-"+info.versionName
+                        +"/"+info.versionCode ;
+                //是否加上deviceId?
+            }catch (Throwable throwable){
+                throwable.printStackTrace();
+            }
+        }
+        return userAgent;
+    }
+
+
 
     public static Handler getMainHandler() {
         if (mainHandler == null) {

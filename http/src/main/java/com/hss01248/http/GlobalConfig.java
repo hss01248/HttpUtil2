@@ -312,7 +312,7 @@ public class GlobalConfig {
 
 
 
-    private String userAgent = System.getProperty("http.agent");
+    private String userAgent = Tool.getDefalutUserAgent();
 
     /**
      * 设置useragent,可能需要欺骗服务器什么的
