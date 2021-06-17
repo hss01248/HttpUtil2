@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
+import androidx.lifecycle.Observer;
 
 import com.google.gson.Gson;
 import com.hss01248.http.callback.BaseObserver;
@@ -565,9 +566,24 @@ public class ConfigInfo<T> {
         Runner.asCallback(this);
     }
 
+    /**
+     * 防重复发送:   callback.onResult(t);
+     *         //防止onresume重复发送. 也可以使用singleliveevent
+     *         liveData.removeObservers(lifecycleOwner);
+     * @param lifecycleOwner
+     * @param callback
+     */
     public void callbackByLiveData(LifecycleOwner lifecycleOwner,MyNetCallback<ResponseBean<T>> callback){
         callback.info = this;
-        asLiveData().observe(lifecycleOwner,new BaseObserver<>(callback));
+        LiveData<ResponseBean<T>> liveData = asLiveData();
+        liveData.observe(lifecycleOwner,new BaseObserver<>(callback,liveData,lifecycleOwner));
+        /*liveData.observe(lifecycleOwner, new Observer<ResponseBean<T>>() {
+            @Override
+            public void onChanged(ResponseBean<T> tResponseBean) {
+                callback.onResult(tResponseBean);
+                liveData.removeObservers(lifecycleOwner);
+            }
+        });*/
     }
 
     public LiveData<ResponseBean<T>> asLiveData() {
