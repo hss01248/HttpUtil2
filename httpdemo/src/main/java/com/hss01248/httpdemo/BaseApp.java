@@ -10,15 +10,15 @@ import android.content.pm.PackageManager;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.akaita.java.rxjava2debug.RxJava2Debug;
 import com.google.gson.Gson;
 import com.hss01248.basecache.BaseCacher;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
-import com.hss01248.http.aop.IgnoreSslVerifyForAll;
-import com.hss01248.http.aop.cerverify.HostNameCerChecker;
-import com.hss01248.http.aop.cerverify.IGetCerConfigRequest;
+
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.LoadingDialogConfig;
@@ -41,7 +41,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * Created by hss on 2018/7/28.
  */
 
-public class BaseApp extends Application {
+public class BaseApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
@@ -55,27 +55,27 @@ public class BaseApp extends Application {
             ActivityStackManager.init(this);
             TestCache.getInstance().prefetch();
             //RxJava2Debug.enableRxJava2AssemblyTracking(new String[]{"com.hss01248.http","com.hss01248.httpdemo"});
-            HostNameCerChecker.enableLog = true;
-            HostNameCerChecker.init(this,new IGetCerConfigRequest() {
-                @Override
-                public Map<String, String> requestConfig() {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Map<String, String> map = new HashMap<>();
-                    map.put("zhihu.com","efaa8a257e9608d49058abe7525504eb05de1ce26229fa20de6b88434e6dffb6");
-                    return map;
-                }
-
-                @Override
-                public Map<String, String> defaultConfig() {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("zhihu.com","efaa8a257e9608d49058abe7525504eb05de1ce26229fa20de6b88434e6dffb6-");
-                    return map;
-                }
-            });
+//            HostNameCerChecker.enableLog = true;
+//            HostNameCerChecker.init(this,new IGetCerConfigRequest() {
+//                @Override
+//                public Map<String, String> requestConfig() {
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Map<String, String> map = new HashMap<>();
+//                    map.put("zhihu.com","efaa8a257e9608d49058abe7525504eb05de1ce26229fa20de6b88434e6dffb6");
+//                    return map;
+//                }
+//
+//                @Override
+//                public Map<String, String> defaultConfig() {
+//                    Map<String, String> map = new HashMap<>();
+//                    map.put("zhihu.com","efaa8a257e9608d49058abe7525504eb05de1ce26229fa20de6b88434e6dffb6-");
+//                    return map;
+//                }
+//            });
 
 
         } catch (PackageManager.NameNotFoundException e) {
@@ -217,7 +217,7 @@ public class BaseApp extends Application {
                 .setRetryOnConnectionFailure(false)
                 .addCommonHeader("clienttype","android");
 
-        IgnoreSslVerifyForAll.enable = true;
+        //IgnoreSslVerifyForAll.enable = true;
 
         //SafetyUtil.addSSLPinner("*.zhihu.com","sha256/RUZBQThBMjU3RTk2MDhENDkwNThBQkU3NTI1NTA0RUIwNURFMUNFMjYyMjlGQTIwREU2Qjg4NDM0RTZERkZCNg==");
         //SafetyUtil.setSSLPinnerConfig("*.zhihu.com",true);

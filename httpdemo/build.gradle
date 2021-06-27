@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'com.fernandocejas.frodo2'
-apply from:'aspectjconfig.gradle'
+//apply from:'aspectjconfig.gradle'
 
 android {
 	compileSdkVersion 28
@@ -13,6 +13,7 @@ android {
 		targetSdkVersion 28
 		versionCode 1
 		versionName "1.0"
+		multiDexEnabled true
 
 		//testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 		packagingOptions {
@@ -54,7 +55,7 @@ dependencies {
 	annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 	//implementation "com.google.guava:guava:23.0-android"
     compile project(path: ':http')
-	implementation project(path: ':httpaop')
+	//implementation project(path: ':httpaop')
 	implementation project(path: ':baseCache')
 	implementation project(path: ':logforaop')
 	compile 'com.mylhyl:acp:1.0.0'
@@ -69,7 +70,13 @@ dependencies {
 
 	implementation 'com.akaita.java:rxjava2-debug:1.4.0'
 
+	implementation('com.github.hss01248.flipperUtil:network:1.1.5')
+
 	implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+}
+
+configurations{
+	all*.exclude group: 'com.facebook.flipper', module: 'flipper-network-plugin'
 }
 
 

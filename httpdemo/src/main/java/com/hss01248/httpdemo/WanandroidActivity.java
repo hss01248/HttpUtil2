@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.Tool;
-import com.hss01248.http.aop.SSLPinerAspect;
+
 import com.hss01248.http.callback.MyNetCallback;
 import com.hss01248.http.exceptions.ExceptionWrapper;
 import com.hss01248.http.response.ResponseBean;
