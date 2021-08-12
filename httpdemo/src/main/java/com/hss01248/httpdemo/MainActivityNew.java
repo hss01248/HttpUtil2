@@ -235,6 +235,25 @@ public class MainActivityNew extends AppCompatActivity {
                 break;
             case R.id.post_standard_json:
 
+                HttpUtil.requestAsJsonArray("article/getArticleCommentList/v1.json",
+                        PostStandardJsonArray.class)
+                        .addParam("pageSize","30")
+                        .addParam("articleId","1738")
+                        .addParam("pageIndex","1")
+                        .post()
+                        .callback(new MyNetCallback<ResponseBean<List<PostStandardJsonArray>>>() {
+                            @Override
+                            public void onSuccess(ResponseBean<List<PostStandardJsonArray>> response) {
+                                //response.
+                            }
+
+                            @Override
+                            public void onError(String msgCanShow) {
+
+                            }
+                        });
+
+
                 HttpUtil.requestAsJsonArray("article/getArticleCommentList/v1.json",PostStandardJsonArray.class)
                         .addParam("pageSize","30")
                         .addParam("articleId","1738")

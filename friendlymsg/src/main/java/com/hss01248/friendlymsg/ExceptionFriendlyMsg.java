@@ -135,7 +135,16 @@ public class ExceptionFriendlyMsg {
             bean.realMsg = e.getCause().getMessage();
         }*/
         if(friendlyMsg != null){
-            bean.friendlyMsg = friendlyMsg.toMsg(bean.code);
+
+            String msg = "";
+            try {
+                msg =    friendlyMsg.toMsg(bean.code);
+            }catch (Throwable throwable){
+                throwable.printStackTrace();
+            }
+            if(!TextUtils.isEmpty(msg)){
+                bean.friendlyMsg = msg;
+            }
         }
 
         return bean;

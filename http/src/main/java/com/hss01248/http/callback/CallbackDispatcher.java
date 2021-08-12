@@ -1,5 +1,6 @@
 package com.hss01248.http.callback;
 
+import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.Tool;
 import com.hss01248.http.response.ErrorCallbackDispatcher;
 import com.hss01248.http.response.ResponseBean;
@@ -14,7 +15,11 @@ public class CallbackDispatcher {
         onEnd(callback,t);
         ResponseBean bean = (ResponseBean) t;
         if(bean.success){
-            onSuccess(callback,t);
+            try {
+                onSuccess(callback,t);
+            }catch (Throwable throwable){
+                onError(callback,throwable);
+            }
         }else {
             onError(callback,bean.errorInfo);
         }
@@ -30,7 +35,22 @@ public class CallbackDispatcher {
             Tool.dismissLoadingDialog(callback.dialogConfig, callback.tagForCancel);
             ErrorCallbackDispatcher.dispatchException(callback, e);
         }catch (Throwable e2){
-            e2.printStackTrace();
+            if(GlobalConfig.get().getErrorHandler() != null){
+                try {
+                    GlobalConfig.get().getErrorHandler().accept(e2);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+
+            }else {
+                if(!GlobalConfig.get().isDebug()){
+                    e2.printStackTrace();
+                }
+            }
+            //测试环境,都崩溃,提醒一下
+            if(GlobalConfig.get().isDebug()){
+                throw e2;
+            }
         }
     }
 

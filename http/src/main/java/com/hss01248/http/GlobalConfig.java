@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.functions.Consumer;
 import okhttp3.Interceptor;
 
 /**
@@ -236,7 +237,7 @@ public class GlobalConfig {
     public static final int COOKIE_NONE = 1;
     public static final int COOKIE_MEMORY = 2;
     public static final int COOKIE_DISK = 3;
-    private int cookieMode = COOKIE_DISK;//默认是会话cookie,不做持久化操作
+    private int cookieMode = COOKIE_DISK;//默认是做持久化操作
 
     /**
      * 设置cookie管理策略
@@ -332,6 +333,7 @@ public class GlobalConfig {
 
     //此处默认值的策略: 设一个比较大的值,让底层的超时时间设置不成为瓶颈.
     // 通过上层的rxjava控制总的超时时间.因为okhttp无法控制系统层面的dns解析的超时时间.
+    //现今有calltimeout,但依然推荐使用rxjava来控制整体耗时
     //下方三个超时时间都是在dns解析成功的基础上设置才有意义.
     private int connectTimeout = 15000;//tcp连接的超时时间,单位为ms,默认15s
     private int readTimeout = 60000;//已连接后台时,后台响应的超时时间,单位为ms,默认1min.适用于服务端接口慢的情况(内部阻塞)
@@ -357,6 +359,17 @@ public class GlobalConfig {
         this.writeTimeout = writeTimeout;
         return this;
     }
+
+    public Consumer<Throwable> getErrorHandler() {
+        return errorHandler;
+    }
+
+    public GlobalConfig setErrorHandler(Consumer<Throwable> errorHandler) {
+        this.errorHandler = errorHandler;
+        return this;
+    }
+
+    Consumer<Throwable> errorHandler;
 
     /**
      * 网络链接的超时时间 tcp的配置
@@ -464,6 +477,21 @@ public class GlobalConfig {
 
     public GlobalConfig setFriendMsgImpl(IFriendlyMsg friendlyMsg) {
         ExceptionFriendlyMsg.init(context,friendlyMsg);
+       /* ExceptionFriendlyMsg.init(context, new IFriendlyMsg() {
+            Map<String,Integer> errorMsgs = new HashMap<>();
+            {
+                errorMsgs.put("user.login.89899",R.string.httputl_unlogin_error);
+            }
+            @Override
+            public String toMsg(String code) {
+                Integer res = errorMsgs.get(code);
+                if(res != null && res != 0){
+                    return context.getResources().getString(res);
+                }
+                return "";
+
+            }
+        });*/
         return this;
     }
 

@@ -72,6 +72,13 @@ public class ConfigInfo<T> {
     //响应相关
     Class clazz;
     boolean responseAsString;
+
+    public ConfigInfo<T> toastErrorMsg(boolean toastError) {
+        this.toastError = toastError;
+        return this;
+    }
+
+    boolean toastError;
     private boolean responseAsDownload;
     private boolean responseAsNormalJson;
     private boolean responseAsDataCodeMsgInJson = true;
