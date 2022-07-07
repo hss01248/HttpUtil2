@@ -58,7 +58,11 @@ public class ErrorCallbackDispatcher {
         }
 
         if (GlobalConfig.get().isOpenLog()) {
-            RxJava2Debug.getEnhancedStackTrace(e).printStackTrace();
+            Throwable throwable2 = RxJava2Debug.getEnhancedStackTrace(e);
+            if(throwable2 != null){
+                throwable2.printStackTrace();
+            }
+
         }
         if(info != null){
            // Tool.logJson(info);
