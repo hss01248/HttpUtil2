@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.webkit.URLUtil;
 
+import com.blankj.utilcode.util.Utils;
 import com.hss01248.http.HttpUtil;
 
 import com.hss01248.http.Tool;
@@ -260,13 +261,13 @@ public class DownloadParser {
     }
 
     public static String mkDefaultDownloadDir() {
-        File dir = mkDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), true);
+        File dir = Utils.getApp().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         if (dir != null) {
             return dir.getAbsolutePath();
         }
 
 
-        return mkDir(HttpUtil.context.getCacheDir(), false).getAbsolutePath();
+        return HttpUtil.context.getFilesDir().getAbsolutePath();
     }
 
     private static File mkDir(File dir, boolean isPublic) {

@@ -94,7 +94,7 @@ public class GlobalConfig {
 
     DataCodeMsgJsonConfig dataCodeMsgJsonConfig = DataCodeMsgJsonConfig.newBuilder().build();
 
-    FileDownlodConfig downlodConfig ;
+    FileDownlodConfig downlodConfig = FileDownlodConfig.newBuilder().fileDir(getDownloadDir()).build() ;
 
 
     public INetTool getTool() {
@@ -102,6 +102,9 @@ public class GlobalConfig {
     }
 
      GlobalConfig setTool(INetTool tool) {
+        if(tool == null){
+            return this;
+        }
         iNetTool = tool;
         if(isOpenLog){
             tool.initialStetho(context);
@@ -109,13 +112,13 @@ public class GlobalConfig {
         return this;
     }
 
-    private INetTool iNetTool;
+    private INetTool iNetTool = new NetToolByUtilcode();
 
 
     private GlobalConfig() {
         commonInterceptors = new ArrayList<>();
         commonInterceptors.add(new OkHttpExceptionInterceptor());
-        commonInterceptors.add(new SameRequestInterceptor());
+        //commonInterceptors.add(new SameRequestInterceptor());
         //commonHeaders = new HashMap<>();
         //commonHeaders.put(SameRequestFilterInterceptor.HEAD_REQUEST,"YES");
 

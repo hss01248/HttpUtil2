@@ -11,5 +11,14 @@
 	<application>
 		<receiver android:name=".netstate.NetWorkStateReceiver"/>
 		<receiver android:name=".netstate.NetStateChangeReceiver"/>
+		<provider
+			android:name="androidx.startup.InitializationProvider"
+			android:authorities="${applicationId}.androidx-startup"
+			android:exported="false"
+			tools:node="merge">
+			<meta-data
+				android:name="com.hss01248.http.InitForHttpUtil"
+				android:value="androidx.startup" />
+		</provider>
 	</application>
 </manifest>

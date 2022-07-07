@@ -3,6 +3,7 @@ package com.hss01248.http;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import com.akaita.java.rxjava2debug.RxJava2Debug;
@@ -44,7 +45,7 @@ public class HttpUtil {
 
     private static RxCache rxCache;
 
-    public static GlobalConfig init(Application context0, boolean openlog, String baseUrl, INetTool tool) {
+    public static GlobalConfig init(Application context0, boolean openlog, String baseUrl,@Nullable INetTool tool) {
         context = context0;
         LogUtils.DEBUG = openlog;
         if(callback != null){
