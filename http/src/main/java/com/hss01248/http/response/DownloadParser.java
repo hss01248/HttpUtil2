@@ -261,9 +261,17 @@ public class DownloadParser {
     }
 
     public static String mkDefaultDownloadDir() {
-        File dir = Utils.getApp().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        //有权限,就放到外面
+
+        File dir = mkDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), true);
         if (dir != null) {
             return dir.getAbsolutePath();
+        }
+
+
+        File dir2 = Utils.getApp().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        if (dir2 != null) {
+            return dir2.getAbsolutePath();
         }
 
 
