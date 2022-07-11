@@ -1,0 +1,53 @@
+buildscript{
+
+     repositories {
+        maven {//google()
+             url  'https://dl.google.com/dl/android/maven2/'
+        }
+        maven {//jcenter()
+             url  'https://jcenter.bintray.com/'
+        }
+        maven {//mavenCentral()
+             url  'https://repo.maven.apache.org/maven2/'
+        }
+        maven {
+             url  'https://jitpack.io'
+        }
+        maven {
+             url  'https://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+             url  'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+             url  'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+             url  'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+}
+
+//list all plugin classPath:
+dependencies {
+     classpath "com.android.tools.build:gradle:4.0.0"
+     classpath "com.github.skyNet2017.frodo2:frodo2-plugin:0.9.3"
+     classpath "com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10"
+     classpath "io.github.didi.dokit:dokitx-plugin:3.5.0.1"
+  }
+}
+
+
+//当前工程应用的插件信息:
+// [class:class org.gradle.api.plugins.HelpTasksPlugin]
+// [class:class org.gradle.buildinit.plugins.BuildInitPlugin]
+// [class:class org.gradle.buildinit.plugins.WrapperPlugin]
+// [class:class com.android.build.gradle.internal.plugins.VersionCheckPlugin]
+// [class:class com.android.build.gradle.api.AndroidBasePlugin]
+// [class:class org.gradle.language.base.plugins.LifecycleBasePlugin]
+// [class:class org.gradle.api.plugins.BasePlugin]
+// [class:class org.gradle.api.plugins.ReportingBasePlugin]
+// [class:class org.gradle.api.plugins.JavaBasePlugin]
+// [extension:extension 'android', projectType:0, class:class com.android.build.gradle.internal.plugins.AppPlugin, modelBuilderRegistry:org.gradle.tooling.provider.model.internal.DefaultToolingModelBuilderRegistry@50b05173, packagePublished:false, analyticsPluginType:APPLICATION, extensionClass:class com.android.build.gradle.internal.dsl.BaseAppModuleExtension, variantInputModel:com.android.build.gradle.internal.variant.VariantInputModelImpl@47b22eff, variantManager:com.android.build.gradle.internal.VariantManager@63cc617e]
+// [extension:extension 'android', class:class com.android.build.gradle.AppPlugin]
+// [class:class com.hujiang.gradle.plugin.android.aspectjx.AJXPlugin]
+// [class:class com.dorongold.gradle.tasktree.TaskTreePlugin]
