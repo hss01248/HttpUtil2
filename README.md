@@ -34,6 +34,8 @@
 
 # 使用:
 
+[![](https://jitpack.io/v/hss01248/HttpUtil2.svg)](https://jitpack.io/#hss01248/HttpUtil2)
+
 ## gradle
 
 **Step 1.** Add the JitPack repository to your build file
@@ -53,7 +55,7 @@ Add it in your root build.gradle at the end of repositories:
 
 ```
     dependencies {
-            compile 'com.github.hss01248.HttpUtil:http:3.0.0'
+            compile 'com.github.hss01248.HttpUtil2:http:3.0.5'
     }
 ```
 
@@ -740,7 +742,7 @@ spring boot:  增加filter,对content-encoding=gzip的进行解压缩
 
 # 彩蛋
 
-不断更新的开发/调试工具包:[TestTools](https://github.com/hss01248/TestTools)
+不断更新的开发/调试工具包:[FlipperUtil](https://github.com/hss01248/flipperUtil)
 
 # thanks
 
