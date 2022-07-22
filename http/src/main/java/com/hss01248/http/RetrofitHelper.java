@@ -37,9 +37,9 @@ public class RetrofitHelper {
         switch (info.getMethod()) {
             case HttpMethod.GET:
                 if (info.isDownload()) {
-                    observable = service.download(info.getUrl(), info.getParams(), info.getHeaders());
+                    observable = service.download(info.getUrl(), info.getParams2(), info.getHeaders());
                 } else {
-                    observable = service.get(info.getUrl(), info.getParams(), info.getHeaders());
+                    observable = service.get(info.getUrl(), info.getParams2(), info.getHeaders());
                 }
                 break;
             case HttpMethod.POST:
@@ -55,7 +55,7 @@ public class RetrofitHelper {
                     RequestBody body = RetrofitHelper.buildBinaryRequestBody(info);
                     observable = service.uploadRawByPost(info.getUrl(), body, info.getHeaders());
                 } else {
-                    observable = service.post(info.getUrl(), info.getParams(), info.getHeaders());
+                    observable = service.post(info.getUrl(), info.getParams2(), info.getHeaders());
                 }
 
                 break;
@@ -83,7 +83,7 @@ public class RetrofitHelper {
         //将key-value放进body中:
         Map<String, RequestBody> paramsMap = new HashMap<>();
         if (info.getParams() != null && info.getParams().size() > 0) {
-            Map<String, String> params = info.getParams();
+            Map<String, String> params = info.getParams2();
             int count = params.size();
             if (count > 0) {
                 Set<Map.Entry<String, String>> set = params.entrySet();

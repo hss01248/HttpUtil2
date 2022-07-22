@@ -57,7 +57,7 @@ public class ConfigInfo<T> {
     //请求相关
     private int method = HttpMethod.GET;
     private String url;
-    private Map<String, String> params = new HashMap<>();
+    private Map<String, Object> params = new HashMap<>();
     //请求头  http://tools.jb51.net/table/http_header
     private Map<String, String> headers = new HashMap<>();
     private Set<String> paramKeysSetNotForCacheKey;
@@ -198,9 +198,26 @@ public class ConfigInfo<T> {
         if(params == null){
             params = new HashMap<>();
         }
-        params.put(key, value.toString());
+        params.put(key, value);
         return this;
     }
+    public ConfigInfo<T> addParams2(Map<String,String> map) {
+        if(params == null){
+            params = new HashMap<>();
+        }
+        params.putAll(map);
+        return this;
+    }
+
+    public ConfigInfo<T> addParams(Map<String,Object> map) {
+        if(params == null){
+            params = new HashMap<>();
+        }
+        params.putAll(map);
+        return this;
+    }
+
+    //todo 支持多个参数
 
     public ConfigInfo<T> addParamIf(String key, Object value,boolean shouldAdd){
         return addParamWith(key,value,shouldAdd,false,false);
@@ -258,6 +275,11 @@ public class ConfigInfo<T> {
      */
     public ConfigInfo<T> addParamStr(String paramsStr) {
         this.paramsStr = Tool.urlDecode(paramsStr);
+        return this;
+    }
+
+    public ConfigInfo<T> setParamAsJson(Object param) {
+        this.paramsStr = Tool.getGson().toJson(paramsStr);
         return this;
     }
 
@@ -713,8 +735,24 @@ public class ConfigInfo<T> {
         return url;
     }
 
-    public Map<String, String> getParams() {
+    public Map<String, Object> getParams() {
         return params;
+    }
+
+    public Map<String, String> getParams2() {
+        if(params == null || params.isEmpty()){
+            return new HashMap<>();
+        }
+        Map<String, String> map = new HashMap<>();
+        for (String s : params.keySet()) {
+            Object val = params.get(s);
+            if(val !=  null){
+                map.put(s,String.valueOf(val));
+            }else {
+                map.put(s,null);
+            }
+        }
+        return map;
     }
 
     public Map<String, String> getHeaders() {

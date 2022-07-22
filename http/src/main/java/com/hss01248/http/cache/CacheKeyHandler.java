@@ -21,7 +21,7 @@ public class CacheKeyHandler {
 
     public static <T> String getCacheKey(final ConfigInfo<T> info) {
         String url = info.getUrl();
-        Map<String,String> map = info.getParams();
+        Map<String,String> map = info.getParams2();
         StringBuilder stringBuilder = new StringBuilder(200);
         stringBuilder.append(url);
 
