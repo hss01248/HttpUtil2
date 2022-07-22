@@ -127,7 +127,7 @@ public class ExceptionFriendlyMsg {
         } else {
             bean = ReturnMsg.newBuilder()
                     .code("UnknownException")
-                    .realMsg(e.getMessage())
+                    .realMsg(e ==null ? "e is null":e.getMessage())
                     .friendlyMsg(getString(R.string.some_error))
                     .build();
         }

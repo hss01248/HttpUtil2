@@ -15,6 +15,7 @@ public class CallbackDispatcher {
         onEnd(callback,t);
         ResponseBean bean = (ResponseBean) t;
         if(bean.success){
+            //todo 下载时的success判断有问题
             try {
                 onSuccess(callback,t);
             }catch (Throwable throwable){
