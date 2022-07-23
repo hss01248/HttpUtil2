@@ -4,6 +4,18 @@ buildscript {
     apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/dev/remote3.gradle'
     apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/master/deps/depsLastestChecker.gradle'
     apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/dev/z_config/git_branch_info.gradle'
+
+    apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/master/deps/uploadAllTask.gradle'
+
+    ext {
+// 快照版需要在版本号后面加-SNAPSHOT
+        groupId='com.github.hss01248.HttpUtil2'
+        versionCode = '3.1.1.local.00'
+        isPublisToLocal=true
+    }
+
+
+
     repositories {
         maven { url 'https://maven.aliyun.com/repository/jcenter' }  // <= here
         maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
@@ -15,7 +27,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.0"
+        classpath "com.android.tools.build:gradle:4.1.0"
         classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'
         classpath "com.github.skyNet2017.frodo2:frodo2-plugin:0.9.3"
         //classpath 'me.tatarka:gradle-retrolambda:3.2.5'

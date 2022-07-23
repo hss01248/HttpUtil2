@@ -78,6 +78,7 @@ public class DownloadParser {
 
             try {
                 bean.data = (T) config;
+                bean.success = true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -142,6 +143,7 @@ public class DownloadParser {
             str = fileToSHA1(info.filePath);
         }
         if (TextUtils.isEmpty(str)) {//md算法失败
+            tResponseBean.success = false;
             throw new FileDownloadException("file verify fail:algorithm fail-generate str is empty", info0, tResponseBean);
         }
         GlobalConfig.get().getTool().logd("real md:" + str + " --- expect md:" + info.verifyStr);
@@ -149,6 +151,7 @@ public class DownloadParser {
             // handleMedia(info);
         } else {
             String error = String.format("file verify fail,expect:%s,actual:%s", info.verifyStr, str);
+            tResponseBean.success = false;
             throw new FileDownloadException(error, info0, tResponseBean);
         }
 
