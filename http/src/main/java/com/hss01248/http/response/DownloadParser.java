@@ -39,6 +39,10 @@ public class DownloadParser {
         //todo 文件名生成规则
         config.filePath = generateFinalFilePath(config, info.getUrl(), body);
         File outputPath = new File(config.filePath);
+        outputPath.getParentFile().mkdirs();
+        if(!outputPath.exists()){
+            outputPath.createNewFile();
+        }
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {

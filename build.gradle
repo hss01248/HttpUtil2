@@ -10,7 +10,7 @@ buildscript {
     ext {
 // 快照版需要在版本号后面加-SNAPSHOT
         groupId='com.github.hss01248.HttpUtil2'
-        versionCode = '3.1.1.local.00'
+        versionCode = '3.1.1.local.01'
         isPublisToLocal=true
     }
 
