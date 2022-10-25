@@ -1,6 +1,7 @@
 package com.hss01248.httpdemo;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.callback.BaseSubscriber;
@@ -289,22 +292,50 @@ public class MainActivityNew extends AppCompatActivity {
                 PermissionUtils.askExternalStorage(new PermissionUtils.PermissionListener() {
                     @Override
                     public void onGranted() {
-                        String url2 = "https://kiwivm.64clouds.com/dist/openvpn-install-2.4.5-I601.exe";
+                        String url2 = "https://services.gradle.org/distributions/gradle-6.9.3-src.zip";
+                        //https://assets.kpmg/content/dam/kpmg/cn/pdf/zh/2022/09/understand-the-hydrogen-energy-industry-in-one-article.pdf
+                        ProgressDialog dialog = new ProgressDialog(MainActivityNew.this);
+
                         HttpUtil.download(url2)
                                 .setFileDownlodConfig(
                                         FileDownlodConfig.newBuilder()
-                                        .verifyBySha1("76DAB206AE43FB81A15E9E54CAC87EA94BB5B384")
+                                        //.verifyBySha1("76DAB206AE43FB81A15E9E54CAC87EA94BB5B384")
                                         .isOpenAfterSuccess(true)
                                         .build())
                                 .callback(new MyNetCallback<ResponseBean<FileDownlodConfig>>() {
                                     @Override
+                                    protected void onStart() {
+                                        super.onStart();
+                                        dialog.show();
+                                    }
+
+                                    @Override
+                                    public void onProgressChange(long transPortedBytes, long totalBytes, ConfigInfo info) {
+                                        super.onProgressChange(transPortedBytes, totalBytes, info);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                String process = ConvertUtils.byte2FitMemorySize(transPortedBytes,1) +"/"
+                                                        +ConvertUtils.byte2FitMemorySize(totalBytes,1);
+                                                if(totalBytes > 0){
+                                                    String percent =   String.format("%.1f",transPortedBytes *100f/totalBytes)+"%";
+                                                    process = percent + " "+ process;
+                                                }
+                                                dialog.setMessage(process+"\n"+"dialogMsg");
+                                            }
+                                        });
+                                    }
+
+                                    @Override
                                     public void onSuccess(ResponseBean<FileDownlodConfig> response) {
                                         MyLog.i("path:"+response.data.filePath);
+                                        dialog.dismiss();
                                     }
 
 
                                     @Override
                                     public void onError(String msgCanShow) {
+                                        dialog.dismiss();
                                         MyLog.e(msgCanShow);
                                     }
                                 });
