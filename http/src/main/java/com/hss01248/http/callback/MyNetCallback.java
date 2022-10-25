@@ -59,7 +59,7 @@ public abstract class MyNetCallback<T>  implements ProgressCallback{
     }
 
 
-     void onStart() {
+    protected void onStart() {
         Tool.logd("-->http is onStart");
         startTime = System.currentTimeMillis();
         boolean hasShow =  Tool.showLoadingDialog(dialogConfig, tagForCancel, null);

@@ -22,8 +22,6 @@ import com.hss01248.http.INetTool;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.LoadingDialogConfig;
-import com.hss01248.http.https.SafetyUtil;
-import com.hss01248.testtool.TestTool;
 import com.orhanobut.logger.IJsonToStr;
 import com.orhanobut.logger.MyLog;
 
@@ -84,7 +82,7 @@ public class BaseApp extends MultiDexApplication {
     }
 
     private void initTestTool() {
-        TestTool.init(this,true,false);
+        //TestTool.init(this,true,false);
         MyLog.init(true, "httpdemo",3, new IJsonToStr() {
             @Override
             public String toStr(Object o) {

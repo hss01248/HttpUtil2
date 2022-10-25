@@ -9,7 +9,7 @@ android {
 
 	defaultConfig {
 		applicationId "com.hss01248.httpdemo"
-		minSdkVersion 16
+		minSdkVersion 19
 		targetSdkVersion 32
 		versionCode 1
 		versionName "1.0"
@@ -60,23 +60,27 @@ dependencies {
 	implementation project(path: ':logforaop')
 	compile 'com.mylhyl:acp:1.0.0'
 	//compile 'com.alibaba:fastjson:1.1.64.android'
-	compile'com.github.hss01248.TestTools:testtool:1.0.4'/*){
-		exclude module: 'com.github.hss01248:Mylog'
-	}*/
+	//compile'com.github.hss01248.TestTools:testtool:1.0.4'
 
 	compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 	compile 'com.alibaba:fastjson:1.1.64.android'
-	//compile 'com.github.hss01248:Mylog:1.0.5'
+	api('com.github.hss01248:Mylog:1.0.3'){
+		exclude group: 'com.android.support'
+	}
+
+	api ('com.github.hss01248:Toasty:2.0.6'){
+		exclude group: 'com.android.support'
+	}
 
 	implementation 'com.akaita.java:rxjava2-debug:1.4.0'
 
-	implementation('com.github.hss01248.flipperUtil:network:1.1.5')
+	//implementation('com.github.hss01248.flipperUtil:network:1.1.5')
 
 	implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 }
 
 configurations{
-	all*.exclude group: 'com.facebook.flipper', module: 'flipper-network-plugin'
+	//all*.exclude group: 'com.facebook.flipper', module: 'flipper-network-plugin'
 }
 
 
