@@ -1,7 +1,7 @@
 # HttpUtil
  http engine for android,power by retrofit ,rxjava and rxcache
 
-
+[![](https://jitpack.io/v/hss01248/HttpUtil2.svg)](https://jitpack.io/#hss01248/HttpUtil2)
 
 # 特性
 
@@ -34,7 +34,7 @@
 
 # 使用:
 
-[![](https://jitpack.io/v/hss01248/HttpUtil2.svg)](https://jitpack.io/#hss01248/HttpUtil2)
+  [![](https://jitpack.io/v/hss01248/HttpUtil2.svg)](https://jitpack.io/#hss01248/HttpUtil2)
 
 ## gradle
 
@@ -59,6 +59,19 @@ Add it in your root build.gradle at the end of repositories:
     }
 ```
 
+
+内部有这些库:
+```
+com.github.hss01248.HttpUtil2:baseCache:3.1.2
+com.github.hss01248.HttpUtil2:clientGateway:3.1.2
+com.github.hss01248.HttpUtil2:logforaop:3.1.2
+com.github.hss01248.HttpUtil2:httpaop:3.1.2
+com.github.hss01248.HttpUtil2:friendlymsg:3.1.2
+com.github.hss01248.HttpUtil2:http:3.1.2
+com.github.hss01248.HttpUtil2:rxcache:3.1.2
+com.github.hss01248.HttpUtil2:serverclock:3.1.2
+com.github.hss01248.HttpUtil2:openuri:3.1.2
+```
 
 
 # 全局配置
