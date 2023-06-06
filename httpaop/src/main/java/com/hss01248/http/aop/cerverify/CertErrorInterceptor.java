@@ -4,6 +4,7 @@ import android.util.Log;
 
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
@@ -41,7 +42,7 @@ public class CertErrorInterceptor implements Interceptor {
                         throw throwable;
                     }
                     Log.w(TAG, Thread.currentThread().getName()+"准备拉配置-"+chain.request().url());
-                    Map<String, String> piners0 = HostNameCerChecker.configRequest.requestConfig();
+                    Map<String, List<String>> piners0 = HostNameCerChecker.configRequest.requestConfig();
                     Log.w(TAG, Thread.currentThread().getName()+"piners0-"+piners0);
                     if (piners0 != null) {
                         HostNameCerChecker.piners.putAll(piners0);

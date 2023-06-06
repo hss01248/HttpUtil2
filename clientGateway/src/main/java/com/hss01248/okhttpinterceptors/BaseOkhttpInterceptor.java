@@ -44,11 +44,10 @@ public abstract class BaseOkhttpInterceptor implements Interceptor {
 
     /**
      * 忽略所有,相当于此不走此拦截器逻辑
-     *
      * @param ignoreAll
      * @return
      */
-    public BaseOkhttpInterceptor ignoreAll(boolean ignoreAll) {
+    public BaseOkhttpInterceptor ignoreAll(boolean ignoreAll){
         this.ignoreAll = ignoreAll;
         return this;
     }
@@ -56,11 +55,10 @@ public abstract class BaseOkhttpInterceptor implements Interceptor {
     /**
      * 强制拦截所有,所有都走拦截器逻辑
      * 优先级低于ignoreAll
-     *
      * @param interceptorAll
      * @return
      */
-    public BaseOkhttpInterceptor interceptorAll(boolean interceptorAll) {
+    public BaseOkhttpInterceptor interceptorAll(boolean interceptorAll){
         this.interceptorAll = interceptorAll;
         return this;
     }
@@ -83,24 +81,24 @@ public abstract class BaseOkhttpInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        if (config != null) {
-            if (config.ignoreAll()) {
+        if(config !=null){
+            if(config.ignoreAll()){
                 return chain.proceed(chain.request());
             }
-            if (config.interceptorAll()) {
+            if(config.interceptorAll()){
                 return interceptReally(chain);
             }
-        } else {
-            if (ignoreAll) {
+        }else {
+            if(ignoreAll){
                 return chain.proceed(chain.request());
             }
-            if (interceptorAll) {
+            if(interceptorAll){
                 return interceptReally(chain);
             }
         }
 
 
-        if (shouldInterceptBeforeUrlWhiteBlackList(chain)) {
+        if(shouldInterceptBeforeUrlWhiteBlackList(chain)){
             return interceptReally(chain);
         }
         String url = chain.request().url().toString();
@@ -123,7 +121,7 @@ public abstract class BaseOkhttpInterceptor implements Interceptor {
             }
             //有白名单,但不在白名单里,就不拦截
             return chain.proceed(chain.request());
-        } else if (blackListUrlPattern != null && !blackListUrlPattern.isEmpty()) {
+        }else if (blackListUrlPattern != null && !blackListUrlPattern.isEmpty()) {
             //有黑名单,在黑名单里的,就不拦截
             for (String pattern : blackListUrlPattern) {
                 if (url.contains(pattern)) {
@@ -133,14 +131,13 @@ public abstract class BaseOkhttpInterceptor implements Interceptor {
             //不在黑名单里,就拦截
             return interceptReally(chain);
         }
-        //什么名单都没有配置,则默认拦截
-        return interceptReally(chain);
+        return chain.proceed(chain.request());
 
     }
 
-    public static String getRequetBodyAsString(RequestBody body) {
+    public static String getRequetBodyAsString(RequestBody body){
         try {
-            if (body == null) {
+            if(body == null){
                 return null;
             }
             final Buffer buffer = new Buffer();
@@ -151,7 +148,7 @@ public abstract class BaseOkhttpInterceptor implements Interceptor {
             final byte[] bytes = new byte[(int) size];
             buffer.readFully(bytes);
             return new String(bytes);
-        } catch (Throwable throwable) {
+        }catch (Throwable throwable){
             throwable.printStackTrace();
             return "";
         }
@@ -164,14 +161,14 @@ public abstract class BaseOkhttpInterceptor implements Interceptor {
 
     protected abstract Response interceptReally(Chain chain) throws IOException;
 
-    public interface IConfig {
-        default boolean ignoreAll() {
+    public interface IConfig{
+        default   boolean ignoreAll(){
+            return false;
+        }
+        default   boolean interceptorAll(){
             return false;
         }
 
-        default boolean interceptorAll() {
-            return false;
-        }
 
     }
 }
