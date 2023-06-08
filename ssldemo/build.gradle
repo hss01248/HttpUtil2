@@ -37,6 +37,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    api project(path: ':httpaop')
     api 'com.squareup.okhttp3:okhttp:3.12.12'
     compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '3.12.12'
 }

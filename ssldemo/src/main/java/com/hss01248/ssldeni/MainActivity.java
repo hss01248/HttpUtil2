@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.hss01248.http.aop.cerverify.SslCertInfoUtil;
+
 import java.io.IOException;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
@@ -120,5 +122,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void sslCertInfo(View view) {
+        SslCertInfoUtil.fetchCertInfo("www.baidu.com");
     }
 }

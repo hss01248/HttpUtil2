@@ -19,4 +19,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:onClick="sslCertInfo"
+        android:text="拉取ssl证书链信息-baidu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>
