@@ -85,16 +85,16 @@ public class DataCodeMsgJsonConfig {
     }
 
     //设置标准格式json本次响应的不同字段
-    public String key_data = "data";
-    public String key_code = "code";
-    public String key_msg = "msg";
-    public String key_isSuccess = "success";
+    public String key_data ;
+    public String key_code ;
+    public String key_msg ;
+    public String key_isSuccess ;
 
     boolean isCodeAsString;//code对应的字段是int还是String
 
-    public String key_extra1 = "sysTime";//json外层额外的字段,如果为空就说明没有
-    public String key_extra2 = "extra2";
-    public String key_extra3 = "extra3";
+    public String key_extra1 ;//json外层额外的字段,如果为空就说明没有
+    public String key_extra2 ;
+    public String key_extra3 ;
 
     public JSONObject json;
 
@@ -102,14 +102,14 @@ public class DataCodeMsgJsonConfig {
 
 
     public static final class Builder {
-        private String key_data;
-        private String key_code;
-        private String key_msg;
-        private String key_isSuccess;
+        private String key_data = "data";
+        private String key_code= "code";
+        private String key_msg = "msg";
+        private String key_isSuccess = "success";
         private boolean isCodeAsString;
-        private String key_extra1;
-        private String key_extra2;
-        private String key_extra3;
+        private String key_extra1 = "sysTime";
+        private String key_extra2 = "extra2";
+        private String key_extra3 = "extra3";
         private Map<String, Object> responseMap;
         private DataSuccessJudge successJudge;
 
