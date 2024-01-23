@@ -27,7 +27,7 @@ public class SslCertInfoUtil {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .proxy(Proxy.NO_PROXY)
                 .addInterceptor(new HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.BODY));
+                        .setLevel(HttpLoggingInterceptor.Level.HEADERS));
         builder.hostnameVerifier(new CertInfoInHostNameVerifier());
         OkHttpClient client = builder.build();
         client.newCall(new Request.Builder().url(url).get().build())
