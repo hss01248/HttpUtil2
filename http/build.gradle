@@ -134,7 +134,7 @@ dependencies {
 	api 'com.github.hss01248.AndroidBeanValidator:beanvalidator:1.0.2'
 	implementation 'com.raskasa.metrics:metrics-okhttp:0.4.0'
     implementation project(path: ':clientGateway')
-    //implementation("com.github.skyNet2017.frodo2:frodo2-api:0.9.2")
+
 
 
 }

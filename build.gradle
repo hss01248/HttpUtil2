@@ -1,10 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    //apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/dev/remote3.gradle'
-    apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/master/deps/depsLastestChecker.gradle'
+    apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/gradle7_5/remote3.gradle?q=2'
     apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/dev/z_config/git_branch_info.gradle'
-
+    apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/master/deps/depsLastestChecker.gradle'
     apply from: 'https://raw.githubusercontent.com/hss01248/flipperUtil/dev/deps/uploadAllByMavenPublish.gradle'
 
     ext {
@@ -16,20 +15,10 @@ buildscript {
 
 
 
-    repositories {
-       /* maven { url 'https://maven.aliyun.com/repository/jcenter' }  // <= here
-        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'https://maven.aliyun.com/repository/google' }  // <= here
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }  // <= here
-        google()
-        jcenter()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }*/
-    }
+
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
-        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'
-        classpath "com.github.skyNet2017.frodo2:frodo2-plugin:0.9.3"
+
         //classpath 'me.tatarka:gradle-retrolambda:3.2.5'
         //classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         // NOTE: Do not place your application dependencies here; they belong
@@ -40,16 +29,7 @@ buildscript {
 
 allprojects {
     repositories {
-      /*  maven { url 'https://maven.aliyun.com/repository/jcenter' }  // <= here
-        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'https://maven.aliyun.com/repository/google' }  // <= here*/
-       /* mavenCentral()
-        google()
-        jcenter()
-        maven { url 'https://jitpack.io' }*/
         maven{url 'https://dl.bintray.com/zchu/maven/'}
-
-
     }
 }
 
