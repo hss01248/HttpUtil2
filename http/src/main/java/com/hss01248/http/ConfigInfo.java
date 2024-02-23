@@ -279,7 +279,7 @@ public class ConfigInfo<T> {
     }
 
     public ConfigInfo<T> setParamAsJson(Object param) {
-        this.paramsStr = Tool.getGson().toJson(paramsStr);
+        this.paramsStr = Tool.getGson().toJson(param);
         return this;
     }
 
