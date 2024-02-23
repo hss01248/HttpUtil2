@@ -1,5 +1,6 @@
 package com.hss01248.http.callback;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.Tool;
 import com.hss01248.http.response.ErrorCallbackDispatcher;
@@ -45,7 +46,7 @@ public class CallbackDispatcher {
 
             }else {
                 if(!GlobalConfig.get().isDebug()){
-                    e2.printStackTrace();
+                    LogUtils.w(e2);
                 }
             }
             //测试环境,都崩溃,提醒一下
@@ -59,6 +60,7 @@ public class CallbackDispatcher {
 
     private static <T> void onSuccess(MyNetCallback<T> callback, T t) {
         Tool.logd("-->http is onsuccess: "+callback.getUrl());
+        Tool.dismissLoadingDialog(callback.dialogConfig,null);
         callback.onSuccess(t);
     }
 
