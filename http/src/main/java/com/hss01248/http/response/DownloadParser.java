@@ -16,18 +16,52 @@ import com.hss01248.http.exceptions.FileDownloadException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.Okio;
+import okio.Sink;
+import okio.Source;
 
 /**
  * Created by hss on 2018/7/28.
  */
 
 public class DownloadParser {
+
+    private final int MAX_BUFF_SIZE = 4 * 1024;          //每次发送的字节(这个数值可能没有什么作用,因为大部分http流都会做缓存)
+    /***
+     * 保存文件
+     * @param is 源输入流
+     * @param os 目标输出流
+     * @return 如果是下载完成返回true,如果停止导致返回false
+     * @throws IOException
+     */
+    private boolean saveData(InputStream is, OutputStream os) throws IOException {
+        Source source = Okio.source(is);
+        Sink sink = Okio.sink(os);
+        Buffer buf = new Buffer();
+        long len = 0;
+
+        while ((len = source.read(buf, MAX_BUFF_SIZE)) != -1 ) {
+            sink.write(buf, len);
+            //mDownloadLength += len;
+        }
+
+        sink.flush();
+        sink.close();
+        source.close();
+        return true;
+    }
+
+
 
 
     public static <T> ResponseBean<T> receiveInputStream(ConfigInfo<T> info, ResponseBody body) throws Exception {
@@ -43,10 +77,31 @@ public class DownloadParser {
         if(!outputPath.exists()){
             outputPath.createNewFile();
         }
+
+        //BufferedSource source = body.source();
+        //Sink sink = Okio.sink(outputPath);
+
+        //限速: https://blog.csdn.net/a940659387/article/details/107565196
+
+        /*Sink requestBodyOut =httpCodec.createRequestBody(request, request.body().contentLength());
+        BufferedSink bufferedRequestBody = Okio.buffer(requestBodyOut);
+        request.body().writeTo(bufferedRequestBody);
+        bufferedRequestBody.close();*/
+
+        //原文链接：https://blog.csdn.net/chituhuan/article/details/105115480
+
+
+
+
+
+
+
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {
-            byte[] fileReader = new byte[4096];
+            byte[] fileReader = new byte[1024 * 256];
+            //网速 30M/s
+            //4096-->10M/s
             final long fileSize = body.contentLength();
             long fileSizeDownloaded = 0;
             inputStream = body.byteStream();
@@ -60,7 +115,7 @@ public class DownloadParser {
                 }
                 outputStream.write(fileReader, 0, read);
                 fileSizeDownloaded += read;
-                Tool.logd("file download: " + fileSizeDownloaded + " of " + fileSize);
+                //Tool.logd("file download: " + fileSizeDownloaded + " of " + fileSize);
                 //todo 控制频率
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - oldTime > 300 || fileSizeDownloaded == fileSize) {//每300ms更新一次进度
