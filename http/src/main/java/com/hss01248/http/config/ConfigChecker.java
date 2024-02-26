@@ -2,10 +2,12 @@ package com.hss01248.http.config;
 
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.Tool;
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -21,16 +23,16 @@ public class ConfigChecker {
      */
     public static String check(ConfigInfo config){
 
-        Map<String,String> params = config.getParams();
+        Map<String,Object> params = config.getParams();
         if(params == null || params.isEmpty()){
             return "";
         }
-
-        for (Map.Entry<String,String> entry : params.entrySet()) {
-            String key = entry.getKey();
-            String val = entry.getValue();
-            if(val == null){
-                return "the input of "+key+" should not be empty!";
+        Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String, Object> next = iterator.next();
+            if(next.getValue() ==null){
+                iterator.remove();
+                LogUtils.w("remove the key when value is null : "+next.getKey());
             }
         }
         return "";
