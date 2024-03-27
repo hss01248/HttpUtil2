@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.disposables.Disposable;
+import okhttp3.internal.Util;
 
 /**
  * Created by hss on 2018/7/29.
@@ -50,9 +51,13 @@ public class Tool {
             try {
                 PackageManager pm = HttpUtil.context.getPackageManager();
                 PackageInfo info = pm.getPackageInfo(HttpUtil.context.getPackageName(), 0);
-
+                String appName = info.applicationInfo.loadLabel(pm).toString();
+                //非英文字母就会无法写入header
+                if(!checkValue(appName,"ua")){
+                    appName = HttpUtil.context.getPackageName();
+                }
                 //pi.applicationInfo.loadLabel(pm).toString()
-                userAgent = userAgent+" "+ info.applicationInfo.loadLabel(pm).toString()+"/"+info.versionName
+                userAgent = userAgent+" "+ appName+"/"+info.versionName
                         +"/"+info.versionCode ;
                 //是否加上deviceId?
             }catch (Throwable throwable){
@@ -60,6 +65,36 @@ public class Tool {
             }
         }
         return userAgent;
+    }
+
+   public static boolean checkName(String name) {
+        if (name == null) return false;
+            //throw new NullPointerException("name == null");
+        if (name.isEmpty()) return false;
+            //throw new IllegalArgumentException("name is empty");
+        for (int i = 0, length = name.length(); i < length; i++) {
+            char c = name.charAt(i);
+            if (c <= '\u0020' || c >= '\u007f') {
+                return false;
+               // throw new IllegalArgumentException(Util.format(
+               //         "Unexpected char %#04x at %d in header name: %s", (int) c, i, name));
+            }
+        }
+        return true;
+    }
+
+    public static boolean checkValue(String value, String name) {
+        if (value == null) return false;
+            //throw new NullPointerException("value for name " + name + " == null");
+        for (int i = 0, length = value.length(); i < length; i++) {
+            char c = value.charAt(i);
+            if ((c <= '\u001f' && c != '\t') || c >= '\u007f') {
+                /*throw new IllegalArgumentException(Util.format(
+                        "Unexpected char %#04x at %d in %s value: %s", (int) c, i, name, value));*/
+                return false;
+            }
+        }
+        return true;
     }
 
 
