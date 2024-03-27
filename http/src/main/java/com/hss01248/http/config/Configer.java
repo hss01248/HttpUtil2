@@ -40,6 +40,9 @@ public class Configer {
         for(Interceptor interceptor : GlobalConfig.get().commonInterceptors){
             builder.addInterceptor(interceptor);
         }
+        for(Interceptor interceptor : GlobalConfig.get().commonNetworkInterceptors){
+            builder.addInterceptor(interceptor);
+        }
 
 
         if(GlobalConfig.get().getCacheMode() != CacheMode.DEFAULT){
@@ -61,8 +64,23 @@ public class Configer {
         builder.writeTimeout(GlobalConfig.get().getWriteTimeout(),TimeUnit.MILLISECONDS);
         //todo 拦截器的区分
 
+
         for(Interceptor interceptor : GlobalConfig.get().commonInterceptors){
             builder.addInterceptor(interceptor);
+        }
+        for(Interceptor interceptor : GlobalConfig.get().commonNetworkInterceptors){
+            builder.addInterceptor(interceptor);
+        }
+
+        if(!info.getInterceptors().isEmpty()){
+            for (Object interceptor : info.getInterceptors()) {
+                builder.addInterceptor((Interceptor) interceptor);
+            }
+        }
+        if(!info.getNetworkInterceptors().isEmpty()){
+            for (Object networkInterceptor : info.getNetworkInterceptors()) {
+                builder.addNetworkInterceptor((Interceptor) networkInterceptor);
+            }
         }
 
 

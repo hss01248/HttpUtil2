@@ -38,6 +38,7 @@ import io.reactivex.functions.Function;
 import okhttp3.CertificatePinner;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by hss on 2018/12/1.
@@ -189,6 +190,7 @@ public class WanandroidActivity extends AppCompatActivity {
                 HttpUtil.requestAsJsonArray(ReqUrls.BASE_URL+ReqUrls.HOME_TABS, HomeTabsBean.class)
                         .setSync(true)
                         .setDataCodeMsgJsonConfig(WanDataCodeMsgConfig.build())
+                        .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                         .callback(new MyNetCallback<ResponseBean<List<HomeTabsBean>>>() {
                             @Override
                             public void onSuccess(ResponseBean<List<HomeTabsBean>> response) {

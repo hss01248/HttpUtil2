@@ -175,8 +175,15 @@ public class GlobalConfig {
 
     public List<Interceptor> commonInterceptors = new ArrayList<>();
 
+    public List<Interceptor> commonNetworkInterceptors = new ArrayList<>();
+
     public GlobalConfig addInterceptor(Interceptor interceptor) {
         commonInterceptors.add(interceptor);
+        return this;
+    }
+
+    public GlobalConfig addNetworkInterceptor(Interceptor interceptor) {
+        commonNetworkInterceptors.add(interceptor);
         return this;
     }
 
@@ -326,6 +333,10 @@ public class GlobalConfig {
      */
     public GlobalConfig setDefaultUserAgent(String userAgent) {
         this.userAgent = userAgent;
+        commonHeaders.put(HttpHeaders.HEAD_KEY_USER_AGENT, userAgent);
+        return this;
+    }
+    public GlobalConfig useDefaultUserAgent() {
         commonHeaders.put(HttpHeaders.HEAD_KEY_USER_AGENT, userAgent);
         return this;
     }

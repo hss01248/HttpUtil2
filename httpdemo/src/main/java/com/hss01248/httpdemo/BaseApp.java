@@ -19,6 +19,7 @@ import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.INetTool;
 
+import com.hss01248.http.Tool;
 import com.hss01248.http.cache.CacheMode;
 import com.hss01248.http.config.DataCodeMsgJsonConfig;
 import com.hss01248.http.config.LoadingDialogConfig;
@@ -205,7 +206,8 @@ public class BaseApp extends MultiDexApplication {
                 .setLogTag("httpdemo")
                 .setCacheMode(CacheMode.NO_CACHE)
                 .setCookieMode(GlobalConfig.COOKIE_DISK)
-                .setDefaultUserAgent(System.getProperty("http.agent"))
+                //.setDefaultUserAgent(Tool.getDefalutUserAgent())
+                //.useDefaultUserAgent()
                 .setIgnoreCertificateVerify(false)
                 //.setReadTimeout(15000)
                 .setConnectTimeout(10000)

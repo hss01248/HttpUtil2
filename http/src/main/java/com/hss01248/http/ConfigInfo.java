@@ -22,6 +22,7 @@ import org.reactivestreams.Publisher;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -67,6 +68,10 @@ public class ConfigInfo<T> {
     //上传的文件路径
     private Map<String, String> files;
     private Map<String, List<String>> files2;//一个key接收多个文件
+
+
+
+
 
 
     //响应相关
@@ -652,8 +657,22 @@ public class ConfigInfo<T> {
         return this;
     }
 
+    public ConfigInfo<T> addInterceptor(Interceptor interceptor){
+        interceptors.add(interceptor);
+        return this;
+    }
 
-    private List<Interceptor> interceptors;
+    public ConfigInfo<T> addNetworkInterceptor(Interceptor interceptor){
+        networkInterceptors.add(interceptor);
+        return this;
+    }
+    private List<Interceptor> interceptors = new ArrayList<Interceptor>();
+
+    public List<Interceptor> getNetworkInterceptors() {
+        return networkInterceptors;
+    }
+
+    private List<Interceptor> networkInterceptors = new ArrayList<Interceptor>();
 
    /* public Dialog loadingDialog;
     public boolean isLoadingDialogHorizontal;

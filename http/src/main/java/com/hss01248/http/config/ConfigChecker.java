@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.hss01248.http.ConfigInfo;
 import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.Tool;
+import com.hss01248.http.utils.HttpHeaders;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -62,6 +63,9 @@ public class ConfigChecker {
                     info.addHeader(entry.getKey(),entry.getValue());
                 }
             }
+        }
+        if(!info.getHeaders().containsKey(HttpHeaders.HEAD_KEY_USER_AGENT)){
+            info.addHeader(HttpHeaders.HEAD_KEY_USER_AGENT,Tool.getDefalutUserAgent());
         }
 
 

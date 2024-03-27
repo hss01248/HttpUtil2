@@ -60,7 +60,6 @@ public class Runner {
     //@RxLogObservable
     public static <T> Observable<ResponseBean<T>> asObservable(ConfigInfo<T> info) {
 
-        info.addHeader("User-Agent", GlobalConfig.get().getUserAgent());
         ConfigChecker.convertParams(info);
         String checkedStr = ConfigChecker.check(info);
         Tool.logd(info.toString());

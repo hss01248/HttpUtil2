@@ -52,7 +52,7 @@ public class Tool {
                 PackageInfo info = pm.getPackageInfo(HttpUtil.context.getPackageName(), 0);
 
                 //pi.applicationInfo.loadLabel(pm).toString()
-                userAgent = userAgent+" "+ info.applicationInfo.loadLabel(pm).toString()+"-"+info.versionName
+                userAgent = userAgent+" "+ info.applicationInfo.loadLabel(pm).toString()+"/"+info.versionName
                         +"/"+info.versionCode ;
                 //是否加上deviceId?
             }catch (Throwable throwable){

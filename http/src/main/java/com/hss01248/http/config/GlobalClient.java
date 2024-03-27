@@ -119,6 +119,13 @@ public class GlobalClient {
             return true;
         }
 
+        if(!info.getInterceptors().isEmpty()){
+            return true;
+        }
+        if(!info.getNetworkInterceptors().isEmpty()){
+            return true;
+        }
+
         return false;
     }
 
@@ -137,6 +144,7 @@ public class GlobalClient {
 
     private static OkHttpClient buildCustomClient(ConfigInfo info) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
 
         Configer.setCustomConfig(builder,info);
 
