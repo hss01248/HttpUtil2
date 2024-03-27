@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 
 import com.hss01248.http.ConfigInfo;
+import com.hss01248.http.GlobalConfig;
 import com.hss01248.http.HttpUtil;
 import com.hss01248.http.RetrofitHelper;
 import com.hss01248.http.StringParser;
@@ -59,6 +60,7 @@ public class Runner {
     //@RxLogObservable
     public static <T> Observable<ResponseBean<T>> asObservable(ConfigInfo<T> info) {
 
+        info.addHeader("User-Agent", GlobalConfig.get().getUserAgent());
         ConfigChecker.convertParams(info);
         String checkedStr = ConfigChecker.check(info);
         Tool.logd(info.toString());
